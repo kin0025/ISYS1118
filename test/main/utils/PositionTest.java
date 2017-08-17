@@ -6,14 +6,27 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * Testing for the Position Class
+ */
 public class PositionTest {
     private Position position;
 
+    /**
+     * Sets up.
+     *
+     * @throws Exception the exception
+     */
     @Before
     public void setUp() throws Exception {
         position = new Position(1,1);
     }
 
+    /**
+     * Tear down.
+     *
+     * @throws Exception the exception
+     */
     @After
     public void tearDown() throws Exception {
     }
@@ -21,6 +34,7 @@ public class PositionTest {
 
     /**
      * Tests for movement working properly with an , no bounds
+     *
      * @throws Exception An exception
      */
     @Test
@@ -35,8 +49,10 @@ public class PositionTest {
         assertEquals("Negative X movement by , no bounds failed", -3,position.getX(),0.01);
         assertEquals("Negative Y movement by , no bounds failed", -2,position.getY(),0.01);
     }
+
     /**
      * Tests for movement working properly with individual variables, no bounds
+     *
      * @throws Exception An exception
      */
     @Test
@@ -48,8 +64,10 @@ public class PositionTest {
         assertEquals("Negative X movement individual, no bounds failed", -3,position.getX(),0.01);
         assertEquals("Negative Y movement individual, no bounds failed", -2,position.getY(),0.01);
     }
+
     /**
      * Tests for movement working properly with an , with bounds. Shouldn't error
+     *
      * @throws Exception An exception
      */
     @Test
@@ -69,6 +87,7 @@ public class PositionTest {
 
     /**
      * Tests for movement working properly with bounds. Shouldn't error
+     *
      * @throws Exception An exception
      */
     @Test
@@ -85,6 +104,7 @@ public class PositionTest {
 
     /**
      * Tests for movement working properly with an , with bounds. Shouldn't error
+     *
      * @throws Exception An exception
      */
     @Test
@@ -104,6 +124,7 @@ public class PositionTest {
 
     /**
      * Tests for movement working properly with bounds. Shouldn't error
+     *
      * @throws Exception An exception
      */
     @Test
@@ -118,10 +139,11 @@ public class PositionTest {
         assertEquals("Negative Y movement  with bounds wrong result", -1,position.getY(),0.01);
     }
 
-    @Test
-    public void movePositionBounds() throws Exception {
-    }
-
+    /**
+     * Sets position array.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void setPositionArray() throws Exception {
         double[] array = {10,10};
@@ -129,6 +151,11 @@ public class PositionTest {
         assertArrayEquals("Set position Array failed",array,position.getPosition(),0.01);
     }
 
+    /**
+     * Sets position.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void setPosition() throws Exception {
         double[] array = {10,10};
@@ -136,18 +163,33 @@ public class PositionTest {
         assertArrayEquals("Set position standard failed",array,position.getPosition(),0.01);
     }
 
+    /**
+     * Gets x.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void getX() throws Exception {
             assertEquals("Get X failed",1,position.getX(),0.01);
 
     }
 
+    /**
+     * Gets y.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void getY() throws Exception {
         assertEquals("Get Y failed",1,position.getY(),0.01);
 
     }
 
+    /**
+     * Gets position.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void getPosition() throws Exception {
         double[] expectedPosition = {1,1};
@@ -157,6 +199,7 @@ public class PositionTest {
 
     /**
      * Tests for set working properly with an , with bounds. Shouldn't error
+     *
      * @throws Exception An exception
      */
     @Test
@@ -170,6 +213,7 @@ public class PositionTest {
 
     /**
      * Tests for set working properly with bounds. Shouldn't error
+     *
      * @throws Exception An exception
      */
     @Test
@@ -183,6 +227,7 @@ public class PositionTest {
 
     /**
      * Tests for setworking properly with an , with bounds. Shouldn't error
+     *
      * @throws Exception An exception
      */
     @Test
@@ -202,6 +247,7 @@ public class PositionTest {
 
     /**
      * Tests for setworking properly with bounds. Shouldn't error
+     *
      * @throws Exception An exception
      */
     @Test
@@ -216,19 +262,34 @@ public class PositionTest {
         assertEquals("Negative Y set with bounds wrong result", -1,position.getY(),0.01);
     }
 
+    /**
+     * Tests the difference in both axis.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void getDifference() throws Exception {
         Position difference = new Position(10,15);
         assertEquals("Difference calculation returned incorrect result",16.6433,position.getDifference(difference),0.05);
     }
 
+    /**
+     * Tests the difference in the x axis.
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void getDifferenceX() throws Exception {
         Position difference = new Position(10,15);
         assertEquals("Difference calculation returned incorrect result",9,position.getDifference(difference,0),0.05);
 
-    }    
-    
+    }
+
+    /**
+     * Tests for a difference in the Y axis
+     *
+     * @throws Exception the exception
+     */
     @Test
     public void getDifferenceY() throws Exception {
         Position difference = new Position(10,15);

@@ -1,6 +1,7 @@
 package main.utils;
 
 import com.sun.org.apache.xpath.internal.operations.Or;
+import main.exceptions.IncorrectOrientationException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +32,11 @@ public class OrientationTest {
     public void getCurrentOrientation() throws Exception {
         assertEquals("Getting orientation failed",Orientation.vertical,orientation.getCurrentOrientation());
 
+    }
+
+    @Test (expected=IncorrectOrientationException.class)
+    public void checkConstructor() throws IncorrectOrientationException {
+        new Orientation('y');
     }
 
 

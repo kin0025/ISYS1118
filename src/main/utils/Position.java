@@ -13,7 +13,7 @@ public class Position {
      * @param x the x position in pixels
      * @param y the y position in pixels
      */
-    Position(double x, double y){
+    public Position(double x, double y){
         this.x = x;
         this.y = y;
     }

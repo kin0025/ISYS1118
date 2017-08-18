@@ -15,30 +15,27 @@ public class PositionTest {
     /**
      * Sets up.
      *
-     * @throws Exception the exception
      */
     @Before
-    public void setUp() throws Exception {
+    public void setUp()  {
         position = new Position(1,1);
     }
 
     /**
      * Tear down.
      *
-     * @throws Exception the exception
      */
     @After
-    public void tearDown() throws Exception {
+    public void tearDown()  {
     }
 
 
     /**
      * Tests for movement working properly with an , no bounds
      *
-     * @throws Exception An exception
      */
     @Test
-    public void movePositionArray() throws Exception {
+    public void movePositionArray()  {
         double[] moveBy = {2,1};
         position.movePosition(moveBy);
         assertEquals("Positive X movement by , no bounds failed",3.0,position.getX(),0.01);
@@ -53,10 +50,9 @@ public class PositionTest {
     /**
      * Tests for movement working properly with individual variables, no bounds
      *
-     * @throws Exception An exception
      */
     @Test
-    public void movePosition() throws Exception {
+    public void movePosition()  {
         position.movePosition(2,1);
         assertEquals("Positive X movement individual, no bounds failed",3.0,position.getX(),0.01);
         assertEquals("Positive Y movement individual, no bounds failed",2.0,position.getY(),0.01);
@@ -68,10 +64,9 @@ public class PositionTest {
     /**
      * Tests for movement working properly with an , with bounds. Shouldn't error
      *
-     * @throws Exception An exception
      */
     @Test
-    public void movePositionBoundsArrayCorrect() throws Exception {
+    public void movePositionBoundsArrayCorrect()  {
         double[] moveBy = {2,1};
         double[] maxBounds = {10,10};
         double[] minBounds = {-10,-10};
@@ -88,10 +83,9 @@ public class PositionTest {
     /**
      * Tests for movement working properly with bounds. Shouldn't error
      *
-     * @throws Exception An exception
      */
     @Test
-    public void movePositionBoundsCorrect() throws Exception {
+    public void movePositionBoundsCorrect()  {
         double[] maxBounds = {10,10};
         double[] minBounds = {-10,-10};
         assertEquals("Positive movement  with bounds failed",true,position.movePosition(2,1,maxBounds,minBounds));
@@ -105,10 +99,9 @@ public class PositionTest {
     /**
      * Tests for movement working properly with an , with bounds. Shouldn't error
      *
-     * @throws Exception An exception
      */
     @Test
-    public void movePositionBoundsArrayIncorrect() throws Exception {
+    public void movePositionBoundsArrayIncorrect()  {
         double[] moveBy = {20,20};
         double[] maxBounds = {10,10};
         double[] minBounds = {-10,-10};
@@ -125,27 +118,25 @@ public class PositionTest {
     /**
      * Tests for movement working properly with bounds. Shouldn't error
      *
-     * @throws Exception An exception
      */
     @Test
-    public void movePositionBoundsIncorrect() throws Exception {
+    public void movePositionBoundsIncorrect()  {
         double[] maxBounds = {10,10};
         double[] minBounds = {-10,-10};
         assertEquals("Positive movement  with bounds failed",false,position.movePosition(20,20,maxBounds,minBounds));
         assertEquals("Positive X movement  with bounds wrong result",1.0,position.getX(),0.01);
         assertEquals("Positive Y movement  with bounds wrong result",1.0,position.getY(),0.01);
         assertEquals("Negative movement  with bounds failed",false,position.movePosition(-20,-20,maxBounds,minBounds));
-        assertEquals("Negative X movement  with bounds wrong result", -1,position.getX(),0.01);
-        assertEquals("Negative Y movement  with bounds wrong result", -1,position.getY(),0.01);
+        assertEquals("Negative X movement  with bounds wrong result", 1,position.getX(),0.01);
+        assertEquals("Negative Y movement  with bounds wrong result", 1,position.getY(),0.01);
     }
 
     /**
      * Sets position array.
      *
-     * @throws Exception the exception
      */
     @Test
-    public void setPositionArray() throws Exception {
+    public void setPositionArray()  {
         double[] array = {10,10};
         position.setPosition(array);
         assertArrayEquals("Set position Array failed",array,position.getPosition(),0.01);
@@ -154,10 +145,9 @@ public class PositionTest {
     /**
      * Sets position.
      *
-     * @throws Exception the exception
      */
     @Test
-    public void setPosition() throws Exception {
+    public void setPosition()  {
         double[] array = {10,10};
         position.setPosition(10,10);
         assertArrayEquals("Set position standard failed",array,position.getPosition(),0.01);
@@ -166,10 +156,9 @@ public class PositionTest {
     /**
      * Gets x.
      *
-     * @throws Exception the exception
      */
     @Test
-    public void getX() throws Exception {
+    public void getX()  {
             assertEquals("Get X failed",1,position.getX(),0.01);
 
     }
@@ -177,10 +166,9 @@ public class PositionTest {
     /**
      * Gets y.
      *
-     * @throws Exception the exception
      */
     @Test
-    public void getY() throws Exception {
+    public void getY()  {
         assertEquals("Get Y failed",1,position.getY(),0.01);
 
     }
@@ -188,10 +176,9 @@ public class PositionTest {
     /**
      * Gets position.
      *
-     * @throws Exception the exception
      */
     @Test
-    public void getPosition() throws Exception {
+    public void getPosition()  {
         double[] expectedPosition = {1,1};
         assertArrayEquals("Get Position array failed",expectedPosition,position.getPosition(),0.01);
 
@@ -200,10 +187,9 @@ public class PositionTest {
     /**
      * Tests for set working properly with an , with bounds. Shouldn't error
      *
-     * @throws Exception An exception
      */
     @Test
-    public void setPositionBoundsArrayCorrect() throws Exception {
+    public void setPositionBoundsArrayCorrect()  {
         double[] setTo = {2,3};
         double[] maxBounds = {10,10};
         double[] minBounds = {-10,-10};
@@ -214,10 +200,9 @@ public class PositionTest {
     /**
      * Tests for set working properly with bounds. Shouldn't error
      *
-     * @throws Exception An exception
      */
     @Test
-    public void setPositionBoundsCorrect() throws Exception {
+    public void setPositionBoundsCorrect()  {
         double[] setTo = {2,3};
         double[] maxBounds = {10,10};
         double[] minBounds = {-10,-10};
@@ -228,10 +213,9 @@ public class PositionTest {
     /**
      * Tests for setworking properly with an , with bounds. Shouldn't error
      *
-     * @throws Exception An exception
      */
     @Test
-    public void setPositionBoundsArrayIncorrect() throws Exception {
+    public void setPositionBoundsArrayIncorrect()  {
         double[] setTo = {20,20};
         double[] maxBounds = {10,10};
         double[] minBounds = {-10,-10};
@@ -248,27 +232,25 @@ public class PositionTest {
     /**
      * Tests for setworking properly with bounds. Shouldn't error
      *
-     * @throws Exception An exception
      */
     @Test
-    public void setPositionBoundsIncorrect() throws Exception {
+    public void setPositionBoundsIncorrect()  {
         double[] maxBounds = {10,10};
         double[] minBounds = {-10,-10};
         assertEquals("Positive set with bounds failed",false,position.setPosition(20,20,maxBounds,minBounds));
         assertEquals("Positive X set with bounds wrong result",1.0,position.getX(),0.01);
         assertEquals("Positive Y set with bounds wrong result",1.0,position.getY(),0.01);
         assertEquals("Negative set with bounds failed",false,position.setPosition(-20,-20,maxBounds,minBounds));
-        assertEquals("Negative X set with bounds wrong result", -1,position.getX(),0.01);
-        assertEquals("Negative Y set with bounds wrong result", -1,position.getY(),0.01);
+        assertEquals("Negative X set with bounds wrong result", 1,position.getX(),0.01);
+        assertEquals("Negative Y set with bounds wrong result", 1,position.getY(),0.01);
     }
 
     /**
      * Tests the difference in both axis.
      *
-     * @throws Exception the exception
      */
     @Test
-    public void getDifference() throws Exception {
+    public void getDifference()  {
         Position difference = new Position(10,15);
         assertEquals("Difference calculation returned incorrect result",16.6433,position.getDifference(difference),0.05);
     }
@@ -276,10 +258,9 @@ public class PositionTest {
     /**
      * Tests the difference in the x axis.
      *
-     * @throws Exception the exception
      */
     @Test
-    public void getDifferenceX() throws Exception {
+    public void getDifferenceX()  {
         Position difference = new Position(10,15);
         assertEquals("Difference calculation returned incorrect result",9,position.getDifference(difference,0),0.05);
 
@@ -288,10 +269,9 @@ public class PositionTest {
     /**
      * Tests for a difference in the Y axis
      *
-     * @throws Exception the exception
      */
     @Test
-    public void getDifferenceY() throws Exception {
+    public void getDifferenceY()  {
         Position difference = new Position(10,15);
         assertEquals("Difference calculation returned incorrect result",14,position.getDifference(difference,0),0.05);
 

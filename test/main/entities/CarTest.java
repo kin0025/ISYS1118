@@ -1,23 +1,37 @@
 package main.entities;
 
+import main.utils.Direction;
+import main.utils.Position;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Queue;
+
 import static org.junit.Assert.*;
 
 public class CarTest {
+    private Car car;
+    private Position carPosition;
+    private Direction carDirection;
+private Queue<Lane> path;
     @Before
     public void setUp() throws Exception {
-        //Car car = new Car();
+        carPosition = new Position(1, 1);
+        carDirection = new Direction(Direction.north);
+        car = new Car(carPosition, carDirection, path);
     }
 
     @After
     public void tearDown() throws Exception {
+        carDirection = null;
+        car = null;
+        carPosition = null;
     }
 
     @Test
     public void accelerate() throws Exception {
+        car.accelerate();
     }
 
     @Test
@@ -29,7 +43,7 @@ public class CarTest {
     }
 
     @Test
-    public void turnLeft() throws Exception {
+    public void turnLeft() {
     }
 
     @Test

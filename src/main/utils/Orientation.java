@@ -50,5 +50,4 @@ public class Orientation {
     public boolean getCurrentOrientation() {
         return orientation;
     }
-
 }

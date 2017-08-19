@@ -2,16 +2,16 @@ package main.entities;
 
 import main.utils.Position;
 
-import java.util.Queue;
+import java.util.LinkedList;
 
 /**
  * Spawns cars.
  */
 public class CarSpawn {
     //Get this from the constructor
-    private Queue<Intersection> pathIntersections;
+    private LinkedList<Intersection> pathIntersections;
     //Generate this in the constructor
-    private Queue<Lane> pathLanes;
+    private LinkedList<Lane> pathLanes = new LinkedList<>();
 
     private int spawnSpeed;
     private Position spawnPosition;
@@ -24,18 +24,22 @@ public class CarSpawn {
 
     /**
      * Instantiates a new Car spawn. Creates a lanes list for cars to follow and figures out the...
-     *
      * @param pathIntersections the path intersections
      * @param spawnSpeed        the spawn speed
      * @param spawnPosition     the spawn position
      * @param spawnDelay        the spawn delay
      */
-    public CarSpawn(Queue<Intersection> pathIntersections, int spawnSpeed, Position spawnPosition, int spawnDelay) {
+    public CarSpawn(LinkedList<Intersection> pathIntersections, int spawnSpeed, Position spawnPosition, int spawnDelay) {
         this.pathIntersections = pathIntersections;
-        //TODO: Some logic to set the lanes here as well.
         this.spawnSpeed = spawnSpeed;
         this.spawnPosition = spawnPosition;
         this.spawnDelay = spawnDelay;
+
+        for(int i = 0; i < pathIntersections.size();i++){
+            Intersection nextIntersection = pathIntersections.remove();
+            //if(nextIntersection.S)
+            //pathLanes.add()
+        }
     }
 
     /**
@@ -43,11 +47,14 @@ public class CarSpawn {
      *
      * @return the boolean
      */
-    public boolean spawnCar(){return false;}
+    public boolean spawnCar() {
+        return false;
+    }
 
     /**
      * Increments time. Performs all the logic that is needed per tick for the car spawner.
      * Must be called every tick.
      */
-    void incrementTime(){}
+    void incrementTime() {
+    }
 }

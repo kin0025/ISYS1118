@@ -75,8 +75,7 @@ public boolean movePosition(double x, double y, double[] min, double[] max){retu
     }
 
     public double[] getPosition(){
-        double[] array = {x,y};
-        return array;
+        return new double[]{x,y};
     }
 
     public double getDifference(Position positionDiff){return 0;}

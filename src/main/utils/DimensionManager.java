@@ -1,8 +1,8 @@
 package main.utils;
 
 public class DimensionManager {
-    private static int numberOfTicksPerSecond = 30;
-    private static int numberOfMetersPerPixel = 1;
+    private static final int numberOfTicksPerSecond = 30;
+    private static final int numberOfMetersPerPixel = 1;
 
     public static double metersToPixels(double meters) {
         return meters * numberOfMetersPerPixel;

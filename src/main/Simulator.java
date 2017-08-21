@@ -15,7 +15,7 @@ public class Simulator {
         while(!stop) {
             while (!pause) {
                 long time = 0;
-                MapGrid grid = new MapGrid();
+                //MapGrid grid = new MapGrid();
 
 
 

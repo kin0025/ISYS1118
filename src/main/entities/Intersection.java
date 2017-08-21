@@ -1,12 +1,14 @@
 package main.entities;
 
+import main.utils.Direction;
 import main.utils.Position;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Intersection {
+    private HashMap<Direction, Road> roads;
     private Position position;
-    private Road[] roads;
     private TrafficLight[] lights;
     private LinkedList<Car> cars;
 
@@ -14,7 +16,7 @@ public class Intersection {
         return position;
     }
 
-    public Road[] getRoads() {
+    public HashMap<Direction, Road> getRoads() {
         return roads;
     }
 
@@ -24,5 +26,10 @@ public class Intersection {
 
     public LinkedList<Car> getCars() {
         return cars;
+    }
+
+    //Probably shouldn't be void
+    public boolean addCar(){
+        return false;
     }
 }

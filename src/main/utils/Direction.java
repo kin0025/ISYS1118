@@ -6,7 +6,6 @@ import main.exceptions.IncorrectDirectionException;
  * The type main.utils.Direction. Used to indicate what direction an object is facing
  */
 public class Direction {
-    private int direction;
     /**
      * The constant north.
      */
@@ -23,6 +22,7 @@ public class Direction {
      * The constant west.
      */
     public static final int west = 3;
+    private int direction;
 
 
     /**
@@ -94,7 +94,7 @@ public class Direction {
                 break;
         }
         return array;
-        }
+    }
 
     /**
      * Gets current direction.
@@ -103,7 +103,42 @@ public class Direction {
      */
     public int getDirection() {
         return direction;
+    }
+
+    public int getTurnDirection(Direction turningTo) {
+        switch(turningTo.direction - direction){
+            case 1:
+                return 1;
+            case -1:
+                return -1;
+            case 2:
+                return 2;
+            case 0:
+                return 0;
+            case -3:
+                return 1;
+            case 3:
+                return -1;
+                default:
+                    throw new RuntimeException("Something went seriously wrong or there is a logic error");
         }
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null) {
+            return false;
+        }
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+        Direction comparator = (Direction) o;
+        return direction == comparator.direction;
+    }
 }
 
 

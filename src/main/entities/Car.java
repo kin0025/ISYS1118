@@ -1,16 +1,16 @@
 package main.entities;
 
+import main.entities.interfaces.CarMoveable;
 import main.utils.DimensionManager;
 import main.utils.Direction;
 import main.utils.Position;
 
 import java.util.LinkedList;
-import java.util.Queue;
 
 /**
  * The type main.entities.Car.
  */
-public class Car {
+public class Car{
     private static final double accelerationRate = DimensionManager.metersToPixels(2);
     private static final double decelerationRate = DimensionManager.metersToPixels(4);
     private static final double maxSpeed = DimensionManager.metersToPixels(13.9);
@@ -24,7 +24,8 @@ public class Car {
     private LinkedList<Lane> lanePath;
     private LinkedList<Intersection> intersectionPath;
 
-    public Car(Position position, Direction direction, LinkedList<Lane> pathLanes, LinkedList<Intersection> intersectionPath) {
+    public Car(Position position, Direction direction, LinkedList<Lane> pathLanes, LinkedList<Intersection>
+            intersectionPath) {
         this.position = position;
         this.direction = direction;
         this.lanePath = pathLanes;
@@ -66,7 +67,7 @@ public class Car {
 
         //TODO: If decelerating don't do anything?
 
-        if(position.getDifference(intersectionPath.element().getPosition()) <= 0){
+        if (position.getDifference(intersectionPath.element().getPosition()) <= 0) {
             //TODO: Move to another lane logic here
             lanePath.remove().getCars().remove(this);
             lanePath.element().getCars().add(this);

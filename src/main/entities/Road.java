@@ -7,6 +7,7 @@ public class Road {
     private Lane[] lanes;
     private Orientation orientation;
     private Intersection[] intersections;
+
     public Lane[] getLanes() {
         return lanes;
     }

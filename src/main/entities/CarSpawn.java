@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017. Alexander Kinross-Smith, s3603437
+ */
+
 package main.entities;
 
 import main.utils.Position;
@@ -30,7 +34,8 @@ public class CarSpawn extends Intersection {
      * @param spawnPosition     the spawn position
      * @param spawnDelay        the spawn delay
      */
-    public CarSpawn(LinkedList<Intersection> pathIntersections, int spawnSpeed, Position spawnPosition, int spawnDelay) {
+    public CarSpawn(LinkedList<Intersection> pathIntersections, int spawnSpeed, Position spawnPosition, int
+            spawnDelay) {
         this.pathIntersections = pathIntersections;
         this.spawnSpeed = spawnSpeed;
         this.spawnPosition = spawnPosition;
@@ -38,9 +43,9 @@ public class CarSpawn extends Intersection {
 
         for (int i = 0; i < pathIntersections.size(); i++) {
             Intersection nextIntersection = pathIntersections.remove();
-            Road currentRoad;
-            Road nextRoad;
-            Lane nextLane;
+            Road currentRoad = null;
+            Road nextRoad = null;
+            Lane addLane = null;
             for (Road roads : nextIntersection.getRoads().values()) {
                 for (Intersection iteratedIntersection : roads.getIntersections()) {
                     if (iteratedIntersection.equals(nextIntersection)) {
@@ -48,10 +53,8 @@ public class CarSpawn extends Intersection {
                         currentRoad = roads;
                     }
                 }
-                //if(nextRoad != null) {
-                    currentRoad = nextRoad;
-                    nextRoad = null;
-                }
+            }
+            for (Intersection intersections : pathIntersections) {
 
             }
             //pathLanes.add(nextLane);

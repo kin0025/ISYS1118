@@ -13,7 +13,7 @@ public class Position {
      * @param x the x position in pixels
      * @param y the y position in pixels
      */
-    public Position(double x, double y){
+    public Position(double x, double y) {
         this.x = x;
         this.y = y;
     }
@@ -24,37 +24,48 @@ public class Position {
      * @param x the amount to change x by in pixels
      * @param y the amount to change y by in pixels
      */
-    public void movePosition(double x, double y){
-        this.x +=x;
-        this.y +=y;
+    public void movePosition(double x, double y) {
+        this.x += x;
+        this.y += y;
     }
 
-    public void movePosition(double[] array){
+    public void movePosition(double[] array) {
         this.x += array[0];
         this.y += array[1];
     }
 
-public boolean movePosition(double[] array, double[] min, double[] max){return false;}
-public boolean movePosition(double x, double y, double[] min, double[] max){return false;}
+    public boolean movePosition(double[] array, double[] min, double[] max) {
+        return false;
+    }
+
+    public boolean movePosition(double x, double y, double[] min, double[] max) {
+        return false;
+    }
+
     /**
      * Set position.
      *
      * @param x the new value of x in pixels
      * @param y the new value of y in pixels
      */
-    public void setPosition(double x, double y){
+    public void setPosition(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
-    public void setPosition(double[] array){
+    public void setPosition(double[] array) {
         this.x = array[0];
         this.y = array[1];
     }
 
 
-    public boolean setPosition(double[] array, double[] min, double[] max){return false;}
-    public boolean setPosition(double x, double y, double[] min, double[] max){return false;}
+    public boolean setPosition(double[] array, double[] min, double[] max) {
+        return false;
+    }
+
+    public boolean setPosition(double x, double y, double[] min, double[] max) {
+        return false;
+    }
 
     /**
      * Gets x.
@@ -74,13 +85,17 @@ public boolean movePosition(double x, double y, double[] min, double[] max){retu
         return y;
     }
 
-    public double[] getPosition(){
-        return new double[]{x,y};
+    public double[] getPosition() {
+        return new double[]{x, y};
     }
 
-    public double getDifference(Position positionDiff){return 0;}
+    public double getDifference(Position positionDiff) {
+        return 0;
+    }
 
-    public double getDifference(Position positionDiff, int dimension){return 0;}
+    public double getDifference(Position positionDiff, int dimension) {
+        return 0;
+    }
 
 
 }

@@ -1,12 +1,13 @@
 package main.entities;
 
+import main.entities.interfaces.CarMoveable;
 import main.utils.Direction;
 import main.utils.Position;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class Intersection {
+public class Intersection implements CarMoveable{
     private HashMap<Direction, Road> roads;
     private Position position;
     private TrafficLight[] lights;
@@ -29,7 +30,17 @@ public class Intersection {
     }
 
     //Probably shouldn't be void
-    public boolean addCar(){
+    public boolean addCar(Car car) {
+        return false;
+    }
+
+    @Override
+    public boolean removeCar(Car car) {
+        return false;
+    }
+
+    @Override
+    public boolean moveCar(Car car) {
         return false;
     }
 }

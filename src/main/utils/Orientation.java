@@ -10,11 +10,11 @@ public class Orientation {
     /**
      * The constant horizontal.
      */
-    public static final boolean horizontal  = false;
+    public static final boolean horizontal = false;
     /**
      * The constant vertical.
      */
-    public static final boolean vertical  = true;
+    public static final boolean vertical = true;
 
     /**
      * Instantiates a new main.utils.Orientation.

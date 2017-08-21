@@ -6,20 +6,20 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Queue;
-
-import static org.junit.Assert.*;
+import java.util.LinkedList;
 
 public class CarTest {
     private Car car;
     private Position carPosition;
     private Direction carDirection;
-private Queue<Lane> path;
+    private LinkedList<Lane> pathLane;
+    private LinkedList<Intersection> pathIntersection;
+
     @Before
     public void setUp() throws Exception {
         carPosition = new Position(1, 1);
         carDirection = new Direction(Direction.north);
-        car = new Car(carPosition, carDirection, path);
+        car = new Car(carPosition, carDirection, pathLane, pathIntersection);
     }
 
     @After

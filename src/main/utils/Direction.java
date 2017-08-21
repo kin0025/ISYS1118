@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017. Alexander Kinross-Smith, s3603437
+ */
+
 package main.utils;
 
 import main.exceptions.IncorrectDirectionException;
@@ -106,7 +110,8 @@ public class Direction {
     }
 
     public int getTurnDirection(Direction turningTo) {
-        switch(turningTo.direction - direction){
+        //TODO make neater
+        switch (turningTo.direction - direction) {
             case 1:
                 return 1;
             case -1:
@@ -119,8 +124,8 @@ public class Direction {
                 return 1;
             case 3:
                 return -1;
-                default:
-                    throw new RuntimeException("Something went seriously wrong or there is a logic error");
+            default:
+                throw new RuntimeException("Something went seriously wrong or there is a logic error");
         }
     }
 

@@ -1,8 +1,9 @@
 package main.entities;
 
 public class MapGrid {
-    Intersection[][] grid;
-    int width, height;
+    private Intersection[][] grid;
+    private int width;
+    private int height;
 
     //FIXME Not final at all.
     public MapGrid(int width, int height) {
@@ -15,14 +16,14 @@ public class MapGrid {
         return grid;
     }
 
+    public void setGrid(Intersection[][] grid) {
+        this.grid = grid;
+    }
+
     public boolean addIntersection(int x, int y, Intersection intersection) {
         //FIXME Needs a hilarious amount added
         grid[x][y] = intersection;
         return false;
-    }
-
-    public void setGrid(Intersection[][] grid) {
-        this.grid = grid;
     }
 
     public int getWidth() {

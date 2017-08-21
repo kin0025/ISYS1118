@@ -1,6 +1,5 @@
 package main.utils;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
 import main.exceptions.IncorrectOrientationException;
 import org.junit.After;
 import org.junit.Before;
@@ -9,7 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class OrientationTest {
-    Orientation orientation;
+    private Orientation orientation;
 
     @Before
     public void setUp() throws Exception {

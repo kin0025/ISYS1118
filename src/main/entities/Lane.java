@@ -1,12 +1,19 @@
+/*
+ * Copyright (c) 2017. Alexander Kinross-Smith, s3603437
+ */
+
 package main.entities;
 
+import main.entities.interfaces.CarMoveable;
 import main.utils.Direction;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
-public class Lane {
+public class Lane implements CarMoveable{
     private Road parentRoad;
-    private LinkedList<Car> cars = new LinkedList<Car>();
+    private LinkedList<Car> cars = new LinkedList<>();
     private ArrayList<Lane> outputLanes;
     private Direction direction;
     private boolean isRightTurnLane;
@@ -18,7 +25,8 @@ public class Lane {
         this.direction = direction;
     }
 
-    public void incrementTime(){}
+    public void incrementTime() {
+    }
 
     public Road getParentRoad() {
         return parentRoad;
@@ -36,13 +44,27 @@ public class Lane {
         return direction;
     }
 
-    public boolean isRightTurnLane(){
+    public boolean isRightTurnLane() {
         return isRightTurnLane;
     }
 
     //Why did I make this?
-    public boolean isLeftTurnLane(){
+    public boolean isLeftTurnLane() {
         return !isRightTurnLane;
     }
 
+    @Override
+    public boolean addCar(Car car) {
+        return false;
+    }
+
+    @Override
+    public boolean moveCar(Car car) {
+        return false;
+    }
+
+    @Override
+    public boolean removeCar(Car car) {
+        return false;
+    }
 }

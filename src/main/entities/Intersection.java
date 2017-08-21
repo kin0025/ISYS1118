@@ -14,4 +14,15 @@ public class Intersection {
         return position;
     }
 
+    public Road[] getRoads() {
+        return roads;
+    }
+
+    public TrafficLight[] getLights() {
+        return lights;
+    }
+
+    public LinkedList<Car> getCars() {
+        return cars;
+    }
 }

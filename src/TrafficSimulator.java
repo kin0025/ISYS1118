@@ -1,6 +1,6 @@
 import main.Simulator;
 
-public class Traffic {
+public class TrafficSimulator {
 
     public static int main(){
         Simulator sim = new Simulator();

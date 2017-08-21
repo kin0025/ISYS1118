@@ -7,7 +7,7 @@ import java.util.LinkedList;
 /**
  * Spawns cars.
  */
-public class CarSpawn {
+public class CarSpawn extends Intersection {
     //Get this from the constructor
     private LinkedList<Intersection> pathIntersections;
     //Generate this in the constructor
@@ -24,6 +24,7 @@ public class CarSpawn {
 
     /**
      * Instantiates a new Car spawn. Creates a lanes list for cars to follow and figures out the...
+     *
      * @param pathIntersections the path intersections
      * @param spawnSpeed        the spawn speed
      * @param spawnPosition     the spawn position
@@ -35,9 +36,18 @@ public class CarSpawn {
         this.spawnPosition = spawnPosition;
         this.spawnDelay = spawnDelay;
 
-        for(int i = 0; i < pathIntersections.size();i++){
+        for (int i = 0; i < pathIntersections.size(); i++) {
             Intersection nextIntersection = pathIntersections.remove();
-            //if(nextIntersection.S)
+            Road nextRoad;
+            for (Road roads : nextIntersection.getRoads()) {
+                for (Intersection iteratedIntersection : roads.getIntersections()) {
+                    if (iteratedIntersection.equals(nextIntersection)) {
+                        //We've found the road!. Now we need to figure out what lane to go to.
+                        nextRoad = roads;
+                    }
+                }
+                nextRoad = null;
+            }
             //pathLanes.add()
         }
     }

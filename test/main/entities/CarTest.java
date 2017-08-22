@@ -18,8 +18,8 @@ public class CarTest {
     @Before
     public void setUp() throws Exception {
         carPosition = new Position(1, 1);
-        carDirection = new Direction(Direction.north);
-        car = new Car(carPosition, carDirection, pathLane, pathIntersection);
+        carDirection = new Direction(Direction.COMPASS_DIRECTION.NORTH);
+        //car = new Car(carPosition, carDirection, pathLane, pathIntersection);
     }
 
     @After

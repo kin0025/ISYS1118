@@ -88,7 +88,7 @@ public class CarSpawn extends Lane {
 
         }
         carPath.add(endLane);
-        //TODO find the destructor lane associated with this lane? - verify that it is in the rtight spot
+        //TODO find the destructor lane associated with this lane? - verify that it is in the right spot
     }
 
 

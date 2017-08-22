@@ -126,24 +126,23 @@ public class Direction {
      * Gets the turn direction from this direction turning into the argument direction
      *
      * @param turningTo the direction we are turning to
-     * @return
+     * @return The turn direction enum
      */
     public TURN_DIRECTION getTurnDirection(Direction turningTo) {
         //TODO make neater
         switch (turningTo.direction - direction) {
             //Right
+            case -3:
             case 1:
                 return TURN_DIRECTION.RIGHT;
+            case 3:
             case -1:
                 return TURN_DIRECTION.LEFT;
+            case -2:
             case 2:
                 return TURN_DIRECTION.REVERSE;
             case 0:
                 return TURN_DIRECTION.STRAIGHT;
-            case -3:
-                return TURN_DIRECTION.RIGHT;
-            case 3:
-                return TURN_DIRECTION.LEFT;
             default:
                 throw new RuntimeException("Something went seriously wrong or there is a logic error");
         }

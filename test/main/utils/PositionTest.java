@@ -70,12 +70,12 @@ public class PositionTest {
         double[] moveBy = {2,1};
         double[] maxBounds = {10,10};
         double[] minBounds = {-10,-10};
-        assertEquals("Positive movement  with bounds failed",true,position.movePosition(moveBy,maxBounds,minBounds));
+        assertEquals("Positive movement  with bounds failed",true,position.movePosition(moveBy,minBounds,maxBounds));
         assertEquals("Positive X movement  with bounds wrong result",3.0,position.getX(),0.01);
         assertEquals("Positive Y movement  with bounds wrong result",2.0,position.getY(),0.01);
         moveBy[0] = -6;
         moveBy[1] = -4;
-        assertEquals("Negative movement  with bounds failed",true,position.movePosition(moveBy,maxBounds,minBounds));
+        assertEquals("Negative movement  with bounds failed",true,position.movePosition(moveBy,minBounds,maxBounds));
         assertEquals("Negative X movement  with bounds wrong result", -3,position.getX(),0.01);
         assertEquals("Negative Y movement  with bounds wrong result", -2,position.getY(),0.01);
     }
@@ -88,10 +88,10 @@ public class PositionTest {
     public void movePositionBoundsCorrect()  {
         double[] maxBounds = {10,10};
         double[] minBounds = {-10,-10};
-        assertEquals("Positive movement  with bounds failed",true,position.movePosition(2,1,maxBounds,minBounds));
+        assertEquals("Positive movement  with bounds failed",true,position.movePosition(2,1,minBounds,maxBounds));
         assertEquals("Positive X movement  with bounds wrong result",3.0,position.getX(),0.01);
         assertEquals("Positive Y movement  with bounds wrong result",2.0,position.getY(),0.01);
-        assertEquals("Negative movement  with bounds failed",true,position.movePosition(-6,-4,maxBounds,minBounds));
+        assertEquals("Negative movement  with bounds failed",true,position.movePosition(-6,-4,minBounds,maxBounds));
         assertEquals("Negative X movement  with bounds wrong result", -3,position.getX(),0.01);
         assertEquals("Negative Y movement  with bounds wrong result", -2,position.getY(),0.01);
     }
@@ -105,12 +105,12 @@ public class PositionTest {
         double[] moveBy = {20,20};
         double[] maxBounds = {10,10};
         double[] minBounds = {-10,-10};
-        assertEquals("Positive movement  with bounds failed",false,position.movePosition(moveBy,maxBounds,minBounds));
+        assertEquals("Positive movement  with bounds failed",false,position.movePosition(moveBy,minBounds,maxBounds));
         assertEquals("Positive X movement  with bounds wrong result",1.0,position.getX(),0.01);
         assertEquals("Positive Y movement  with bounds wrong result",1.0,position.getY(),0.01);
         moveBy[0] = -20;
         moveBy[1] = -20;
-        assertEquals("Negative movement  with bounds failed",false,position.movePosition(moveBy,maxBounds,minBounds));
+        assertEquals("Negative movement  with bounds failed",false,position.movePosition(moveBy,minBounds,maxBounds));
         assertEquals("Negative X movement  with bounds wrong result", 1,position.getX(),0.01);
         assertEquals("Negative Y movement  with bounds wrong result", 1,position.getY(),0.01);
     }
@@ -193,7 +193,7 @@ public class PositionTest {
         double[] setTo = {2,3};
         double[] maxBounds = {10,10};
         double[] minBounds = {-10,-10};
-        assertEquals("Set with bounds failed",true,position.setPosition(setTo,maxBounds,minBounds));
+        assertEquals("Set with bounds failed",true,position.setPosition(setTo,minBounds,maxBounds));
         assertArrayEquals("Set position array with bounds failed",setTo,position.getPosition(),0.01);
     }
 
@@ -206,7 +206,7 @@ public class PositionTest {
         double[] setTo = {2,3};
         double[] maxBounds = {10,10};
         double[] minBounds = {-10,-10};
-        assertEquals("Set with bounds failed",true,position.setPosition(2,3,maxBounds,minBounds));
+        assertEquals("Set with bounds failed",true,position.setPosition(2,3,minBounds,maxBounds));
         assertArrayEquals("Set position array with bounds failed",setTo,position.getPosition(),0.01);
     }
 
@@ -219,12 +219,12 @@ public class PositionTest {
         double[] setTo = {20,20};
         double[] maxBounds = {10,10};
         double[] minBounds = {-10,-10};
-        assertEquals("Positive set with bounds failed",false,position.setPosition(setTo,maxBounds,minBounds));
+        assertEquals("Positive set with bounds failed",false,position.setPosition(setTo,minBounds,maxBounds));
         assertEquals("Positive X set with bounds wrong result",1.0,position.getX(),0.01);
         assertEquals("Positive Y set with bounds wrong result",1.0,position.getY(),0.01);
         setTo[0] = -20;
         setTo[1] = -20;
-        assertEquals("Negative set with bounds failed",false,position.setPosition(setTo,maxBounds,minBounds));
+        assertEquals("Negative set with bounds failed",false,position.setPosition(setTo,minBounds,maxBounds));
         assertEquals("Negative X set with bounds wrong result", 1,position.getX(),0.01);
         assertEquals("Negative Y set with bounds wrong result", 1,position.getY(),0.01);
     }
@@ -262,7 +262,7 @@ public class PositionTest {
     @Test
     public void getDifferenceX()  {
         Position difference = new Position(10,15);
-        assertEquals("Difference calculation returned incorrect result",9,position.getDifference(difference,0),0.05);
+        assertEquals("Difference calculation returned incorrect result",9,position.getDifference(difference, Position.DIMENSION.X),0.05);
 
     }
 
@@ -273,7 +273,7 @@ public class PositionTest {
     @Test
     public void getDifferenceY()  {
         Position difference = new Position(10,15);
-        assertEquals("Difference calculation returned incorrect result",14,position.getDifference(difference,0),0.05);
+        assertEquals("Difference calculation returned incorrect result",14,position.getDifference(difference, Position.DIMENSION.Y),0.05);
 
     }
 

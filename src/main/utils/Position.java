@@ -35,11 +35,35 @@ public class Position {
     }
 
     public boolean movePosition(double[] array, double[] min, double[] max) {
-        return false;
+        if(array.length != 2 || min.length != 2 || max.length != 2){
+            return false;
+        }
+        //Check the x
+        if((x + array[0]) > max[0] || (x + array[0]) < min[0]){
+            return false;
+        }
+        if((y + array[1]) > max[1] || (y + array[1]) < min[1]){
+            return false;
+        }
+        x += array[0];
+        y += array[1];
+        return true;
     }
 
     public boolean movePosition(double x, double y, double[] min, double[] max) {
-        return false;
+        if(min.length != 2 || max.length != 2){
+            return false;
+        }
+        //Check the x
+        if(this.x + x > max[0] || this.x + x < min[0]){
+            return false;
+        }
+        if(this.y + y > max[1] || this.y + y < min[1]){
+            return false;
+        }
+        this.x += x;
+        this.y += y;
+        return true;
     }
 
     /**
@@ -60,11 +84,38 @@ public class Position {
 
 
     public boolean setPosition(double[] array, double[] min, double[] max) {
-        return false;
+        if(array.length != 2 || min.length != 2 || max.length != 2){
+            return false;
+        }
+        //Check the x
+        if(array[0] > max[0] ||array[0] < min[0]){
+            return false;
+        }
+        //Check the Y
+        if(array[1] > max[1] || array[1] < min[1]){
+            return false;
+        }
+        x = array[0];
+        y = array[1];
+        return true;
     }
 
     public boolean setPosition(double x, double y, double[] min, double[] max) {
-        return false;
+        if(min.length != 2 || max.length != 2){
+            return false;
+        }
+        //Check the x
+        if(x > max[0] || x < min[0]){
+            return false;
+        }
+        //Check the y
+        if(y > max[1] || y < min[1]){
+            return false;
+        }
+        this.x = x;
+        this.y = y;
+        return true;
+
     }
 
     /**
@@ -90,12 +141,27 @@ public class Position {
     }
 
     public double getDifference(Position positionDiff) {
-        return 0;
+        //a^2 + b^2 = c^2 , return c.
+        return Math.sqrt(Math.pow((positionDiff.getX() - this.x),2) + Math.pow((positionDiff.getY() - this.y),2));
     }
 
-    public double getDifference(Position positionDiff, int dimension) {
-        return 0;
+    /**
+     * Gets the difference in dimension between this object and the argument.
+     * @param positionDiff the position that the current position is subtracted from.
+     * @param dimension the dimension (X or Y) that the difference is needed in.
+     * @return the difference positionDiff - this in the dimensions specified as a double
+     */
+    public double getDifference(Position positionDiff, DIMENSION dimension) {
+        switch (dimension){
+            case X:
+                return positionDiff.getX() - x;
+            case Y:
+                return  positionDiff.getY() - y;
+                default:
+                    throw new RuntimeException("Wrong dimension");
+        }
     }
 
+    enum DIMENSION{X,Y}
 
 }

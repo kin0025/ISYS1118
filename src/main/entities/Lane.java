@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class Lane implements CarMoveable{
+public class Lane implements CarMoveable {
+    ArrayList<Direction.TURN_DIRECTION> turnDirections;
     private Road parentRoad;
     private LinkedList<Car> cars = new LinkedList<>();
     private Direction direction;
-    ArrayList <Direction.TURN_DIRECTION> turnDirections;
 
-    public Lane(){
+    public Lane() {
         parentRoad = null;
     }
 
@@ -28,7 +28,7 @@ public class Lane implements CarMoveable{
     }
 
 
-    public void incrementTime() {
+    public void incrementTime(boolean stopMoving) {
     }
 
     public Road getParentRoad() {

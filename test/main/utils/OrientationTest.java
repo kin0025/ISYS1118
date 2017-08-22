@@ -1,6 +1,5 @@
 package main.utils;
 
-import main.exceptions.IncorrectOrientationException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,32 +10,26 @@ public class OrientationTest {
     private Orientation orientation;
 
     @Before
-    public void setUp() throws Exception {
-        orientation = new Orientation('v');
+    public void setUp()  {
+        orientation = new Orientation(Orientation.ENUM.VERTICAL);
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown()  {
     }
 
     @Test
-    public void swapOrientation() throws Exception {
+    public void swapOrientation()  {
         orientation.swapOrientation();
-        assertEquals("Swapping from V to H failed",Orientation.horizontal,orientation.getCurrentOrientation());
+        assertEquals("Swapping from V to H failed", Orientation.ENUM.HORIZONTAL,orientation.getCurrentOrientation());
    orientation.swapOrientation();
-        assertEquals("Swapping from V to H failed",Orientation.vertical,orientation.getCurrentOrientation());
+        assertEquals("Swapping from V to H failed", Orientation.ENUM.VERTICAL,orientation.getCurrentOrientation());
     }
 
     @Test
-    public void getCurrentOrientation() throws Exception {
-        assertEquals("Getting orientation failed",Orientation.vertical,orientation.getCurrentOrientation());
+    public void getCurrentOrientation()  {
+        assertEquals("Getting orientation failed", Orientation.ENUM.VERTICAL,orientation.getCurrentOrientation());
 
     }
-
-    @Test (expected=IncorrectOrientationException.class)
-    public void checkConstructor() throws IncorrectOrientationException {
-        new Orientation('y');
-    }
-
 
 }

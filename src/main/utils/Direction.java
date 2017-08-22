@@ -4,8 +4,6 @@
 
 package main.utils;
 
-import main.exceptions.IncorrectDirectionException;
-
 /**
  * The type main.utils.Direction. Used to indicate what direction an object is facing
  */
@@ -35,9 +33,8 @@ public class Direction {
      * Instantiates a new main.utils.Direction.
      *
      * @param direction the direction to start facing
-     * @throws IncorrectDirectionException the incorrect direction exception
      */
-    public Direction(COMPASS_DIRECTION direction) throws IncorrectDirectionException {
+    public Direction(COMPASS_DIRECTION direction){
         switch (direction) {
             case NORTH:
                 this.direction = 0;
@@ -52,7 +49,6 @@ public class Direction {
                 this.direction = 3;
                 break;
             default:
-                throw new IncorrectDirectionException("Not a compass direction");
         }
     }
 
@@ -75,6 +71,26 @@ public class Direction {
             direction--;
         } else {
             direction = west;
+        }
+    }
+
+    /**
+     * Reverses direction.
+     */
+    public void reverse() {
+        switch (direction){
+            case north:
+                direction = south;
+                break;
+            case east:
+                direction = west;
+                break;
+            case south:
+                direction = north;
+                break;
+            case west:
+                direction = east;
+                break;
         }
     }
 

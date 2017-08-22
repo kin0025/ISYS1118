@@ -1,6 +1,5 @@
 package main.utils;
 
-import main.exceptions.IncorrectDirectionException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +11,7 @@ public class DirectionTest {
     private Direction direction;
 
     @Before
-    public void setUp() throws IncorrectDirectionException {
+    public void setUp()  {
         direction = new Direction(Direction.COMPASS_DIRECTION.NORTH);
     }
 
@@ -59,7 +58,7 @@ public class DirectionTest {
     }
 
     @Test
-    public void getTurnDirection() throws IncorrectDirectionException {
+    public void getTurnDirection()  {
         Direction north = new Direction(Direction.COMPASS_DIRECTION.NORTH);
         Direction south = new Direction(Direction.COMPASS_DIRECTION.SOUTH);
         Direction east = new Direction(Direction.COMPASS_DIRECTION.EAST);

@@ -1,6 +1,7 @@
 package main.entities;
 
 import main.entities.interfaces.CarMoveable;
+import main.entities.interfaces.SimulationTimed;
 import main.utils.DimensionManager;
 import main.utils.Direction;
 import main.utils.Position;
@@ -11,7 +12,7 @@ import java.util.LinkedList;
 /**
  * The type main.entities.Car.
  */
-public class Car{
+public class Car implements SimulationTimed{
     private static final double accelerationRate = DimensionManager.metersToPixels(2);
     private static final double decelerationRate = DimensionManager.metersToPixels(4);
     private static final double maxSpeed = DimensionManager.metersToPixels(13.9);

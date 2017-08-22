@@ -1,34 +1,55 @@
 package main.gui;
 
 import main.entities.*;
+import main.utils.DimensionManager;
 
-public class SimulationOutput {
+import javax.swing.*;
+import java.awt.*;
+import java.util.Map;
 
-    public void displayOutput(MapGrid grid) {
-        //Display all the somethings in the something
+public class SimulationOutput extends JPanel{
 
-        //Display all the objects in the grid
+    private MapGrid grid;
+    //private JFrame frame = new JFrame("Simulator Output");
+
+
+    public SimulationOutput(MapGrid grid) {
+        this.grid = grid;
+//        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//        frame.pack();
+//        frame.setVisible(true);
+        int WIDTH = grid.getWidth() * (DimensionManager.widthOfIntersectionPixels + DimensionManager.lengthOfRoadPixels);
+        int HEIGHT = grid.getHeight() * (DimensionManager.widthOfIntersectionPixels + DimensionManager.lengthOfRoadPixels);
+
+        setPreferredSize(new Dimension(WIDTH,HEIGHT));
+    }
+
+    public void displayOutput() {
+        setBackground(Color.BLACK);
+        //Display all the objects in intersections in the grid
         for (int i = 0; i < grid.getGrid().length; i++) {
             for (Intersection intersection : grid.getGrid()[i]) {
-                //Display the intersection here
+                //TODO Display the intersection here
 
                 for (Car intersectionCars : intersection.getCars()) {
-                    //Display cars here
+                    //TODO Display cars here
 
                 }
-                for (Road roads : intersection.getRoads()) {
-                    //Check if road hasn't already been displayed? and then show it
-                    for (Lane lane : roads.getLanes()) {
 
-                        for (Car laneCars : lane.getCars()) {
-                            //Display the cars from here
-                        }
 
-                    }
+            }
+        }
 
+        //Display all the roads
+        for (Road roads : grid.getRoads()) {
+            //Check if road hasn't already been displayed? and then show it
+            for (Lane lane : roads.getLanes()) {
+                for (Car laneCars : lane.getCars()) {
+                    //Display the cars from here
                 }
 
             }
+
         }
     }
 }

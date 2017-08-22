@@ -16,7 +16,7 @@ public class Road {
     public Road(Orientation orientation) {
         this.orientation = orientation;
         lanes = new Lane[4];
-        //Adithya Please rewrite or comment. Not very good code, but needed for adding gui.
+        //TODO: @Adithya Please rewrite or comment. Not very good code, but needed for adding gui.
         for (int i = 0; i < lanes.length; i++) {
             ArrayList<Direction.TURN_DIRECTION> turnDirections = new ArrayList<>();
             Direction laneDirection;
@@ -30,18 +30,17 @@ public class Road {
             if (orientation.getCurrentOrientation() == Orientation.ENUM.VERTICAL) {
                 if (i < lanes.length / 2) {
                     laneDirection = new Direction(Direction.COMPASS_DIRECTION.NORTH);
-                }else{
+                } else {
                     laneDirection = new Direction(Direction.COMPASS_DIRECTION.SOUTH);
-
                 }
-            }else{
+            } else {
                 if (i < lanes.length / 2) {
                     laneDirection = new Direction(Direction.COMPASS_DIRECTION.EAST);
-                }else{
+                } else {
                     laneDirection = new Direction(Direction.COMPASS_DIRECTION.WEST);
                 }
             }
-            lanes[i] = new Lane(this, laneDirection, turnDirections);
+            lanes[i] = new Lane(laneDirection, turnDirections);
         }
     }
 

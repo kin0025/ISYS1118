@@ -1,6 +1,9 @@
 package main.entities;
 
+import main.utils.DimensionManager;
+import main.utils.Direction;
 import main.utils.Orientation;
+import main.utils.Position;
 
 import java.util.ArrayList;
 
@@ -8,7 +11,7 @@ public class MapGrid {
     private Intersection[][] grid;
     private int width;
     private int height;
-    private ArrayList<Road> roads;
+    private ArrayList<Road> roads = new ArrayList<>();
 
 
     //FIXME Not final at all.
@@ -28,9 +31,11 @@ public class MapGrid {
         this.grid = grid;
     }
 
-    public boolean addIntersection(int x, int y, Intersection intersection) {
+    public boolean addIntersection(int x, int y) {
         //FIXME Needs a hilarious amount added
-        grid[x][y] = intersection;
+        int offset = DimensionManager.lengthOfRoadPixels + DimensionManager.widthOfIntersectionPixels;
+        grid[x][y] = new Intersection(new Position((x * offset) + DimensionManager.lengthOfRoadPixels, (y * offset) + DimensionManager
+                .lengthOfRoadPixels));
         return false;
     }
 
@@ -50,11 +55,36 @@ public class MapGrid {
         this.height = height;
     }
 
-    public void fillGrid() {
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                roads.add(new Road(new Orientation(Orientation.ENUM.VERTICAL)));
+    /**
+     * Needs to empty any roads in intersections if there are any - call removeAllRoads on intersections?
+     * Generate all connecting roads - lanes are auto created by the roads.
+     */
+    public void fillRoads() {
+        //TODO remove all existing roads from intersections before filling the grid.
+        //Iterate through all the columns of the grid
+        for (int i = 0; i < grid.length - 1; i++) {
+            //Iterate through the rows of intersections
+            for (int j = 0; j < grid[i].length - 1; j++) {
+                //Check the horizontal grid
+                if (grid[i][j] != null && grid[i][j + 1] != null) {
+                    Road newRoad = new Road(new Orientation(Orientation.ENUM.HORIZONTAL));
+                    roads.add(newRoad);
+                    grid[i][j].addRoad(newRoad, new Direction(Direction.COMPASS_DIRECTION.EAST));
+                    grid[i][j + 1].addRoad(newRoad, new Direction(Direction.COMPASS_DIRECTION.WEST));
+                }
+                //Check the vertical grid
+                if (grid[i][j] != null && grid[i + 1][j] != null) {
+                    Road newRoad = new Road(new Orientation(Orientation.ENUM.VERTICAL));
+                    roads.add(newRoad);
+                    grid[i][j].addRoad(newRoad, new Direction(Direction.COMPASS_DIRECTION.SOUTH));
+                    grid[i][j + 1].addRoad(newRoad, new Direction(Direction.COMPASS_DIRECTION.NORTH));
+                }
             }
         }
+
+    }
+
+    public ArrayList<Road> getRoads() {
+        return roads;
     }
 }

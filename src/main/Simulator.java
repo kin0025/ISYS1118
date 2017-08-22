@@ -1,33 +1,53 @@
 package main;
 
-import main.entities.Intersection;
+import main.entities.*;
 
 
 public class Simulator {
+    private MapGrid mapGrid;
 
-    Intersection[][] grid = new Intersection[5][5];
-
+    /**
+     * Runs the simulation through one step
+     */
     public void runSimulation() {
         boolean stop = false;
         boolean pause = false;
         //This entire thing is temporary.
-        while (!stop) {
-            while (!pause) {
-                long time = 0;
-                //MapGrid grid = new MapGrid();
 
+        for (Intersection[] row : mapGrid.getGrid()) {
+            for (Intersection intersection : row) {
+                intersection.incrementTime();
+            }
 
-                time++;
-            }
-            try {
-                wait(1);
-            } catch (InterruptedException e) {
-                break;
-            }
         }
+        for (Road roads : mapGrid.getRoads()) {
+            for (Lane lane : roads.getLanes()) {
+                for (Car car : lane.getCars()) {
+                    car.incrementTime();
+                }
+                lane.incrementTime();
+
+            }
+
+        }
+
+
     }
 
-    public boolean addRoad() {
-        return false;
+    public MapGrid getMapGrid() {
+        return mapGrid;
+    }
+
+    public void createNewMap(int width, int height) {
+        mapGrid = new MapGrid(width, height);
+    }
+
+
+    public void addSpawnPoint() {
+
+    }
+
+    public void addDestroyPoint() {
+
     }
 }

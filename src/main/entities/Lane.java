@@ -5,35 +5,30 @@
 package main.entities;
 
 import main.entities.interfaces.CarMoveable;
+import main.entities.interfaces.SimulationTimed;
 import main.utils.Direction;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class Lane implements CarMoveable {
+public class Lane implements CarMoveable,SimulationTimed {
     ArrayList<Direction.TURN_DIRECTION> turnDirections;
-    private Road parentRoad;
     private LinkedList<Car> cars = new LinkedList<>();
     private Direction direction;
 
     public Lane() {
-        parentRoad = null;
     }
 
-    public Lane(Road parentRoad, Direction direction, ArrayList<Direction.TURN_DIRECTION> turnDirections) {
+    public Lane(Direction direction, ArrayList<Direction.TURN_DIRECTION> turnDirections) {
         this.turnDirections = turnDirections;
-        this.parentRoad = parentRoad;
         this.direction = direction;
     }
 
+    public void incrementTime() {
 
-    public void incrementTime(boolean stopMoving) {
     }
 
-    public Road getParentRoad() {
-        return parentRoad;
-    }
 
     public Queue<Car> getCars() {
         return cars;

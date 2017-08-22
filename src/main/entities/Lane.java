@@ -14,16 +14,19 @@ import java.util.Queue;
 public class Lane implements CarMoveable{
     private Road parentRoad;
     private LinkedList<Car> cars = new LinkedList<>();
-    private ArrayList<Lane> outputLanes;
     private Direction direction;
-    private boolean isRightTurnLane;
+    ArrayList <Direction.TURN_DIRECTION> turnDirections;
 
-    public Lane(Road parentRoad, ArrayList<Lane> outputLanes, Direction direction, boolean isRightTurnLane) {
-        this.isRightTurnLane = isRightTurnLane;
+    public Lane(){
+        parentRoad = null;
+    }
+
+    public Lane(Road parentRoad, Direction direction, ArrayList<Direction.TURN_DIRECTION> turnDirections) {
+        this.turnDirections = turnDirections;
         this.parentRoad = parentRoad;
-        this.outputLanes = outputLanes;
         this.direction = direction;
     }
+
 
     public void incrementTime() {
     }
@@ -36,21 +39,12 @@ public class Lane implements CarMoveable{
         return cars;
     }
 
-    public ArrayList<Lane> getOutputLanes() {
-        return outputLanes;
-    }
-
     public Direction getDirection() {
         return direction;
     }
 
-    public boolean isRightTurnLane() {
-        return isRightTurnLane;
-    }
-
-    //Why did I make this?
-    public boolean isLeftTurnLane() {
-        return !isRightTurnLane;
+    public boolean hasTurnDirection(Direction.TURN_DIRECTION turnDirection) {
+        return turnDirections.contains(turnDirection);
     }
 
     @Override

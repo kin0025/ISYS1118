@@ -6,6 +6,7 @@ package main.entities.interfaces;
 
 import main.entities.Car;
 
+
 public interface CarMoveable {
     public boolean addCar(Car car);
     public boolean removeCar(Car car);

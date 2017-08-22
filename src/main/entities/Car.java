@@ -5,6 +5,7 @@ import main.utils.DimensionManager;
 import main.utils.Direction;
 import main.utils.Position;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -21,15 +22,12 @@ public class Car{
 
     //The status of the next turn - 0 if left turn, 1 if straight, 2 if right turn.
     private int turning;
-    private LinkedList<Lane> lanePath;
-    private LinkedList<Intersection> intersectionPath;
+    private ArrayList<CarMoveable> carPath;
 
-    public Car(Position position, Direction direction, LinkedList<Lane> pathLanes, LinkedList<Intersection>
-            intersectionPath) {
+    public Car(Position position, Direction direction, ArrayList<CarMoveable> carPath) {
         this.position = position;
         this.direction = direction;
-        this.lanePath = pathLanes;
-        this.intersectionPath = intersectionPath;
+        this.carPath = carPath;
     }
 
     public void accelerate() {
@@ -67,12 +65,14 @@ public class Car{
 
         //TODO: If decelerating don't do anything?
 
+        /*
         if (position.getDifference(intersectionPath.element().getPosition()) <= 0) {
             //TODO: Move to another lane logic here
             lanePath.remove().getCars().remove(this);
             lanePath.element().getCars().add(this);
             this.direction = lanePath.element().getDirection();
         }
+        */
     }
 
     public void turnLeft() {

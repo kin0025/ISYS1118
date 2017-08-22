@@ -13,19 +13,21 @@ public class Direction {
     /**
      * The constant north.
      */
-    public static final int north = 0;
+    private static final int north = 0;
     /**
      * The constant east.
      */
-    public static final int east = 1;
+    private static final int east = 1;
     /**
      * The constant south.
      */
-    public static final int south = 2;
+    private static final int south = 2;
     /**
      * The constant west.
      */
-    public static final int west = 3;
+    private static final int west = 3;
+
+    //Our actual stored direction
     private int direction;
 
 
@@ -35,19 +37,19 @@ public class Direction {
      * @param direction the direction to start facing
      * @throws IncorrectDirectionException the incorrect direction exception
      */
-    public Direction(int direction) throws IncorrectDirectionException {
+    public Direction(COMPASS_DIRECTION direction) throws IncorrectDirectionException {
         switch (direction) {
-            case north:
-                this.direction = north;
+            case NORTH:
+                this.direction = 0;
                 break;
-            case east:
-                this.direction = east;
+            case EAST:
+                this.direction = 1;
                 break;
-            case south:
-                this.direction = south;
+            case SOUTH:
+                this.direction = 2;
                 break;
-            case west:
-                this.direction = west;
+            case WEST:
+                this.direction = 3;
                 break;
             default:
                 throw new IncorrectDirectionException("Not a compass direction");
@@ -105,30 +107,47 @@ public class Direction {
      *
      * @return the current direction
      */
-    public int getDirection() {
-        return direction;
+    public COMPASS_DIRECTION getDirection() {
+        switch (direction) {
+            case north:
+                return COMPASS_DIRECTION.NORTH;
+            case east:
+                return COMPASS_DIRECTION.EAST;
+            case south:
+                return COMPASS_DIRECTION.SOUTH;
+            case west:
+                return COMPASS_DIRECTION.WEST;
+            default:
+                return null;
+        }
     }
 
-    public int getTurnDirection(Direction turningTo) {
+    /**
+     * Gets the turn direction from this direction turning into the argument direction
+     *
+     * @param turningTo the direction we are turning to
+     * @return
+     */
+    public TURN_DIRECTION getTurnDirection(Direction turningTo) {
         //TODO make neater
         switch (turningTo.direction - direction) {
+            //Right
             case 1:
-                return 1;
+                return TURN_DIRECTION.RIGHT;
             case -1:
-                return -1;
+                return TURN_DIRECTION.LEFT;
             case 2:
-                return 2;
+                return TURN_DIRECTION.REVERSE;
             case 0:
-                return 0;
+                return TURN_DIRECTION.STRAIGHT;
             case -3:
-                return 1;
+                return TURN_DIRECTION.RIGHT;
             case 3:
-                return -1;
+                return TURN_DIRECTION.LEFT;
             default:
                 throw new RuntimeException("Something went seriously wrong or there is a logic error");
         }
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -144,6 +163,11 @@ public class Direction {
         Direction comparator = (Direction) o;
         return direction == comparator.direction;
     }
+
+    public enum TURN_DIRECTION {LEFT, STRAIGHT, RIGHT, REVERSE}
+
+
+    public enum COMPASS_DIRECTION {NORTH, EAST, SOUTH, WEST}
 }
 
 

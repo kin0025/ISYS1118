@@ -4,7 +4,7 @@
 
 package main.entities;
 
-public class CarDestroy extends Intersection {
+public class CarDestroy extends Lane {
     @Override
     public boolean addCar(Car car) {
         car = null;

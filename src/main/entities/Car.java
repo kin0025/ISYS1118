@@ -7,12 +7,11 @@ import main.utils.Direction;
 import main.utils.Position;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 /**
  * The type main.entities.Car.
  */
-public class Car implements SimulationTimed{
+public class Car implements SimulationTimed {
     private static final double accelerationRate = DimensionManager.metersToPixels(2);
     private static final double decelerationRate = DimensionManager.metersToPixels(4);
     private static final double maxSpeed = DimensionManager.metersToPixels(13.9);

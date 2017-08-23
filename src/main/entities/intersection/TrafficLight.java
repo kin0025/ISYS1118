@@ -9,9 +9,14 @@ import main.utils.Orientation;
 
 public class TrafficLight implements SimulationTimed {
     static final int amberLightTiming = 5;
-    Orientation orientation;
-    int greenLightTiming;
-    int timeToAmber;
+    private Orientation orientation;
+    private int greenLightTiming;
+    private int timeToAmber;
+
+    public TrafficLight(int greenLightTiming, Orientation.ENUM orientationEnum) {
+        this.greenLightTiming = greenLightTiming;
+        this.orientation = new Orientation(orientationEnum);
+    }
 
     public void incrementTime() {
     }
@@ -21,7 +26,7 @@ public class TrafficLight implements SimulationTimed {
     } // Can only be run if red
     // - sets light to green and counts down
 
-    public  STATUS getStatus() {
+    public STATUS getStatus() {
         return STATUS.RED;
     }// returns r,y,g (red,yellow,green)
 

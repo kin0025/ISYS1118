@@ -1,5 +1,4 @@
 import main.Simulator;
-import main.entities.Intersection;
 import main.gui.SimulationOutput;
 
 public class TrafficSimulator {

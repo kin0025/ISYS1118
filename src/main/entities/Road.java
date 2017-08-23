@@ -1,8 +1,11 @@
 package main.entities;
 
 
+import main.entities.intersection.Intersection;
+import main.entities.lane.Lane;
 import main.utils.Direction;
 import main.utils.Orientation;
+import main.utils.Position;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,10 +14,11 @@ public class Road {
     private Lane[] lanes;
     private Orientation orientation;
     private HashMap<Intersection, Direction.COMPASS_DIRECTION> intersectionDirections;
+    private Position position;
 
-
-    public Road(Orientation orientation) {
+    public Road(Orientation orientation, Position position) {
         this.orientation = orientation;
+        this.position = position;
         lanes = new Lane[4];
         //TODO: @Adithya Please rewrite or comment. Not very good code, but needed for adding gui.
         for (int i = 0; i < lanes.length; i++) {
@@ -49,6 +53,10 @@ public class Road {
         intersectionDirections.put(intersection, directionFromIntersection.getDirection());
         //We don't want to change the original value
         directionFromIntersection.reverse();
+    }
+
+    public Position getPosition() {
+        return position;
     }
 
     public Lane[] getLanes() {

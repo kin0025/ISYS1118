@@ -2,8 +2,10 @@
  * Copyright (c) 2017. Alexander Kinross-Smith, s3603437
  */
 
-package main.entities;
+package main.entities.lane;
 
+import main.entities.intersection.Intersection;
+import main.entities.Road;
 import main.entities.interfaces.CarMoveable;
 import main.exceptions.PathNotFoundException;
 import main.utils.Direction;

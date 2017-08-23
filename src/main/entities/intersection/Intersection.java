@@ -1,5 +1,11 @@
-package main.entities;
+/*
+ * Copyright (c) 2017. Alexander Kinross-Smith, s3603437
+ */
 
+package main.entities.intersection;
+
+import main.entities.Car;
+import main.entities.Road;
 import main.entities.interfaces.CarMoveable;
 import main.entities.interfaces.SimulationTimed;
 import main.utils.Direction;
@@ -20,21 +26,20 @@ public class Intersection implements CarMoveable, SimulationTimed {
         this.position = position;
     }
 
-    public void setLightTiming(){
-
-    }
-
-    public void addRoad(Road road, Direction direction) {
-        roads.add(road);
-        roadDirections.put(road, direction);
-    }
-
     public Position getPosition() {
         return position;
     }
 
     public ArrayList<Road> getRoads() {
         return roads;
+    }
+
+    public LinkedList<Car> getCars() {
+        return cars;
+    }
+
+    public TrafficLight[] getLights() {
+        return lights;
     }
 
     /**
@@ -48,12 +53,13 @@ public class Intersection implements CarMoveable, SimulationTimed {
         return roadDirections.get(road);
     }
 
-    public TrafficLight[] getLights() {
-        return lights;
+    public void addRoad(Road road, Direction direction) {
+        roads.add(road);
+        roadDirections.put(road, direction);
     }
 
-    public LinkedList<Car> getCars() {
-        return cars;
+    public void setLightTiming() {
+
     }
 
     public boolean addCar(Car car) {
@@ -66,7 +72,7 @@ public class Intersection implements CarMoveable, SimulationTimed {
     }
 
     @Override
-    public boolean moveCar(Car car) {
+    public boolean moveCar(CarMoveable moveTo) {
         return false;
     }
 

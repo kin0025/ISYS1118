@@ -162,6 +162,6 @@ public class Position {
         }
     }
 
-    enum DIMENSION{X,Y}
+    public enum DIMENSION{X,Y}
 
 }

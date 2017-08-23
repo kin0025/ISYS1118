@@ -9,9 +9,9 @@ import main.utils.Position;
 import java.util.ArrayList;
 
 public class MapGrid {
-    private Intersection[][] grid;
-    private int width;
-    private int height;
+    private final Intersection[][] grid;
+    private final int width;
+    private final int height;
     private ArrayList<Road> roads = new ArrayList<>();
 
 
@@ -28,10 +28,6 @@ public class MapGrid {
         return grid;
     }
 
-    public void setGrid(Intersection[][] grid) {
-        this.grid = grid;
-    }
-
     public boolean addIntersection(int x, int y) {
         //FIXME Needs a hilarious amount added
         int offset = DimensionManager.lengthOfRoadPixels + DimensionManager.widthOfIntersectionPixels;
@@ -44,16 +40,8 @@ public class MapGrid {
         return width;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
     public int getHeight() {
         return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
     }
 
     /**

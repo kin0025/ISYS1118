@@ -98,4 +98,5 @@ public class Car implements SimulationTimed {
     public boolean isAccelerating() {
         return accelerating;
     }
+
 }

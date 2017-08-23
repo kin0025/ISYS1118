@@ -5,6 +5,7 @@ public class DimensionManager {
     private static final int numberOfMetersPerPixel = 1;
     public static final int widthOfIntersectionPixels = 20;
     public static final int lengthOfRoadPixels = 50;
+    public static final int widthOfRoadPixels = 20;
     public static final int lengthOfCarPixels = 2;
     public static final int widthOfCarPixels = 1;
 

@@ -1,6 +1,8 @@
 package main;
 
 import main.entities.*;
+import main.entities.intersection.Intersection;
+import main.entities.lane.Lane;
 
 
 public class Simulator {

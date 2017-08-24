@@ -24,15 +24,13 @@ public class TrafficLightTest {
     @Test
     public void restartCycle() throws Exception {
         assertEquals("Default Traffic Light State incorrect", STATUS.RED, trafficLight.getStatus());
-        // to reset a cycle
-        // trafficlight.startGreenLight();
         trafficLight.restartCycle();
         assertEquals("Reset Traffic Light State incorrect", STATUS.GREEN, trafficLight.getStatus());
-        for (int i = 0; i < 29; i++) {
+        for (int i = 0; i <= 29; i++) {
             trafficLight.incrementTime();
             assertEquals("Reset Traffic Light time incorrect", STATUS.GREEN, trafficLight.getStatus());
         }
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i <= 4; i++) {
             trafficLight.incrementTime();
             assertEquals("Reset Traffic Light amber time incorrect", STATUS.AMBER, trafficLight.getStatus());
         }

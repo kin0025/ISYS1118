@@ -13,15 +13,12 @@ public class TrafficLight {
 	public TrafficLight(int greenLightTiming, Orientation.ENUM orientationEnum) {
 		this.greenLightTiming = greenLightTiming;
 		this.orientation = new Orientation(orientationEnum);
+		time = greenLightTiming + amberLightTiming + 1;
 	}
 	// time on how long green light stays on
 
 	public void incrementTime() {
 		this.time++;
-	}
-
-	public void startGreenLight() {
-		this.time = 0;
 	}
 
 	public boolean restartCycle() {

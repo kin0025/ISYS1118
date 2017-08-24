@@ -47,7 +47,10 @@ public class TrafficLight {
 			 else 
 			 return STATUS.RED;
 	}
-
+	
+	public int checkTiming() {
+		return greenLightTiming;
+	}
 	public Orientation getOrientation() {
 		return orientation;
 	}

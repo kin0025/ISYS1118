@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import main.entities.intersection.*;
 
 public class TrafficLightTest {
@@ -39,12 +40,8 @@ public class TrafficLightTest {
     }
 
     @Test
-    public void getStatus() throws Exception {
-    }
-
-    @Test
     public void checkTiming() {
-
+    	assertEquals("Does not equal",30,trafficLight.checkTiming());
     }
-
 }
+    

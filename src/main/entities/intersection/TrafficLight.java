@@ -1,34 +1,59 @@
-/*
- * Copyright (c) 2017. Alexander Kinross-Smith, s3603437
- */
-
 package main.entities.intersection;
 
-import main.entities.interfaces.SimulationTimed;
-import main.utils.Orientation;
+import main.utils.*;
 
-public class TrafficLight implements SimulationTimed {
-    static final int amberLightTiming = 5;
-    private Orientation orientation;
-    private int greenLightTiming;
-    private int timeToAmber;
+public class TrafficLight {
 
-    public TrafficLight(int greenLightTiming, Orientation.ENUM orientationEnum) {
-        this.greenLightTiming = greenLightTiming;
-        this.orientation = new Orientation(orientationEnum);
-    }
+	static final int amberLightTiming = 5;
 
-    public void incrementTime() {
-    }
+	private Orientation orientation;
+	private int greenLightTiming;
+	private final int amberTime = 5;
+	private int time;
 
-    public boolean restartCycle() {
-        return false;
-    } // Can only be run if red
-    // - sets light to green and counts down
+	public TrafficLight(int greenLightTiming, Orientation.ENUM orientationEnum) {
+		this.greenLightTiming = greenLightTiming;
+		this.orientation = new Orientation(orientationEnum);
+	}
+	// time on how long green light stays on
 
-    public STATUS getStatus() {
-        return STATUS.RED;
-    }// returns r,y,g (red,yellow,green)
+	public void incrementTime() {
+		this.time++;
+	}
 
-    public enum STATUS{RED,YELLOW,GREEN}
+	public void startGreenLight() {
+		this.time = 0;
+	}
+
+	public boolean restartCycle() {
+		if(time >= (greenLightTiming + amberTime)){
+			time = 0;
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	/*
+	 * public char getStatus() 
+	 * { if (time <= greenLightTiming) { return 'g'; }
+	 * else if (time <= (greenLightTiming + timeToAmber)) 
+	 * { return 'a'; }
+	 * else {
+	 * return 'r'; } }
+	 */
+
+	public STATUS getStatus() {
+		 if (time <= greenLightTiming)
+			 return STATUS.GREEN;
+			 else if (time <= (greenLightTiming + amberLightTiming))
+			 return STATUS.AMBER;
+			 else 
+			 return STATUS.RED;
+	}
+
+	public Orientation getOrientation() {
+		return orientation;
+	}
+	
 }

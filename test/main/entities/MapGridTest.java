@@ -8,17 +8,11 @@ import org.junit.Before;
 
 
 public class MapGridTest {
-	
+	MapGrid grid;
 	@Before
     public void createMapGrid() throws Exception{
-		        grid = new Intersection[3][3];
-		        
+		grid = new MapGrid(5, 5);		        
  }
-
-    @After
-    public void closeMapGrid() {
-    	grid = null;
-    }
     
     @Test
     public void addIntersection(){

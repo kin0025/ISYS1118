@@ -1,32 +1,35 @@
 package main.entities.intersection;
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
+
+import main.entities.Car;
+import main.entities.Road;
+import main.utils.Direction;
+import main.utils.Orientation;
+import main.utils.Position;
+
 import org.junit.Test;
 import org.junit.After;
 import org.junit.Before;
 
 public class IntersectionTest {
 	
-	private Car car;
-    private Direction roadDirection;
-    private ArrayList<Intersection> intersection;
-    
+	Intersection intersection;
     
 	@Before
     public void createIntersection() throws Exception{
-		 roadDirections.put(1, North);
-		 roadDirections.put(2, East);
-		 roadDirections.put(3, South);
-		 roadDirections.put(4, West );
+		 intersection = new Intersection(new Position(0,0));
     }
 
-    @After
-    public void closeIntersection() {
-    	roadDirections.<Road, Direction>emptyMap();
-    }
+   
     
     @Test
     public void getRoadDirection(){
+    	Direction roadDirection = new Direction(Direction.COMPASS_DIRECTION.NORTH);
+    	Road road = new Road(Orientation.VERTICAL,new Position(0,0)); 
+		intersection.addRoad(road,roadDirection);
+    	assertEquals("Couldn't find added road", roadDirection, intersection.getRoadDirection(road));
     }
 
     @Test
@@ -40,3 +43,4 @@ public class IntersectionTest {
     @Test
     public void removeCar(){
     }
+}

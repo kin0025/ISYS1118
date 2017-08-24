@@ -21,7 +21,6 @@ public class Car implements SimulationTimed {
 
     //Always set to the direction of the parent lane.
     private Direction direction;
-    private boolean moving = true;
 
     //The status of the next turn - 0 if left turn, 1 if straight, 2 if right turn.
     private int turning;
@@ -36,20 +35,14 @@ public class Car implements SimulationTimed {
     }
 
     public void accelerate() {
-        moving = true;
+        speed = maxSpeed;
     }
 
     public void stop() {
-        moving = false;
+        speed = 0;
     }
 
     public void incrementTime() {
-        if(moving){
-            speed = maxSpeed;
-        }else{
-            speed = 0;
-        }
-
 
         //Create the direction that we want to go in, and then move there.
         double[] moveBy = new double[2];
@@ -92,7 +85,11 @@ public class Car implements SimulationTimed {
     }
 
     public boolean isMoving() {
-        return moving;
+        if(speed != 0){
+            return false;
+        }else {
+            return true;
+        }
     }
 
 }

@@ -3,14 +3,24 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class RoadTest {
+import main.entities.intersection.Intersection;
+import main.utils.Direction;
+import main.utils.Orientation;
+import main.utils.Position;
 
+public class RoadTest {
+    Road road;
 	@Test
 	public void setUp() throws Exception {
+		road = new Road(Orientation.HORIZONTAL, new Position(0,0));
 	}
 	
     @Test
     public void addIntersection() throws Exception {
+    	Intersection intersection = new Intersection(new Position(0,0));
+    	Direction direction = new Direction(Direction.COMPASS_DIRECTION.NORTH);
+    	road.addIntersection(intersection, direction);
+    	assertEquals("Intersection not added correctly",direction,road.getIntersectionDirection(intersection));
     }
 
     @Test

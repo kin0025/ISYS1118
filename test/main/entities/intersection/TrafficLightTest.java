@@ -6,18 +6,12 @@
 
 package main.entities.intersection;
 
-import main.utils.*;
+import main.utils.Orientation;
+import main.utils.STATUS;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-<<<<<<< HEAD
-import static org.junit.Assert.*;
-=======
-import static org.junit.Assert.fail;
-
->>>>>>> 2d5539a7ad31dbb79f4d94d2220bb012790f09a0
-import main.entities.intersection.*;
 
 public class TrafficLightTest {
     TrafficLight trafficLight;
@@ -46,7 +40,7 @@ public class TrafficLightTest {
 
     @Test
     public void checkTiming() {
-    	assertEquals("Does not equal",30,trafficLight.checkTiming());
+        assertEquals("Does not equal", 30, trafficLight.checkTiming());
     }
 }
     

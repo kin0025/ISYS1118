@@ -1,5 +1,5 @@
 package main.utils;
 
-public enum STATUS {
+public enum LightStatus {
 RED,AMBER,GREEN
 }

@@ -1,5 +1,6 @@
 package main.entities;
 
+import main.entities.lane.Lane;
 import main.entities.interfaces.CarMoveable;
 import main.entities.interfaces.SimulationTimed;
 import main.utils.DimensionManager;
@@ -17,6 +18,8 @@ public class Car implements SimulationTimed {
     private static final double maxSpeed = DimensionManager.metersToPixels(13.9);
     private double speed = maxSpeed;
     private Position position;
+
+    //Always set to the direction of the parent lane.
     private Direction direction;
     private boolean accelerating = true;
 
@@ -24,10 +27,12 @@ public class Car implements SimulationTimed {
     private int turning;
     private ArrayList<CarMoveable> carPath;
 
-    public Car(Position position, Direction direction, ArrayList<CarMoveable> carPath) {
+    public Car(Position position, ArrayList<CarMoveable> carPath) {
         this.position = position;
-        this.direction = direction;
         this.carPath = carPath;
+        if(carPath.get(0).getClass() == Lane.class){
+            //this.direction = (Lane)(carPath.get(0)).getDirection();
+        }
     }
 
     public void accelerate() {

@@ -9,6 +9,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.fail;
+
 public class CarSpawnTest {
     CarSpawn carSpawn;
     @Before
@@ -23,10 +25,13 @@ public class CarSpawnTest {
 
     @Test
     public void spawnCar() throws Exception {
+        fail("Not yet implemented");
+
     }
 
     @Test
     public void incrementTime() throws Exception {
+        fail("Not yet implemented");
     }
 
 }

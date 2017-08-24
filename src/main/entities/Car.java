@@ -13,15 +13,15 @@ import java.util.ArrayList;
  * The type main.entities.Car.
  */
 public class Car implements SimulationTimed {
-    private static final double accelerationRate = DimensionManager.metersToPixels(2);
-    private static final double decelerationRate = DimensionManager.metersToPixels(4);
+    //private static final double accelerationRate = DimensionManager.metersToPixels(2);
+    //private static final double decelerationRate = DimensionManager.metersToPixels(4);
     private static final double maxSpeed = DimensionManager.metersToPixels(13.9);
     private double speed = maxSpeed;
     private Position position;
 
     //Always set to the direction of the parent lane.
     private Direction direction;
-    private boolean accelerating = true;
+    private boolean moving = true;
 
     //The status of the next turn - 0 if left turn, 1 if straight, 2 if right turn.
     private int turning;
@@ -36,27 +36,18 @@ public class Car implements SimulationTimed {
     }
 
     public void accelerate() {
-        accelerating = true;
+        moving = true;
     }
 
     public void stop() {
-        accelerating = false;
+        moving = false;
     }
 
     public void incrementTime() {
-        //Run the acceleration logic.
-        if (accelerating && speed < maxSpeed) {
-            if (speed + accelerationRate < maxSpeed) {
-                speed += accelerationRate;
-            } else {
-                speed = maxSpeed;
-            }
-        } else {
-            if (speed - decelerationRate >= 0) {
-                speed -= decelerationRate;
-            } else {
-                speed = 0;
-            }
+        if(moving){
+            speed = maxSpeed;
+        }else{
+            speed = 0;
         }
 
 
@@ -100,8 +91,8 @@ public class Car implements SimulationTimed {
         return position;
     }
 
-    public boolean isAccelerating() {
-        return accelerating;
+    public boolean isMoving() {
+        return moving;
     }
 
 }

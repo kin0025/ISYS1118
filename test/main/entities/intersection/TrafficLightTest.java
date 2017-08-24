@@ -7,7 +7,7 @@
 package main.entities.intersection;
 
 import main.utils.Orientation;
-import main.utils.STATUS;
+import main.utils.LightStatus;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,24 +18,24 @@ public class TrafficLightTest {
 
     @Before
     public void setUp() throws Exception {
-        trafficLight = new TrafficLight(30, Orientation.ENUM.HORIZONTAL);
+        trafficLight = new TrafficLight(30, Orientation.HORIZONTAL);
     }
 
     @Test
     public void trafficCycle() throws Exception {
-        assertEquals("Default Traffic Light State incorrect", STATUS.RED, trafficLight.getStatus());
+        assertEquals("Default Traffic Light State incorrect", LightStatus.RED, trafficLight.getStatus());
         trafficLight.restartCycle();
-        assertEquals("Reset Traffic Light State incorrect", STATUS.GREEN, trafficLight.getStatus());
+        assertEquals("Reset Traffic Light State incorrect", LightStatus.GREEN, trafficLight.getStatus());
         for (int i = 0; i <= 29; i++) {
             trafficLight.incrementTime();
-            assertEquals("Traffic Light time incorrect", STATUS.GREEN, trafficLight.getStatus());
+            assertEquals("Traffic Light time incorrect", LightStatus.GREEN, trafficLight.getStatus());
         }
         for (int i = 0; i <= 4; i++) {
             trafficLight.incrementTime();
-            assertEquals("Traffic Light amber time incorrect", STATUS.AMBER, trafficLight.getStatus());
+            assertEquals("Traffic Light amber time incorrect", LightStatus.AMBER, trafficLight.getStatus());
         }
         trafficLight.incrementTime();
-        assertEquals("Traffic Light red time incorrect", STATUS.RED, trafficLight.getStatus());
+        assertEquals("Traffic Light red time incorrect", LightStatus.RED, trafficLight.getStatus());       
     }
 
     @Test

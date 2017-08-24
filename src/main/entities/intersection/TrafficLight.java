@@ -5,14 +5,13 @@ import main.utils.*;
 public class TrafficLight {
 
 	static final int amberLightTiming = 5;
-
 	private Orientation orientation;
 	private int greenLightTiming;
 	private int time;
 
-	public TrafficLight(int greenLightTiming, Orientation.ENUM orientationEnum) {
+	public TrafficLight(int greenLightTiming, Orientation orientationEnum) {
 		this.greenLightTiming = greenLightTiming;
-		this.orientation = new Orientation(orientationEnum);
+		this.orientation = orientationEnum;
 		time = greenLightTiming + amberLightTiming + 1;
 	}
 	// time on how long green light stays on
@@ -39,13 +38,13 @@ public class TrafficLight {
 	 * return 'r'; } }
 	 */
 
-	public STATUS getStatus() {
+	public LightStatus getStatus() {
 		 if (time <= greenLightTiming)
-			 return STATUS.GREEN;
+			 return LightStatus.GREEN;
 			 else if (time <= (greenLightTiming + amberLightTiming))
-			 return STATUS.AMBER;
+			 return LightStatus.AMBER;
 			 else 
-			 return STATUS.RED;
+			 return LightStatus.RED;
 	}
 	
 	public int checkTiming() {

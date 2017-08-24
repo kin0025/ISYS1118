@@ -60,7 +60,7 @@ public class MapGrid {
                             .DIMENSION.X))/2;
                     double posY = grid[i][j].getPosition().getY() + (grid[i][j].getPosition().getDifference(grid[i][j + 1].getPosition(), Position
                             .DIMENSION.Y))/2;
-                    Road newRoad = new Road(new Orientation(Orientation.ENUM.HORIZONTAL), new Position(posX, posY));
+                    Road newRoad = new Road(Orientation.HORIZONTAL, new Position(posX, posY));
                     roads.add(newRoad);
                     grid[i][j].addRoad(newRoad, new Direction(Direction.COMPASS_DIRECTION.EAST));
                     grid[i][j + 1].addRoad(newRoad, new Direction(Direction.COMPASS_DIRECTION.WEST));
@@ -73,7 +73,7 @@ public class MapGrid {
                             .DIMENSION.Y))/2;
                     System.out.println(grid[i][j].getPosition().getX());
                     System.out.println(posX);
-                    Road newRoad = new Road(new Orientation(Orientation.ENUM.VERTICAL), new Position(posX, posY));
+                    Road newRoad = new Road(Orientation.VERTICAL, new Position(posX, posY));
                     roads.add(newRoad);
                     grid[i][j].addRoad(newRoad, new Direction(Direction.COMPASS_DIRECTION.SOUTH));
                     grid[i][j + 1].addRoad(newRoad, new Direction(Direction.COMPASS_DIRECTION.NORTH));

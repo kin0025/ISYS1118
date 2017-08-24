@@ -56,7 +56,7 @@ public class SimulationOutput extends JPanel {
         for (Road road : grid.getRoads()) {
             g2.setPaint(roadColour);
             double x, y, x2, y2;
-            if (road.getOrientation().getCurrentOrientation() == Orientation.ENUM.VERTICAL) {
+            if (road.getOrientation() == Orientation.VERTICAL) {
                 x = road.getPosition().getX() ;//- (DimensionManager.lengthOfRoadPixels / 2);
                 x2 = (DimensionManager.lengthOfRoadPixels);
                 y = road.getPosition().getY() ;//- (DimensionManager.widthOfRoadPixels / 2);

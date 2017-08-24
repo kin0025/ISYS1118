@@ -8,7 +8,6 @@ public class TrafficLight {
 
 	private Orientation orientation;
 	private int greenLightTiming;
-	private final int amberTime = 5;
 	private int time;
 
 	public TrafficLight(int greenLightTiming, Orientation.ENUM orientationEnum) {
@@ -26,7 +25,7 @@ public class TrafficLight {
 	}
 
 	public boolean restartCycle() {
-		if(time >= (greenLightTiming + amberTime)){
+		if(time >= (greenLightTiming + amberLightTiming)){
 			time = 0;
 			return true;
 		}else{

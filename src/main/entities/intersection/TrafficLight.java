@@ -10,9 +10,9 @@ public class TrafficLight {
 	private int greenLightTiming;
 	private int time;
 
-	public TrafficLight(int greenLightTiming, Orientation.ENUM orientationEnum) {
+	public TrafficLight(int greenLightTiming, Orientation orientationEnum) {
 		this.greenLightTiming = greenLightTiming;
-		this.orientation = new Orientation(orientationEnum);
+		this.orientation = orientationEnum;
 		time = greenLightTiming + amberLightTiming + 1;
 	}
 	// time on how long green light stays on

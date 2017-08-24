@@ -45,7 +45,6 @@ public class CarTest {
         }
         //Get to max speed and stay there
         for (int i = 0; i < 200; i++) {
-
             car.incrementTime();
         }
         assertEquals("Car max speed wrong", DimensionManager.metersToPixels(13.9), car.getSpeed(), 0.05);

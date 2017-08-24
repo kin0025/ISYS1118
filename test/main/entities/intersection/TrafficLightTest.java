@@ -18,7 +18,7 @@ public class TrafficLightTest {
 
     @Before
     public void setUp() throws Exception {
-        trafficLight = new TrafficLight(30, Orientation.ENUM.HORIZONTAL);
+        trafficLight = new TrafficLight(30, Orientation.HORIZONTAL);
     }
 
     @Test

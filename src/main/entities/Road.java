@@ -31,7 +31,7 @@ public class Road {
                 turnDirections.add(Direction.TURN_DIRECTION.RIGHT);
             }
 
-            if (orientation.getCurrentOrientation() == Orientation.ENUM.VERTICAL) {
+            if (orientation == Orientation.VERTICAL) {
                 if (i < lanes.length / 2) {
                     laneDirection = new Direction(Direction.COMPASS_DIRECTION.NORTH);
                 } else {

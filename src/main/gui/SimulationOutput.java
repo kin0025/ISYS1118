@@ -52,27 +52,6 @@ public class SimulationOutput extends JPanel {
         g2.fill(new Rectangle.Double(0, 0, d.width - 1, d.height - 1));
         g2.drawRect(0, 0, d.width - 1, d.height - 1);
 
-        //Display all the objects in intersections in the grid
-        for (int i = 0; i < grid.getGrid().length; i++) {
-            for (Intersection intersection : grid.getGrid()[i]) {
-                Position intersectionPos = intersection.getPosition();
-                g2.setPaint(intersectionColour);
-                g2.fill(new Ellipse2D.Double(intersectionPos.getX(), intersectionPos.getY(), DimensionManager.widthOfIntersectionPixels,
-                        DimensionManager.widthOfIntersectionPixels));
-
-                for (Car intersectionCar : intersection.getCars()) {
-                    Position carPos = intersectionCar.getPosition();
-                    g2.setPaint(carColour);
-                    g2.fill(new Rectangle2D.Double(carPos.getX(), carPos.getY(), DimensionManager.lengthOfCarPixels, DimensionManager
-                            .widthOfCarPixels));
-                    //TODO Display cars here
-
-                }
-
-
-            }
-        }
-
         //Display all the roads
         for (Road road : grid.getRoads()) {
             g2.setPaint(roadColour);
@@ -104,6 +83,29 @@ public class SimulationOutput extends JPanel {
             }
 
         }
+
+        //Display all the objects in intersections in the grid
+        for (int i = 0; i < grid.getGrid().length; i++) {
+            for (Intersection intersection : grid.getGrid()[i]) {
+                Position intersectionPos = intersection.getPosition();
+                g2.setPaint(intersectionColour);
+                g2.fill(new Ellipse2D.Double(intersectionPos.getX(), intersectionPos.getY(), DimensionManager.widthOfIntersectionPixels,
+                        DimensionManager.widthOfIntersectionPixels));
+
+                for (Car intersectionCar : intersection.getCars()) {
+                    Position carPos = intersectionCar.getPosition();
+                    g2.setPaint(carColour);
+                    g2.fill(new Rectangle2D.Double(carPos.getX(), carPos.getY(), DimensionManager.lengthOfCarPixels, DimensionManager
+                            .widthOfCarPixels));
+                    //TODO Display cars here
+
+                }
+
+
+            }
+        }
+
+
     }
 
 }

@@ -39,24 +39,27 @@ public class CarTest {
     @Test
     public void accelerate() {
         car.accelerate();
-        for (int i = 0; i < 20; i++) {
-            car.incrementTime();
-            assertEquals("Car accelerates wrong", DimensionManager.metersToPixels(2) * i, car.getSpeed(), 0.05);
-        }
-        //Get to max speed and stay there
-        for (int i = 0; i < 200; i++) {
-            car.incrementTime();
-        }
-        assertEquals("Car max speed wrong", DimensionManager.metersToPixels(13.9), car.getSpeed(), 0.05);
+        assertEquals("Car doesn't accelerate", DimensionManager.metersToPixels(13.9), car.getSpeed(), 0.05);
 
     }
 
     @Test
     public void stopping() {
-        fail("Not yet implemented");
-
+        //Get to max speed and stay there
+        car.accelerate();
+        assertEquals("Car max speed wrong", DimensionManager.metersToPixels(13.9), car.getSpeed(), 0.05);
+        car.stop();
+        assertEquals("Car decelerates below zero", 0, car.getSpeed(), 0.05);
     }
 
+    @Test
+    public void checkMovement(){
+        car.accelerate();
+        car.incrementTime();
+        //assertEquals("Car not moving correctly", , car.getPosition(), 0.05);
+        fail("Not done");
+
+    }
     @Test
     public void turnLeft() {
         fail("Not yet implemented");

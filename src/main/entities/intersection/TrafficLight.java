@@ -29,15 +29,6 @@ public class TrafficLight {
 		}
 	}
 
-	/*
-	 * public char getStatus() 
-	 * { if (time <= greenLightTiming) { return 'g'; }
-	 * else if (time <= (greenLightTiming + timeToAmber)) 
-	 * { return 'a'; }
-	 * else {
-	 * return 'r'; } }
-	 */
-
 	public LightStatus getStatus() {
 		 if (time <= greenLightTiming)
 			 return LightStatus.GREEN;

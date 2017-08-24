@@ -39,7 +39,7 @@ public class CarTest {
     @Test
     public void accelerate() {
         car.accelerate();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 3; i++) {
             car.incrementTime();
             assertEquals("Car accelerates wrong", DimensionManager.metersToPixels(2) * i, car.getSpeed(), 0.05);
         }
@@ -53,7 +53,21 @@ public class CarTest {
 
     @Test
     public void stopping() {
-        fail("Not yet implemented");
+        //Get to max speed and stay there
+        for (int i = 0; i < 200; i++) {
+            car.incrementTime();
+        }
+        assertEquals("Car max speed wrong", DimensionManager.metersToPixels(13.9), car.getSpeed(), 0.05);
+        car.stop();
+        //Get to max speed and stay there
+        for (int i = 0; i < 5; i++) {
+            car.incrementTime();
+            assertEquals("Car not decelerating", DimensionManager.metersToPixels(13.9) - (i*DimensionManager.metersToPixels(4)), car.getSpeed(), 0.05);
+        }
+        for (int i = 0; i < 20; i++) {
+            car.incrementTime();
+        }
+        assertEquals("Car decelerates below zero", 0, car.getSpeed(), 0.05);
 
     }
 

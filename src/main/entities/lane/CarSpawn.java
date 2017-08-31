@@ -1,15 +1,20 @@
 /*
- * Copyright (c) 2017. Alexander Kinross-Smith, s3603437
+ * ISYS1118: Assignment.
+ * Group: Null
+ * File created by: Alexander Kinross-Smith, s3603437
  */
 
 package main.entities.lane;
 
-import main.entities.intersection.Intersection;
+import main.entities.Car;
 import main.entities.Road;
 import main.entities.interfaces.CarMoveable;
+import main.entities.intersection.Intersection;
 import main.exceptions.PathNotFoundException;
 import main.utils.Direction;
+import main.utils.Orientation;
 import main.utils.Position;
+import main.utils.TurnDirection;
 
 import java.util.ArrayList;
 
@@ -20,9 +25,7 @@ public class CarSpawn extends Lane {
     //Generate this in the constructor
     private ArrayList<CarMoveable> carPath = new ArrayList<>();
 
-    private int spawnSpeed;
     private Position spawnPosition;
-
     //Ticks between each car spawn
     private int spawnDelay;
 
@@ -33,15 +36,15 @@ public class CarSpawn extends Lane {
      * Instantiates a new Car spawn. Creates a lanes list for cars to follow and figures out the...
      *
      * @param pathIntersections the path intersections
-     * @param spawnSpeed        the spawn speed
      * @param spawnPosition     the spawn position
      * @param spawnDelay        the spawn delay
      */
-    public CarSpawn(ArrayList<Intersection> pathIntersections, CarDestroy endLane, int spawnSpeed, Position
-            spawnPosition, int spawnDelay) throws PathNotFoundException {
-        this.spawnSpeed = spawnSpeed;
-        this.spawnPosition = spawnPosition;
+    public CarSpawn(Direction direction, ArrayList<TurnDirection> turnDirections , ArrayList<Intersection> pathIntersections, CarDestroy
+            endLane, Position spawnPosition, int spawnDelay) throws PathNotFoundException {
+        super(direction, turnDirections);
+
         this.spawnDelay = spawnDelay;
+        this.spawnPosition = spawnPosition;
 
         //Add this lane as the first one in the path
         carPath.add(this);
@@ -61,7 +64,7 @@ public class CarSpawn extends Lane {
             for (Road intersectionRoad : nextIntersection.getRoads()) {
                 if (intersectionRoad.getIntersectionDirection(nextIntersection) != null) {
                     //We've found the road! Now find the turn direction.
-                    Direction.TURN_DIRECTION turnDirection = currentLane.getDirection().getTurnDirection
+                    TurnDirection turnDirection = currentLane.getDirection().getTurnDirection
                             (currentIntersection
                                     .getRoadDirection(intersectionRoad));
 
@@ -84,13 +87,26 @@ public class CarSpawn extends Lane {
                     }
                 }
             }
-            if(!laneFound){
+            if (!laneFound) {
                 throw new PathNotFoundException("Couldn't find a connecting lane when generating a path.");
             }
 
         }
-        carPath.add(endLane);
-        //TODO find the destructor lane associated with this lane? - verify that it is in the right spot
+        boolean found = false;
+        for (Road road : pathIntersections.get(pathIntersections.size() - 1).getRoads()
+                ) {
+            for (Lane lane : road.getLanes()
+                    ) {
+                if (lane.equals(endLane)) {
+                    found = true;
+                }
+            }
+        }
+        if (found) {
+            carPath.add(endLane);
+        } else {
+            throw new PathNotFoundException("End Lane dissconnected");
+        }
     }
 
 
@@ -100,7 +116,7 @@ public class CarSpawn extends Lane {
      * @return the boolean
      */
     public boolean spawnCar() {
-
+        addCar(new Car(new Position(spawnPosition.getX(),spawnPosition.getY()),carPath));
         return false;
     }
 
@@ -109,5 +125,16 @@ public class CarSpawn extends Lane {
      * Must be called every tick.
      */
     public void incrementTime() {
+        //Checks that the last car added has moved enough. Might throw a null.
+        if(getCars().getLast() != null) {
+            if (getCars().getLast().getPosition().getDifference(spawnPosition) <= 20) {
+                //Too close, don't spawn a car.
+                //TODO: What sort of logic do we expect here for spawning cars if they are already full?
+                return;
+            }
+        }
+        if (tick % spawnDelay == 0) {
+            spawnCar();
+        }
     }
 }

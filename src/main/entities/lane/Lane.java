@@ -8,20 +8,18 @@ import main.entities.Car;
 import main.entities.interfaces.CarMoveable;
 import main.entities.interfaces.SimulationTimed;
 import main.utils.Direction;
+import main.utils.TurnDirection;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class Lane implements CarMoveable,SimulationTimed {
-    private ArrayList<Direction.TURN_DIRECTION> turnDirections;
+    private ArrayList<TurnDirection> turnDirections;
     private LinkedList<Car> cars = new LinkedList<>();
     private Direction direction;
 
-    public Lane() {
-    }
-
-    public Lane(Direction direction, ArrayList<Direction.TURN_DIRECTION> turnDirections) {
+    public Lane(Direction direction, ArrayList<TurnDirection> turnDirections) {
         this.turnDirections = turnDirections;
         this.direction = direction;
     }
@@ -31,7 +29,7 @@ public class Lane implements CarMoveable,SimulationTimed {
     }
 
 
-    public Queue<Car> getCars() {
+    public LinkedList<Car> getCars() {
         return cars;
     }
 
@@ -39,7 +37,7 @@ public class Lane implements CarMoveable,SimulationTimed {
         return direction;
     }
 
-    public boolean hasTurnDirection(Direction.TURN_DIRECTION turnDirection) {
+    public boolean hasTurnDirection(TurnDirection turnDirection) {
         return turnDirections.contains(turnDirection);
     }
 

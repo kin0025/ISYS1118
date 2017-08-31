@@ -85,11 +85,7 @@ public class Car implements SimulationTimed {
     }
 
     public boolean isMoving() {
-        if(speed != 0){
-            return false;
-        }else {
-            return true;
-        }
+        return !(speed != 0);
     }
 
 }

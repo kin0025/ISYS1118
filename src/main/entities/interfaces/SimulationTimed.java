@@ -5,5 +5,5 @@
 package main.entities.interfaces;
 
 public interface SimulationTimed {
-    public void incrementTime();
+    void incrementTime();
 }

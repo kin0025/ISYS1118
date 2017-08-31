@@ -4,7 +4,6 @@
 
 package main.entities.lane;
 
-import main.entities.lane.CarSpawn;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

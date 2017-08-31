@@ -34,7 +34,7 @@ public class Direction {
      *
      * @param direction the direction to start facing
      */
-    public Direction(COMPASS_DIRECTION direction){
+    public Direction(CardinalDirection direction){
         switch (direction) {
             case NORTH:
                 this.direction = 0;
@@ -123,16 +123,16 @@ public class Direction {
      *
      * @return the current direction
      */
-    public COMPASS_DIRECTION getDirection() {
+    public CardinalDirection getDirection() {
         switch (direction) {
             case north:
-                return COMPASS_DIRECTION.NORTH;
+                return CardinalDirection.NORTH;
             case east:
-                return COMPASS_DIRECTION.EAST;
+                return CardinalDirection.EAST;
             case south:
-                return COMPASS_DIRECTION.SOUTH;
+                return CardinalDirection.SOUTH;
             case west:
-                return COMPASS_DIRECTION.WEST;
+                return CardinalDirection.WEST;
             default:
                 return null;
         }
@@ -144,21 +144,21 @@ public class Direction {
      * @param turningTo the direction we are turning to
      * @return The turn direction enum
      */
-    public TURN_DIRECTION getTurnDirection(Direction turningTo) {
+    public TurnDirection getTurnDirection(Direction turningTo) {
         //TODO make neater
         switch (turningTo.direction - direction) {
             //Right
             case -3:
             case 1:
-                return TURN_DIRECTION.RIGHT;
+                return TurnDirection.RIGHT;
             case 3:
             case -1:
-                return TURN_DIRECTION.LEFT;
+                return TurnDirection.LEFT;
             case -2:
             case 2:
-                return TURN_DIRECTION.REVERSE;
+                return TurnDirection.REVERSE;
             case 0:
-                return TURN_DIRECTION.STRAIGHT;
+                return TurnDirection.STRAIGHT;
             default:
                 throw new RuntimeException("Something went seriously wrong or there is a logic error");
         }
@@ -178,11 +178,6 @@ public class Direction {
         Direction comparator = (Direction) o;
         return direction == comparator.direction;
     }
-
-    public enum TURN_DIRECTION {LEFT, STRAIGHT, RIGHT, REVERSE}
-
-
-    public enum COMPASS_DIRECTION {NORTH, EAST, SOUTH, WEST}
 }
 
 

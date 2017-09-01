@@ -4,14 +4,23 @@ public class DimensionManager {
     private static final int numberOfTicksPerSecond = 30;
     private static final int numberOfMetersPerPixel = 1;
     public static final int widthOfIntersectionPixels = 20;
-    public static final int lengthOfRoadPixels = 50;
+    public static final int lengthOfRoadPixels = 100;
     public static final int widthOfRoadPixels = 20;
-    public static final int lengthOfCarPixels = 2;
-    public static final int widthOfCarPixels = 1;
+    public static final int lengthOfCarPixels = 5;
+    public static final int widthOfCarPixels = 2;
+    public static final int minimumFollowingDistancePixels = 5;
 
 
     public static double metersToPixels(double meters) {
         return meters * numberOfMetersPerPixel;
+    }
+
+    public static double meterSecToPixelTick(double meters) {
+        return meters * numberOfMetersPerPixel / numberOfTicksPerSecond;
+    }
+
+    public static double kmphToPixelTick(double kmph) {
+        return (kmph / 3.6) * numberOfMetersPerPixel / numberOfTicksPerSecond;
     }
 
     public static double pixelsToMeters(double pixels) {

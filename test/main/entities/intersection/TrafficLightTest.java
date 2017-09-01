@@ -38,6 +38,9 @@ public class TrafficLightTest {
         assertEquals("Traffic Light red time incorrect", LightStatus.RED, trafficLight.getStatus());       
     }
 
+
+
+
     @Test
     public void checkTiming() {
         assertEquals("Does not equal", 30, trafficLight.checkTiming());

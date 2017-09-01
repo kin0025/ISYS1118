@@ -5,13 +5,15 @@
 package main.entities.interfaces;
 
 import main.entities.Car;
+import main.utils.Direction;
+import main.utils.Position;
 
 
 public interface CarMoveable {
     /**
      * Adds a car to the object
      * @param car The car to be added
-     * @return not sure why this would fail?
+     * @return Fails if cars overlap
      */
     boolean addCar(Car car);
 
@@ -25,7 +27,11 @@ public interface CarMoveable {
     /**
      * Moves the first car in the queue to the object moveTo. Turns car as appropriate.
      * @param moveTo The object a car is been moved to.
-     * @return whether the move operations succeeded.
+     * @return whether the move operations succeeded - i.e if addCar failed on the move to lane.
      */
     boolean moveCar(CarMoveable moveTo);
+
+    Position getPosition();
+
+    Direction getDirection();
 }

@@ -2,6 +2,7 @@ package main.entities;
 
 import main.entities.interfaces.CarMoveable;
 import main.entities.lane.Lane;
+import main.utils.CardinalDirection;
 import main.utils.DimensionManager;
 import main.utils.Direction;
 import main.utils.Position;
@@ -24,8 +25,9 @@ public class CarTest {
     public void setUp() throws Exception {
         carPosition = new Position(1, 1);
         ArrayList<CarMoveable> carPath = new ArrayList<>();
-        carPath.add(new Lane());
-        carPath.add(new Lane());
+        carPath.add(new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new Position(0,0)));
+        carPath.add(new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new Position(0,0)));
+
         car = new Car(carPosition, carPath);
     }
 

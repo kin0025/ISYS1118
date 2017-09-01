@@ -23,7 +23,7 @@ public class LaneTest {
 
     @Before
     public void setUp() throws Exception {
-        lane = new Lane(new Direction(CardinalDirection.NORTH),new ArrayList<TurnDirection>());
+        lane = new Lane(new Direction(CardinalDirection.NORTH),new ArrayList<TurnDirection>(),0,new Position(0,0));
     }
 
     @Test
@@ -38,7 +38,7 @@ public class LaneTest {
     @Test
     public void moveCar() {
         ArrayList<CarMoveable> carList = new ArrayList<>();
-        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>());
+        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(),0,new Position(0,0));
         carList.add(lane);
         carList.add(lane2);
         Car car1 = new Car(new Position(0, 0), carList);
@@ -51,7 +51,7 @@ public class LaneTest {
     @Test
     public void moveMultipleCar() {
         ArrayList<CarMoveable> carList = new ArrayList<>();
-        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>());
+        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(),0,new Position(0,0));
         carList.add(lane);
         carList.add(lane2);
         Car car1 = new Car(new Position(0, 0), carList);

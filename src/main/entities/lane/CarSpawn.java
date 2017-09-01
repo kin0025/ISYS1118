@@ -39,9 +39,9 @@ public class CarSpawn extends Lane {
      * @param spawnPosition     the spawn position
      * @param spawnDelay        the spawn delay
      */
-    public CarSpawn(Direction direction, ArrayList<TurnDirection> turnDirections , ArrayList<Intersection> pathIntersections, CarDestroy
+    public CarSpawn(Direction direction, ArrayList<TurnDirection> turnDirections , int lanesFromEdge, Position position, ArrayList<Intersection> pathIntersections, CarDestroy
             endLane, Position spawnPosition, int spawnDelay) throws PathNotFoundException {
-        super(direction, turnDirections);
+        super(direction, turnDirections,lanesFromEdge, position);
 
         this.spawnDelay = spawnDelay;
         this.spawnPosition = spawnPosition;

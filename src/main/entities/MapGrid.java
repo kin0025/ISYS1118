@@ -1,10 +1,7 @@
 package main.entities;
 
 import main.entities.intersection.Intersection;
-import main.utils.DimensionManager;
-import main.utils.Direction;
-import main.utils.Orientation;
-import main.utils.Position;
+import main.utils.*;
 
 import java.util.ArrayList;
 
@@ -62,8 +59,8 @@ public class MapGrid {
                             .DIMENSION.Y))/2;
                     Road newRoad = new Road(Orientation.HORIZONTAL, new Position(posX, posY));
                     roads.add(newRoad);
-                    grid[i][j].addRoad(newRoad, new Direction(Direction.COMPASS_DIRECTION.EAST));
-                    grid[i][j + 1].addRoad(newRoad, new Direction(Direction.COMPASS_DIRECTION.WEST));
+                    grid[i][j].addRoad(newRoad, new Direction(CardinalDirection.EAST));
+                    grid[i][j + 1].addRoad(newRoad, new Direction(CardinalDirection.WEST));
                 }
                 //Check the vertical grid
                 if (grid[i][j] != null && grid[i + 1][j] != null) {
@@ -75,8 +72,8 @@ public class MapGrid {
                     System.out.println(posX);
                     Road newRoad = new Road(Orientation.VERTICAL, new Position(posX, posY));
                     roads.add(newRoad);
-                    grid[i][j].addRoad(newRoad, new Direction(Direction.COMPASS_DIRECTION.SOUTH));
-                    grid[i][j + 1].addRoad(newRoad, new Direction(Direction.COMPASS_DIRECTION.NORTH));
+                    grid[i][j].addRoad(newRoad, new Direction(CardinalDirection.SOUTH));
+                    grid[i][j + 1].addRoad(newRoad, new Direction(CardinalDirection.NORTH));
                 }
             }
         }

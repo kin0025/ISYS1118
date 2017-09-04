@@ -12,7 +12,7 @@ public class DirectionTest {
 
     @Before
     public void setUp()  {
-        direction = new Direction(Direction.COMPASS_DIRECTION.NORTH);
+        direction = new Direction(CardinalDirection.NORTH);
     }
 
     @After
@@ -22,31 +22,31 @@ public class DirectionTest {
     @Test
     public void turnRight() {
         direction.turnRight();
-        assertEquals("Turn from N to E failed", Direction.COMPASS_DIRECTION.EAST, direction.getDirection());
+        assertEquals("Turn from N to E failed", CardinalDirection.EAST, direction.getDirection());
         direction.turnRight();
-        assertEquals("Turn from E to S failed", Direction.COMPASS_DIRECTION.SOUTH, direction.getDirection());
+        assertEquals("Turn from E to S failed", CardinalDirection.SOUTH, direction.getDirection());
         direction.turnRight();
-        assertEquals("Turn from S to W failed", Direction.COMPASS_DIRECTION.WEST, direction.getDirection());
+        assertEquals("Turn from S to W failed", CardinalDirection.WEST, direction.getDirection());
         direction.turnRight();
-        assertEquals("Turn from W to N failed", Direction.COMPASS_DIRECTION.NORTH, direction.getDirection());
+        assertEquals("Turn from W to N failed", CardinalDirection.NORTH, direction.getDirection());
     }
 
     @Test
     public void turnLeft() {
         direction.turnLeft();
-        assertEquals("Turn from N to W failed", Direction.COMPASS_DIRECTION.WEST, direction.getDirection());
+        assertEquals("Turn from N to W failed", CardinalDirection.WEST, direction.getDirection());
         direction.turnLeft();
-        assertEquals("Turn from W to S failed", Direction.COMPASS_DIRECTION.SOUTH, direction.getDirection());
+        assertEquals("Turn from W to S failed", CardinalDirection.SOUTH, direction.getDirection());
         direction.turnLeft();
-        assertEquals("Turn from S to E failed", Direction.COMPASS_DIRECTION.EAST, direction.getDirection());
+        assertEquals("Turn from S to E failed", CardinalDirection.EAST, direction.getDirection());
         direction.turnLeft();
-        assertEquals("Turn from E to N failed", Direction.COMPASS_DIRECTION.NORTH, direction.getDirection());
+        assertEquals("Turn from E to N failed", CardinalDirection.NORTH, direction.getDirection());
 
     }
 
     @Test
     public void getDirection() {
-        assertEquals("Get Direction Failed", Direction.COMPASS_DIRECTION.NORTH, direction.getDirection());
+        assertEquals("Get Direction Failed", CardinalDirection.NORTH, direction.getDirection());
 
     }
 
@@ -59,30 +59,30 @@ public class DirectionTest {
 
     @Test
     public void getTurnDirection()  {
-        Direction north = new Direction(Direction.COMPASS_DIRECTION.NORTH);
-        Direction south = new Direction(Direction.COMPASS_DIRECTION.SOUTH);
-        Direction east = new Direction(Direction.COMPASS_DIRECTION.EAST);
-        Direction west = new Direction(Direction.COMPASS_DIRECTION.WEST);
+        Direction north = new Direction(CardinalDirection.NORTH);
+        Direction south = new Direction(CardinalDirection.SOUTH);
+        Direction east = new Direction(CardinalDirection.EAST);
+        Direction west = new Direction(CardinalDirection.WEST);
 
-        assertEquals("Turn direction from N to E failed", Direction.TURN_DIRECTION.RIGHT, north.getTurnDirection(east));
-        assertEquals("Turn direction from N to N failed", Direction.TURN_DIRECTION.STRAIGHT, north.getTurnDirection(north));
-        assertEquals("Turn direction from N to W failed", Direction.TURN_DIRECTION.LEFT, north.getTurnDirection(west));
-        assertEquals("Turn direction from N to S failed", Direction.TURN_DIRECTION.REVERSE, north.getTurnDirection(south));
+        assertEquals("Turn direction from N to E failed", TurnDirection.RIGHT, north.getTurnDirection(east));
+        assertEquals("Turn direction from N to N failed", TurnDirection.STRAIGHT, north.getTurnDirection(north));
+        assertEquals("Turn direction from N to W failed", TurnDirection.LEFT, north.getTurnDirection(west));
+        assertEquals("Turn direction from N to S failed", TurnDirection.REVERSE, north.getTurnDirection(south));
 
-        assertEquals("Turn direction from S to E failed", Direction.TURN_DIRECTION.LEFT, south.getTurnDirection(east));
-        assertEquals("Turn direction from S to S failed", Direction.TURN_DIRECTION.STRAIGHT, south.getTurnDirection(south));
-        assertEquals("Turn direction from S to W failed", Direction.TURN_DIRECTION.RIGHT, south.getTurnDirection(west));
-        assertEquals("Turn direction from S to N failed", Direction.TURN_DIRECTION.REVERSE, south.getTurnDirection(north));
+        assertEquals("Turn direction from S to E failed", TurnDirection.LEFT, south.getTurnDirection(east));
+        assertEquals("Turn direction from S to S failed", TurnDirection.STRAIGHT, south.getTurnDirection(south));
+        assertEquals("Turn direction from S to W failed", TurnDirection.RIGHT, south.getTurnDirection(west));
+        assertEquals("Turn direction from S to N failed", TurnDirection.REVERSE, south.getTurnDirection(north));
 
-        assertEquals("Turn direction from E to N failed", Direction.TURN_DIRECTION.LEFT, east.getTurnDirection(north));
-        assertEquals("Turn direction from E to S failed", Direction.TURN_DIRECTION.RIGHT, east.getTurnDirection(south));
-        assertEquals("Turn direction from E to E failed", Direction.TURN_DIRECTION.STRAIGHT, east.getTurnDirection(east));
-        assertEquals("Turn direction from E to W failed", Direction.TURN_DIRECTION.REVERSE, east.getTurnDirection(west));
+        assertEquals("Turn direction from E to N failed", TurnDirection.LEFT, east.getTurnDirection(north));
+        assertEquals("Turn direction from E to S failed", TurnDirection.RIGHT, east.getTurnDirection(south));
+        assertEquals("Turn direction from E to E failed", TurnDirection.STRAIGHT, east.getTurnDirection(east));
+        assertEquals("Turn direction from E to W failed", TurnDirection.REVERSE, east.getTurnDirection(west));
 
-        assertEquals("Turn direction from W to W failed", Direction.TURN_DIRECTION.STRAIGHT, west.getTurnDirection(west));
-        assertEquals("Turn direction from W to E failed", Direction.TURN_DIRECTION.REVERSE, west.getTurnDirection(east));
-        assertEquals("Turn direction from W to N failed", Direction.TURN_DIRECTION.RIGHT, west.getTurnDirection(north));
-        assertEquals("Turn direction from W to S failed", Direction.TURN_DIRECTION.LEFT, west.getTurnDirection(south));
+        assertEquals("Turn direction from W to W failed", TurnDirection.STRAIGHT, west.getTurnDirection(west));
+        assertEquals("Turn direction from W to E failed", TurnDirection.REVERSE, west.getTurnDirection(east));
+        assertEquals("Turn direction from W to N failed", TurnDirection.RIGHT, west.getTurnDirection(north));
+        assertEquals("Turn direction from W to S failed", TurnDirection.LEFT, west.getTurnDirection(south));
 
     }
 

@@ -8,6 +8,8 @@ package main.entities.lane;
 
 import main.entities.Car;
 import main.entities.interfaces.CarMoveable;
+import main.utils.CardinalDirection;
+import main.utils.Direction;
 import main.utils.Position;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +22,7 @@ public class CarDestroyTest {
     CarDestroy carDestroy;
     @Before
     public void setUp() throws Exception {
-        carDestroy = new CarDestroy();
+        carDestroy = new CarDestroy(new Direction(CardinalDirection.NORTH), new ArrayList<>(),0,new Position(0,0));
     }
 
     @Test

@@ -26,8 +26,14 @@ public class Intersection implements CarMoveable, SimulationTimed {
         this.position = position;
     }
 
+    @Override
     public Position getPosition() {
         return position;
+    }
+
+    @Override
+    public Direction getDirection() {
+        return null;
     }
 
     public ArrayList<Road> getRoads() {

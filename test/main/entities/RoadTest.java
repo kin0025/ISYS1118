@@ -1,6 +1,7 @@
 package main.entities;
 import static org.junit.Assert.*;
 
+import main.utils.CardinalDirection;
 import org.junit.Test;
 
 import main.entities.intersection.Intersection;
@@ -18,7 +19,7 @@ public class RoadTest {
     @Test
     public void addIntersection() throws Exception {
     	Intersection intersection = new Intersection(new Position(0,0));
-    	Direction direction = new Direction(Direction.COMPASS_DIRECTION.NORTH);
+    	Direction direction = new Direction(CardinalDirection.NORTH);
     	road.addIntersection(intersection, direction);
     	assertEquals("Intersection not added correctly",direction,road.getIntersectionDirection(intersection));
     }

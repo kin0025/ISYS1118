@@ -6,7 +6,10 @@ package main.entities.lane;
 
 import main.entities.Car;
 import main.entities.interfaces.CarMoveable;
+import main.utils.CardinalDirection;
+import main.utils.Direction;
 import main.utils.Position;
+import main.utils.TurnDirection;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,34 +23,66 @@ public class LaneTest {
 
     @Before
     public void setUp() throws Exception {
-        lane = new Lane();
+        lane = new Lane(new Direction(CardinalDirection.NORTH),new ArrayList<TurnDirection>(),0,new Position(0,0));
     }
 
     @Test
-    public void moveCars() throws Exception {
+    public void addCar() {
         ArrayList<CarMoveable> carList = new ArrayList<>();
-        Lane lane2 = new Lane();
+        Car car1 = new Car(new Position(0, 0), carList);
+        assertEquals("Cars in lane incorrect initial.", null, lane.getCars().peek());
+        lane.addCar(car1);
+        assertEquals("Cars in lane incorrect car 1.", true, lane.getCars().contains(car1));
+    }
+
+    @Test
+    public void moveCar() {
+        ArrayList<CarMoveable> carList = new ArrayList<>();
+        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(),0,new Position(0,0));
+        carList.add(lane);
+        carList.add(lane2);
+        Car car1 = new Car(new Position(0, 0), carList);
+        lane.addCar(car1);
+        lane.moveCar(lane2);
+        assertEquals("Cars in lane1 incorrect after move", false, lane.getCars().contains(car1));
+        assertEquals("Cars in lane2 incorrect after move", true, lane2.getCars().contains(car1));
+    }
+
+    @Test
+    public void moveMultipleCar() {
+        ArrayList<CarMoveable> carList = new ArrayList<>();
+        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(),0,new Position(0,0));
         carList.add(lane);
         carList.add(lane2);
         Car car1 = new Car(new Position(0, 0), carList);
         Car car2 = new Car(new Position(0, 0), carList);
-        assertEquals("Cars in lane incorrect initial.", null, lane.getCars());
         lane.addCar(car1);
-        assertEquals("Cars in lane incorrect car 1.", true, lane.getCars().contains(car1));
-        assertEquals("Cars in lane incorrect.", false, lane.getCars().contains(car2));
         lane.addCar(car2);
-        assertEquals("Cars in lane incorrect.", true, lane.getCars().contains(car2));
-        assertEquals("Lane allows removing car that isn't first", false, lane.removeCar(car2));
-        assertEquals("Removing car failed", true, lane.removeCar(car1));
-        assertEquals("Car was not removed from lane correctly", false, lane.getCars().contains(car1));
-        assertEquals("Car was not moved correctly", true, lane.moveCar(lane2));
-        assertEquals("Car was not moved from lane correctly", false, lane.getCars().contains(car2));
-        assertEquals("Car was not moved to lane correctly", true, lane2.getCars().contains(car2));
+        lane.moveCar(lane2);
+        assertEquals("Cars in lane1 incorrect after move", false, lane.getCars().contains(car2));
+        assertEquals("Cars in lane1 incorrect after move", true, lane.getCars().contains(car1));
+        assertEquals("Cars in lane2 incorrect after move", true, lane2.getCars().contains(car2));
+        assertEquals("Cars in lane2 incorrect after move", false, lane2.getCars().contains(car1));
+        lane.moveCar(lane2);
+        assertEquals("Cars in lane1 incorrect after move", false, lane.getCars().contains(car2));
+        assertEquals("Cars in lane1 incorrect after move", false, lane.getCars().contains(car1));
+        assertEquals("Cars in lane2 incorrect after move", true, lane2.getCars().contains(car2));
+        assertEquals("Cars in lane2 incorrect after move", true, lane2.getCars().contains(car1));
+    }
 
+    @Test
+    public void removeCar() throws Exception {
+        ArrayList<CarMoveable> carList = new ArrayList<>();
+        carList.add(lane);
+        Car car = new Car(new Position(0, 0), carList);
+        lane.addCar(car);
+        assertEquals("Removing car failed", true, lane.removeCar(car));
+        assertEquals("Car was not removed from lane correctly", false, lane.getCars().contains(car));
     }
 
     @Test
     public void getDirection() throws Exception {
+        lane.getDirection();
         fail("Not yet implemented");
 
     }

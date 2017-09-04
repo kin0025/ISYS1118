@@ -10,6 +10,7 @@ import main.utils.Position;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 public class SimulationOutput extends JPanel {
@@ -67,7 +68,7 @@ public class SimulationOutput extends JPanel {
                 x = road.getPosition().getX() ;//- (DimensionManager.widthOfRoadPixels/2);
                 x2 = (DimensionManager.widthOfRoadPixels);
             }
-            g2.fill(new Rectangle2D.Double(x, y, x2, y2));
+            g2.draw(new Line2D.Double(x, y+DimensionManager.widthOfRoadPixels-1, x + DimensionManager.lengthOfRoadPixels, y));
 
             //Check if road hasn't already been displayed? and then show it
             for (Lane lane : road.getLanes()) {

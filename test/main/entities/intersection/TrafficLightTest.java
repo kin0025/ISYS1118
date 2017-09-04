@@ -14,7 +14,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class TrafficLightTest {
-<<<<<<< HEAD
+
 	TrafficLight trafficLight;
 
 	@Before
@@ -61,37 +61,5 @@ public class TrafficLightTest {
 	public void checkTiming() {
 		assertEquals("Does not equal", 30, trafficLight.checkTiming());
 	}
-=======
-    TrafficLight trafficLight;
-
-    @Before
-    public void setUp() throws Exception {
-        trafficLight = new TrafficLight(30, Orientation.HORIZONTAL);
-    }
-
-    @Test
-    public void trafficCycle() throws Exception {
-        assertEquals("Default Traffic Light State incorrect", LightStatus.RED, trafficLight.getStatus());
-        trafficLight.restartCycle();
-        assertEquals("Reset Traffic Light State incorrect", LightStatus.GREEN, trafficLight.getStatus());
-        for (int i = 0; i <= 29; i++) {
-            trafficLight.incrementTime();
-            assertEquals("Traffic Light time incorrect", LightStatus.GREEN, trafficLight.getStatus());
-        }
-        for (int i = 0; i <= 4; i++) {
-            trafficLight.incrementTime();
-            assertEquals("Traffic Light amber time incorrect", LightStatus.AMBER, trafficLight.getStatus());
-        }
-        trafficLight.incrementTime();
-        assertEquals("Traffic Light red time incorrect", LightStatus.RED, trafficLight.getStatus());       
-    }
-
-
-
-
-    @Test
-    public void checkTiming() {
-        assertEquals("Does not equal", 30, trafficLight.checkTiming());
-    }
->>>>>>> 9be24456f3427ec58066f3fcbee2bc316ce664fe
 }
+

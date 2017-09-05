@@ -53,7 +53,10 @@ public class TrafficLightTest {
 
 	@Test
 	public void testRedLight() throws Exception {
-		trafficLight.incrementTime();
+		trafficLight.restartCycle();
+		for (int i = 0; i <= 35; i++) {
+			trafficLight.incrementTime();
+		}
 		assertEquals("Traffic Light red time incorrect", LightStatus.RED, trafficLight.getStatus());
 	}
 

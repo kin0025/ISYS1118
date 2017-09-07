@@ -1,12 +1,8 @@
 package main.entities;
 
 
-import javafx.geometry.Pos;
 import main.entities.intersection.Intersection;
-import main.entities.lane.CarDestroy;
-import main.entities.lane.CarSpawn;
 import main.entities.lane.Lane;
-import main.exceptions.PathNotFoundException;
 import main.utils.*;
 
 import java.util.ArrayList;
@@ -17,6 +13,9 @@ public class Road {
     private Orientation orientation;
     private HashMap<Intersection, CardinalDirection> intersectionDirections;
     private Position position;
+    private int row;
+    private int column;
+
 
     public Road(Orientation orientation, Position position) {
         this.orientation = orientation;
@@ -60,20 +59,25 @@ public class Road {
         directionFromIntersection.reverse();
     }
 
-    public void addSpawnLane(Direction direction) {
-       /* CarSpawn carSpawn;
-        try {
-            carSpawn = new CarSpawn(direction);
-        } catch (PathNotFoundException e) {
-            return;
-        }
-        lanes.add(carSpawn);*/
+    public void addLane(Lane lane) {
+        lanes.add(lane);
 
+    }
+
+    public int[] getRoadCoordinate(){
+        return new int[] {column,row};
     }
 
     public void addDestroyerLane() {
         //lanes.add(new CarDestroy());
 
+    }
+
+
+    public void incrementTime() {
+        for (Lane lane : lanes) {
+            lane.incrementTime();
+        }
     }
 
     /**

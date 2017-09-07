@@ -6,10 +6,7 @@ package main.entities.lane;
 
 import main.entities.Car;
 import main.entities.interfaces.CarMoveable;
-import main.utils.CardinalDirection;
-import main.utils.Direction;
-import main.utils.Position;
-import main.utils.TurnDirection;
+import main.utils.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +20,7 @@ public class LaneTest {
 
     @Before
     public void setUp() throws Exception {
-        lane = new Lane(new Direction(CardinalDirection.NORTH),new ArrayList<TurnDirection>(),0,new Position(0,0));
+        lane = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<TurnDirection>(), 0, new Position(0, 0));
     }
 
     @Test
@@ -38,7 +35,7 @@ public class LaneTest {
     @Test
     public void moveCar() {
         ArrayList<CarMoveable> carList = new ArrayList<>();
-        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(),0,new Position(0,0));
+        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new Position(0, 0));
         carList.add(lane);
         carList.add(lane2);
         Car car1 = new Car(new Position(0, 0), carList);
@@ -51,7 +48,7 @@ public class LaneTest {
     @Test
     public void moveMultipleCar() {
         ArrayList<CarMoveable> carList = new ArrayList<>();
-        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(),0,new Position(0,0));
+        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new Position(0, 0));
         carList.add(lane);
         carList.add(lane2);
         Car car1 = new Car(new Position(0, 0), carList);
@@ -90,6 +87,33 @@ public class LaneTest {
     @Test
     public void hasTurnDirection() throws Exception {
         fail("Not yet implemented");
+    }
+
+    @Test
+    public void checkCollisionsOccur() {
+        Car car1 = new Car(new Position(0, 0), null);
+        Car car2 = new Car(new Position(0, 0), null);
+        lane.addCar(car1);
+        lane.addCar(car2);
+        assertEquals(false, lane.checkCarCollisions());
+    }
+
+    @Test
+    public void checkCollisionsNoOccur() {
+        Car car1 = new Car(new Position(0, 0), null);
+        Car car2 = new Car(new Position(0, 100), null);
+        lane.addCar(car1);
+        lane.addCar(car2);
+        assertEquals(true, lane.checkCarCollisions());
+    }
+
+    @Test
+    public void checkCollisionsBorderline() {
+        Car car1 = new Car(new Position(0, 0), null);
+        Car car2 = new Car(new Position(0, DimensionManager.minimumFollowingDistancePixels), null);
+        lane.addCar(car1);
+        lane.addCar(car2);
+        assertEquals(true, lane.checkCarCollisions());
     }
 
 

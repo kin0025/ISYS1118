@@ -1,6 +1,7 @@
 package main.entities;
 
 import main.entities.intersection.Intersection;
+import main.entities.lane.Lane;
 import main.utils.*;
 
 import java.util.ArrayList;
@@ -31,6 +32,23 @@ public class MapGrid {
         grid[x][y] = new Intersection(new Position((x * offset) + DimensionManager.lengthOfRoadPixels, (y * offset) + DimensionManager
                 .lengthOfRoadPixels));
         return false;
+    }
+
+    public boolean addLane(Lane lane, int columnm, int row){
+        boolean added = false;
+        for (Road road: roads
+             ) {
+            if(road.getRoadCoordinate()[0] == columnm && road.getRoadCoordinate()[1] == row ){
+                road.addLane(lane);
+                added = true;
+            }
+
+        }
+        return added;
+    }
+
+    public Intersection getIntersection(int x, int y){
+        return grid[x][y];
     }
 
     public int getWidth() {

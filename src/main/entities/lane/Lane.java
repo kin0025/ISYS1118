@@ -29,10 +29,10 @@ public class Lane implements CarMoveable, SimulationTimed {
     }
 
     public void incrementTime() {
+        checkCarCollisions();
         for (Car car : cars) {
             car.incrementTime();
         }
-        checkCarCollisions();
     }
 
     public Position getPosition() {
@@ -60,20 +60,23 @@ public class Lane implements CarMoveable, SimulationTimed {
 
     /**
      * Iterates through the linked list and stops any cars that are getting too close to each other.
+     * Returns True if no collisions occured
      */
-    public void checkCarCollisions() {
-        //TODO: Might need to be reversed based on how Linked List indexing works.
+    public boolean checkCarCollisions() {
+        boolean carTooClose = false;
         for (int i = 0; i < cars.size(); i++) {
             Car currentCar = cars.get(i);
             Car nextCar = cars.get(i + 1);
             if (nextCar != null) {
                 if (currentCar.getPosition().getDifference(nextCar.getPosition()) < DimensionManager.minimumFollowingDistancePixels) {
                     currentCar.stop();
+                    carTooClose = true;
                 }else{
                     currentCar.accelerate();
                 }
             }
         }
+        return !carTooClose;
     }
 
     public Direction getDirection() {

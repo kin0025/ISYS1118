@@ -9,6 +9,7 @@ import main.entities.Road;
 import main.entities.interfaces.CarMoveable;
 import main.entities.interfaces.SimulationTimed;
 import main.utils.Direction;
+import main.utils.Orientation;
 import main.utils.Position;
 
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class Intersection implements CarMoveable, SimulationTimed {
         roadDirections.put(road, direction);
     }
 
-    public void setLightTiming() {
+    public void setLightTiming(Orientation orientation) {
 
     }
 

@@ -30,7 +30,7 @@ public class CarDestroyTest {
         ArrayList<CarMoveable> carPath = new ArrayList<>();
         Car car = new Car(new Position(0,0), carPath);
         carDestroy.addCar(car);
-        assertEquals("Destroying a car failed.",null,carDestroy.getCars());
+        assertEquals("Destroying a car failed.",0,carDestroy.getCars().size());
     }
 
 }

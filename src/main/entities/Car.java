@@ -29,9 +29,10 @@ public class Car implements SimulationTimed {
     public Car(Position carPosition, ArrayList<CarMoveable> carPath) {
         this.carPosition = carPosition;
         this.carPath = carPath;
-        if (carPath.get(0).getClass() == Lane.class) {
-            //this.direction = (Lane)(carPath.get(0)).getDirection();
+        if(carPath != null && carPath.size() != 0) {
+            this.direction = carPath.get(0).getDirection();
         }
+
     }
 
     public void accelerate() {

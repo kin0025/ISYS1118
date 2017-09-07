@@ -64,7 +64,7 @@ public class Lane implements CarMoveable, SimulationTimed {
      */
     public boolean checkCarCollisions() {
         boolean carTooClose = false;
-        for (int i = 0; i < cars.size(); i++) {
+        for (int i = 0; i < cars.size() -1; i++) {
             Car currentCar = cars.get(i);
             Car nextCar = cars.get(i + 1);
             if (nextCar != null) {
@@ -101,12 +101,14 @@ public class Lane implements CarMoveable, SimulationTimed {
 
     @Override
     public boolean moveCar(CarMoveable moveTo) {
+        addCar(cars.element());
+        removeCar(cars.element());
         return false;
     }
 
     @Override
     public boolean removeCar(Car car) {
         cars.remove();
-        return false;
+        return true;
     }
 }

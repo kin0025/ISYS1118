@@ -2,6 +2,7 @@ package main.entities;
 
 
 import main.entities.intersection.Intersection;
+import main.entities.lane.CarDestroy;
 import main.entities.lane.Lane;
 import main.utils.*;
 
@@ -11,44 +12,54 @@ import java.util.HashMap;
 public class Road {
     private ArrayList<Lane> lanes;
     private Orientation orientation;
-    private HashMap<Intersection, CardinalDirection> intersectionDirections =  new HashMap<>();
+    private HashMap<Intersection, CardinalDirection> intersectionDirections = new HashMap<>();
     private BoundingBox boundingBox;
     private int row;
     private int column;
 
 
-    public Road(Orientation orientation, BoundingBox boundingBox) {
+    public Road(Orientation orientation, BoundingBox boundingBox, int row, int column) {
         this.orientation = orientation;
         this.boundingBox = boundingBox;
+        this.row = row;
+        this.column = column;
         lanes = new ArrayList<>(4);
-        //TODO: @Adithya Please rewrite or comment. Not very good code, but needed for adding gui/prototyping
-        for (int i = 0; i < lanes.size(); i++) {
+
+        for (int i = 0; i < DimensionManager.numberOfLanesPerRoad; i++) {
             ArrayList<TurnDirection> turnDirections = new ArrayList<>();
             Direction laneDirection;
-            int laneDistance = i % (lanes.size() / 2);
+            int laneDistance = i % (DimensionManager.numberOfLanesPerRoad / 2);
             if (i % 2 == 0) {
                 turnDirections.add(TurnDirection.LEFT);
                 turnDirections.add(TurnDirection.STRAIGHT);
             } else {
                 turnDirections.add(TurnDirection.RIGHT);
-
             }
 
+            double xMin, xMax, yMin, yMax;
             if (orientation == Orientation.VERTICAL) {
-                if (i < lanes.size() / 2) {
+                xMin = boundingBox.getxMin() + (DimensionManager.widthOfLanePixels * i);
+                xMax = xMin + DimensionManager.widthOfLanePixels;
+                yMax = boundingBox.getyMax();
+                yMin = boundingBox.getyMin();
+                if (i < DimensionManager.numberOfLanesPerRoad / 2) {
                     laneDirection = new Direction(CardinalDirection.NORTH);
                 } else {
                     laneDirection = new Direction(CardinalDirection.SOUTH);
                 }
             } else {
+                yMin = boundingBox.getyMin() + (DimensionManager.widthOfLanePixels * i);
+                yMax = yMin + DimensionManager.widthOfLanePixels;
+                xMax = boundingBox.getxMax();
+                xMin = boundingBox.getxMin();
+
                 if (i < lanes.size() / 2) {
                     laneDirection = new Direction(CardinalDirection.EAST);
                 } else {
                     laneDirection = new Direction(CardinalDirection.WEST);
                 }
             }
-            //FIXME Incorrect boundingBox applied here.
-  //          lanes.add(new Lane(laneDirection, turnDirections, laneDistance, new Position(this.boundingBox.getX(), this.boundingBox.getY())));
+            lanes.add(new Lane(laneDirection, turnDirections, laneDistance, new BoundingBox(xMin, yMin, xMax, yMax)));
         }
     }
 
@@ -64,28 +75,29 @@ public class Road {
 
     }
 
-    public int[] getRoadCoordinate(){
-        return new int[] {column,row};
+    public int[] getRoadCoordinate() {
+        return new int[]{column, row};
     }
 
     public void addDestroyerLane() {
-        //lanes.add(new CarDestroy());
+        //FIXME
+        lanes.add(new CarDestroy(null, null, 0, boundingBox));
 
     }
 
-    public void stopCars(Intersection intersection){
+    public void stopCars(Intersection intersection) {
         CardinalDirection direction = intersectionDirections.get(intersection);
-        for(Lane lane : lanes){
-            if(lane.getDirection().getDirection() == direction){
+        for (Lane lane : lanes) {
+            if (lane.getDirection().getDirection() == direction) {
                 lane.stopFirstCar();
             }
         }
     }
 
-    public void startCars(Intersection intersection){
+    public void startCars(Intersection intersection) {
         CardinalDirection direction = intersectionDirections.get(intersection);
-        for(Lane lane : lanes){
-            if(lane.getDirection().getDirection() == direction){
+        for (Lane lane : lanes) {
+            if (lane.getDirection().getDirection() == direction) {
                 lane.startFirstCar();
             }
         }
@@ -96,6 +108,7 @@ public class Road {
         for (Lane lane : lanes) {
             lane.incrementTime();
         }
+        checkCarsInsideRoad();
     }
 
     /**

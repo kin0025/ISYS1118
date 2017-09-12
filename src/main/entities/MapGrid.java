@@ -34,9 +34,10 @@ public class MapGrid {
         return false;
     }
 
-    public void removeIntersections(int x,int y){
+    public void removeIntersections(int x, int y) {
         grid[x][y] = null;
     }
+
     public boolean addLane(Lane lane, int columnm, int row) {
         boolean added = false;
         for (Road road : roads
@@ -67,42 +68,39 @@ public class MapGrid {
      * Generate all connecting roads - lanes are auto created by the roads.
      */
     public void fillRoads() {
-        //TODO remove all existing roads from intersections before filling the grid.
         roads = new ArrayList<>();
 
         //Iterate through all the columns of the grid
-        for (int i = 0; i < grid.length - 1; i++) {
+        for (int i = 0; i < grid.length; i++) {
             //Iterate through the rows of intersections
-            for (int j = 0; j < grid[i].length - 1; j++) {
+            for (int j = 0; j < grid[i].length; j++) {
                 if (grid[i][j] != null) {
                     //Clear existing roads.
                     grid[i][j].removeRoads();
 
                     //Check the horizontal grid
-                    if (grid[i][j] != null && grid[i][j + 1] != null) {
+                    if (j + 1 != grid[i].length && grid[i][j] != null && grid[i][j + 1] != null) {
                         double posX = grid[i][j].getCentre().getX() + (grid[i][j].getCentre().getDifference(grid[i][j + 1].getCentre(), Position
                                 .DIMENSION.X)) / 2;
                         double posY = grid[i][j].getCentre().getY() + (grid[i][j].getCentre().getDifference(grid[i][j + 1].getCentre(), Position
                                 .DIMENSION.Y)) / 2;
                         Road newRoad = new Road(Orientation.VERTICAL, new BoundingBox(new Position(posX, posY), DimensionManager
-                                .widthOfRoadPixels, DimensionManager.lengthOfRoadPixels));
+                                .widthOfRoadPixels, DimensionManager.lengthOfRoadPixels), i, j);
                         roads.add(newRoad);
                         grid[i][j].addRoad(newRoad, new Direction(CardinalDirection.EAST));
                         grid[i][j + 1].addRoad(newRoad, new Direction(CardinalDirection.WEST));
                     }
                     //Check the vertical grid
-                    if (grid[i][j] != null && grid[i + 1][j] != null) {
+                    if (i+1 != grid.length && grid[i][j] != null && grid[i + 1][j] != null) {
                         double posX = grid[i][j].getCentre().getX() + (grid[i][j].getCentre().getDifference(grid[i + 1][j].getCentre(), Position
                                 .DIMENSION.X)) / 2;
                         double posY = grid[i][j].getCentre().getY() + (grid[i][j].getCentre().getDifference(grid[i + 1][j].getCentre(), Position
                                 .DIMENSION.Y)) / 2;
-                        System.out.println(grid[i][j].getCentre().getX());
-                        System.out.println(posX);
                         Road newRoad = new Road(Orientation.HORIZONTAL, new BoundingBox(new Position(posX, posY), DimensionManager.lengthOfRoadPixels,
-                                DimensionManager.widthOfIntersectionPixels));
+                                DimensionManager.widthOfIntersectionPixels), i ,j);
                         roads.add(newRoad);
                         grid[i][j].addRoad(newRoad, new Direction(CardinalDirection.SOUTH));
-                        grid[i+1][j].addRoad(newRoad, new Direction(CardinalDirection.NORTH));
+                        grid[i + 1][j].addRoad(newRoad, new Direction(CardinalDirection.NORTH));
                     }
                 }
             }

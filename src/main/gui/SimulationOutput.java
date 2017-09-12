@@ -22,8 +22,10 @@ public class SimulationOutput extends JPanel {
     public SimulationOutput(MapGrid grid) {
         this.grid = grid;
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        int WIDTH = grid.getWidth() * (DimensionManager.widthOfIntersectionPixels + DimensionManager.lengthOfRoadPixels);
-        int HEIGHT = grid.getHeight() * (DimensionManager.widthOfIntersectionPixels + DimensionManager.lengthOfRoadPixels);
+        int WIDTH = grid.getWidth() * (DimensionManager.widthOfIntersectionPixels + DimensionManager.lengthOfRoadPixels) + DimensionManager
+                .lengthOfRoadPixels;
+        int HEIGHT = grid.getHeight() * (DimensionManager.widthOfIntersectionPixels + DimensionManager.lengthOfRoadPixels) + DimensionManager
+                .lengthOfRoadPixels;
 
         //FIXME I have no idea what this does, please make sure it is correct later
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
@@ -47,10 +49,11 @@ public class SimulationOutput extends JPanel {
         //Set the colours for things here.
         Color bgColour = Color.getHSBColor(0.33334f, 1f, 0.27f);
         Color carColour = Color.red;
+        Color laneColour = Color.white;
         Color roadColour = Color.black;
         Color intersectionColour = Color.orange;
 
-        
+
         g2.setPaint(bgColour);
         g2.setBackground(bgColour);
         g2.fill(new Rectangle.Double(0, 0, d.width - 1, d.height - 1));
@@ -61,20 +64,24 @@ public class SimulationOutput extends JPanel {
             if (road != null) {
                 g2.setPaint(roadColour);
                 BoundingBox roadBox = road.getBoundingBox();
-                g2.draw(new Rectangle2D.Double(roadBox.getCentre().getX() - roadBox.getWidth() / 2 + (DimensionManager.widthOfIntersectionPixels/2),
-                        roadBox.getCentre().getY() - roadBox.getHeight() / 2 + (DimensionManager.widthOfIntersectionPixels/2),
+                g2.fill(new Rectangle2D.Double(roadBox.getxMin(),
+                        roadBox.getyMin(),
                         roadBox.getWidth(), roadBox.getHeight()));
 
-                //Check if road hasn't already been displayed? and then show it
                 for (Lane lane : road.getLanes()) {
-                    for (Car laneCars : lane.getCars()) {
-                        Position carPos = laneCars.getPosition();
-                        g2.setPaint(carColour);
-                        g2.fill(new Rectangle2D.Double(carPos.getX(), carPos.getY(), DimensionManager.lengthOfCarPixels, DimensionManager
-                                .widthOfCarPixels));
-                        //Display the cars from here
-                    }
+                    if (lane != null) {
+                        g2.setPaint(laneColour);
+                        g2.draw(new Rectangle2D.Double(lane.getBoundingBox().getxMin(), lane.getBoundingBox().getyMin(), lane.getBoundingBox().getWidth(), lane
+                                .getBoundingBox().getHeight()));
 
+                        for (Car laneCars : lane.getCars()) {
+                            Position carPos = laneCars.getPosition();
+                            g2.setPaint(carColour);
+                            g2.fill(new Rectangle2D.Double(carPos.getX(), carPos.getY(), DimensionManager.lengthOfCarPixels, DimensionManager
+                                    .widthOfCarPixels));
+                            //Display the cars from here
+                        }
+                    }
                 }
 
             }
@@ -86,7 +93,7 @@ public class SimulationOutput extends JPanel {
                 if (intersection != null) {
                     BoundingBox intersectionBox = intersection.getBoundingBox();
                     g2.setPaint(intersectionColour);
-                    g2.draw(new Rectangle2D.Double(intersectionBox.getCentre().getX(), intersectionBox.getCentre().getY(), intersectionBox.getWidth(),
+                    g2.fill(new Rectangle2D.Double(intersectionBox.getxMin(), intersectionBox.getyMin(), intersectionBox.getWidth(),
                             intersectionBox.getHeight()));
 
 

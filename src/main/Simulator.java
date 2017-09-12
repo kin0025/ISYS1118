@@ -46,7 +46,7 @@ public class Simulator {
         return mapGrid.addLane(spawner, roadColumn, roadRow);
     }
 
-    public void addDestroyPoint() {
-
+    public void addDestroyPoint(int roadColumn, int roadRow) {
+//TODO
     }
 }

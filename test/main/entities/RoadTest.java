@@ -12,7 +12,7 @@ public class RoadTest {
 
     @Before
     public void setUp() throws Exception {
-        road = new Road(Orientation.HORIZONTAL, new BoundingBox(new Position(0, 0), 20, 100));
+        road = new Road(Orientation.HORIZONTAL, new BoundingBox(new Position(0, 0), 20, 100),0,0);
     }
 
     @Test

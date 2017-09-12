@@ -21,7 +21,7 @@ public class IntersectionTest {
     @Test
     public void getRoadDirection(){
     	Direction roadDirection = new Direction(CardinalDirection.NORTH);
-    	Road road = new Road(Orientation.VERTICAL,new BoundingBox(new Position(0,0),DimensionManager.widthOfRoadPixels,DimensionManager.lengthOfRoadPixels));
+    	Road road = new Road(Orientation.VERTICAL,new BoundingBox(new Position(0,0),DimensionManager.widthOfRoadPixels,DimensionManager.lengthOfRoadPixels),0,0);
 		intersection.addRoad(road,roadDirection);
     	assertEquals("Couldn't find added road", roadDirection, intersection.getRoadDirection(road));
     }

@@ -77,7 +77,6 @@ public class SimulationOutput extends JPanel {
                     g2.setPaint(carColour);
                     g2.fill(new Rectangle2D.Double(carPos.getX(), carPos.getY(), DimensionManager.lengthOfCarPixels, DimensionManager
                             .widthOfCarPixels));
-
                     //Display the cars from here
                 }
 

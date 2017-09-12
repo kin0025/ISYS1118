@@ -136,5 +136,10 @@ public class CarSpawn extends Lane {
         if (tick % spawnDelay == 0) {
             spawnCar();
         }
+        tick++;
+    }
+
+    public ArrayList<CarMoveable> getCarPath() {
+        return carPath;
     }
 }

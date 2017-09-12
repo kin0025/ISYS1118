@@ -15,6 +15,7 @@ public class TrafficSimulator {
             }
         }
         sim.getMapGrid().fillRoads();
+        //sim.getMapGrid().addSpawnPoint();
         sim.runSimulation();
 
     }

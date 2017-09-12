@@ -23,7 +23,7 @@ public class RoadTest {
         Intersection intersection = new Intersection(new Position(0, 0));
         Direction direction = new Direction(CardinalDirection.NORTH);
         road.addIntersection(intersection, direction);
-        assertEquals("Intersection not added correctly", direction, road.getIntersectionDirection(intersection));
+        assertEquals("Intersection not added correctly", CardinalDirection.SOUTH, road.getIntersectionDirection(intersection));
     }
 
 

@@ -261,7 +261,7 @@ public class PositionTest {
      */
     @Test
     public void getDifferenceX()  {
-        Position difference = new Position(10,15);
+        BoundingBox difference = new Position(10,15);
         assertEquals("Difference calculation returned incorrect result",9,position.getDifference(difference, Position.DIMENSION.X),0.05);
 
     }
@@ -272,7 +272,7 @@ public class PositionTest {
      */
     @Test
     public void getDifferenceY()  {
-        Position difference = new Position(10,15);
+        BoundingBox difference = new Position(10,15);
         assertEquals("Difference calculation returned incorrect result",14,position.getDifference(difference, Position.DIMENSION.Y),0.05);
 
     }

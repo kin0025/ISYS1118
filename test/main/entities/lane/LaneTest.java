@@ -60,6 +60,7 @@ public class LaneTest {
         assertEquals("Cars in lane1 incorrect after move", true, lane.getCars().contains(car1));
         assertEquals("Cars in lane2 incorrect after move", true, lane2.getCars().contains(car2));
         assertEquals("Cars in lane2 incorrect after move", false, lane2.getCars().contains(car1));
+        //FIXME DONT ALTERNATE TESTS
         lane.moveCar(lane2);
         assertEquals("Cars in lane1 incorrect after move", false, lane.getCars().contains(car2));
         assertEquals("Cars in lane1 incorrect after move", false, lane.getCars().contains(car1));

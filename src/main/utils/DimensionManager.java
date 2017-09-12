@@ -1,14 +1,21 @@
 package main.utils;
 
 public class DimensionManager {
+    // Program Constants
     private static final int numberOfTicksPerSecond = 30;
     private static final int numberOfMetersPerPixel = 1;
+    public static final int numberOfLanesPerRoad = 4;
+
+    //Dimensional Constants
     public static final int widthOfIntersectionPixels = 20;
     public static final int lengthOfRoadPixels = 100;
     public static final int widthOfRoadPixels = 20;
-    public static final int lengthOfCarPixels = 5;
+    public static final int lengthOfCarPixels = 4;
     public static final int widthOfCarPixels = 2;
+
+    //Other constants
     public static final int minimumFollowingDistancePixels = 5;
+    public static final int amberLightTimeOn = 5;
 
 
     public static double metersToPixels(double meters) {

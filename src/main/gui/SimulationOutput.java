@@ -3,6 +3,7 @@ package main.gui;
 import main.entities.*;
 import main.entities.intersection.Intersection;
 import main.entities.lane.Lane;
+import main.utils.BoundingBox;
 import main.utils.DimensionManager;
 import main.utils.Orientation;
 import main.utils.Position;
@@ -56,19 +57,8 @@ public class SimulationOutput extends JPanel {
         //Display all the roads
         for (Road road : grid.getRoads()) {
             g2.setPaint(roadColour);
-            double x, y, x2, y2;
-            if (road.getOrientation() == Orientation.VERTICAL) {
-                x = road.getPosition().getX() ;//- (DimensionManager.lengthOfRoadPixels / 2);
-                x2 = (DimensionManager.lengthOfRoadPixels);
-                y = road.getPosition().getY() ;//- (DimensionManager.widthOfRoadPixels / 2);
-                y2 = (DimensionManager.widthOfRoadPixels);
-            } else {
-                y = road.getPosition().getY() ;//- (DimensionManager.lengthOfRoadPixels/2);
-                y2 = (DimensionManager.lengthOfRoadPixels);
-                x = road.getPosition().getX() ;//- (DimensionManager.widthOfRoadPixels/2);
-                x2 = (DimensionManager.widthOfRoadPixels);
-            }
-            g2.draw(new Line2D.Double(x, y+DimensionManager.widthOfRoadPixels-1, x + DimensionManager.lengthOfRoadPixels, y));
+            Position roadBox = road.getBoundingBox().getCentre();
+            g2.draw(new Line2D.Double(roadBox.getX(),roadBox.getY(),roadBox.getyMax()));
 
             //Check if road hasn't already been displayed? and then show it
             for (Lane lane : road.getLanes()) {
@@ -87,7 +77,7 @@ public class SimulationOutput extends JPanel {
         //Display all the objects in intersections in the grid
         for (int i = 0; i < grid.getGrid().length; i++) {
             for (Intersection intersection : grid.getGrid()[i]) {
-                Position intersectionPos = intersection.getPosition();
+                BoundingBox intersectionPos = intersection.getBoundingBox();
                 g2.setPaint(intersectionColour);
                 g2.fill(new Ellipse2D.Double(intersectionPos.getX(), intersectionPos.getY(), DimensionManager.widthOfIntersectionPixels,
                         DimensionManager.widthOfIntersectionPixels));

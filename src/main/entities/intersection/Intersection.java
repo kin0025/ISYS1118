@@ -8,9 +8,7 @@ import main.entities.Car;
 import main.entities.Road;
 import main.entities.interfaces.CarMoveable;
 import main.entities.interfaces.SimulationTimed;
-import main.utils.Direction;
-import main.utils.Orientation;
-import main.utils.Position;
+import main.utils.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,17 +17,45 @@ import java.util.LinkedList;
 public class Intersection implements CarMoveable, SimulationTimed {
     private HashMap<Road, Direction> roadDirections = new HashMap<>();
     private ArrayList<Road> roads = new ArrayList<>();
-    private Position position;
-    private TrafficLight[] lights = new TrafficLight[2];
+    private BoundingBox boundingBox;
+    private HashMap<Orientation, TrafficLight> lights = new HashMap<>(2);
     private LinkedList<Car> cars = new LinkedList<>();
 
-    public Intersection(Position position) {
-        this.position = position;
+    public Intersection(Position centre, int lightTimeVertical, int lightTimeHorizontal, Orientation startingLights) {
+        lights.put(Orientation.VERTICAL, new TrafficLight(lightTimeVertical, Orientation.VERTICAL));
+        lights.put(Orientation.HORIZONTAL, new TrafficLight(lightTimeHorizontal, Orientation.HORIZONTAL));
+
+        lights.get(startingLights).restartCycle();
+        this.boundingBox = new BoundingBox(centre,DimensionManager.widthOfIntersectionPixels, DimensionManager.widthOfIntersectionPixels);
+    }
+
+    public void incrementTime() {
+        //Stop cars that are going into the intersection on the correct lanes.
+        for (TrafficLight light : lights.values()) {
+            //Increment the time of the lights
+            LightStatus original = light.getStatus();
+            light.incrementTime();
+            //Detect the transition from amber to red, and swap the lights then.
+            if (original == LightStatus.AMBER && light.getStatus() == LightStatus.RED) {
+                lights.get(light.getOrientation().swapValue()).restartCycle();
+                for (Road road : roads) {
+                    //Find if the road's orientation matches that of the light that just changed to red.
+                    if (road.getOrientation() == light.getOrientation().swapValue()) {
+                        //If it isn't in the same direction, start the cars.
+                        road.startCars(this);
+                    } else {
+                        //If it doesn't, stop cars.
+                        road.stopCars(this);
+                    }
+
+                }
+            }
+        }
     }
 
     @Override
-    public Position getPosition() {
-        return position;
+    public BoundingBox getBoundingBox() {
+        return boundingBox;
     }
 
     @Override
@@ -45,7 +71,7 @@ public class Intersection implements CarMoveable, SimulationTimed {
         return cars;
     }
 
-    public TrafficLight[] getLights() {
+    public HashMap<Orientation, TrafficLight> getLights() {
         return lights;
     }
 
@@ -65,12 +91,17 @@ public class Intersection implements CarMoveable, SimulationTimed {
         roadDirections.put(road, direction);
     }
 
-    public void setLightTiming(Orientation orientation) {
-
+    public void setLightTiming(Orientation orientation, int newGreenTime) {
+        lights.get(orientation).setTiming(newGreenTime);
     }
 
     public boolean addCar(Car car) {
         return false;
+    }
+
+    public void removeRoads(){
+        roads = null;
+        roads = new ArrayList<>();
     }
 
     @Override
@@ -83,7 +114,13 @@ public class Intersection implements CarMoveable, SimulationTimed {
         return false;
     }
 
-    public void incrementTime() {
+    @Override
+    public boolean isInsideBoundingBox(Position position) {
+        return boundingBox.isInsideBoundingBox(position);
     }
 
+    @Override
+    public Position getCentre() {
+        return boundingBox.getCentre();
+    }
 }

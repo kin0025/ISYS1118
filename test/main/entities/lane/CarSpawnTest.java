@@ -33,7 +33,6 @@ public class CarSpawnTest {
         for (int i = 0; i < 5; i++) {
             mapGrid.addIntersection(0, i);
             intersections.add(mapGrid.getIntersection(0, i));
-
         }
         mapGrid.fillRoads();
 

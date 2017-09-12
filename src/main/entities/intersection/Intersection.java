@@ -65,7 +65,7 @@ public class Intersection implements CarMoveable, SimulationTimed {
     }
 
     public void setLightTiming() {
-
+ 
     }
 
     public boolean addCar(Car car) {

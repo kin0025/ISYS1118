@@ -2,7 +2,7 @@ package main.entities;
 
 import main.entities.interfaces.CarMoveable;
 import main.entities.interfaces.SimulationTimed;
-import main.entities.lane.Lane;
+import main.utils.BoundingBox;
 import main.utils.DimensionManager;
 import main.utils.Direction;
 import main.utils.Position;
@@ -55,8 +55,8 @@ public class Car implements SimulationTimed {
                 carPosition.movePosition(moveBy);
             }
 
-            Position currentObjectPosition = carPath.get(carPathPosition).getPosition();
-            if (currentObjectPosition != null && currentObjectPosition.getDifference(carPosition) > DimensionManager.lengthOfRoadPixels / 2) {
+            BoundingBox currentObjectPosition = carPath.get(carPathPosition).getBoundingBox();
+            if (currentObjectPosition != null && currentObjectPosition.isInsideBoundingBox(carPosition)) {
                 moveMe = true;
                 carPathPosition++;
             } else {
@@ -64,7 +64,7 @@ public class Car implements SimulationTimed {
             }
         }
         /*
-        if (carPosition.getDifference(intersectionPath.element().getPosition()) <= 0) {
+        if (carPosition.getDifference(intersectionPath.element().getBoundingBox()) <= 0) {
             //TODO: Move to another lane logic here
             lanePath.remove().getCars().remove(this);
             lanePath.element().getCars().add(this);

@@ -20,7 +20,7 @@ public class LaneTest {
 
     @Before
     public void setUp() throws Exception {
-        lane = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<TurnDirection>(), 0, new Position(0, 0));
+        lane = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<TurnDirection>(), 0, new BoundingBox(new Position(0, 40),5,100));
     }
 
     @Test
@@ -35,7 +35,7 @@ public class LaneTest {
     @Test
     public void moveCar() {
         ArrayList<CarMoveable> carList = new ArrayList<>();
-        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new Position(0, 0));
+        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 40),5,100));
         carList.add(lane);
         carList.add(lane2);
         Car car1 = new Car(new Position(0, 0), carList);
@@ -48,7 +48,7 @@ public class LaneTest {
     @Test
     public void moveMultipleCar() {
         ArrayList<CarMoveable> carList = new ArrayList<>();
-        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new Position(0, 0));
+        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 40),5,100));
         carList.add(lane);
         carList.add(lane2);
         Car car1 = new Car(new Position(0, 0), carList);
@@ -60,6 +60,7 @@ public class LaneTest {
         assertEquals("Cars in lane1 incorrect after move", true, lane.getCars().contains(car1));
         assertEquals("Cars in lane2 incorrect after move", true, lane2.getCars().contains(car2));
         assertEquals("Cars in lane2 incorrect after move", false, lane2.getCars().contains(car1));
+        //FIXME DONT ALTERNATE TESTS
         lane.moveCar(lane2);
         assertEquals("Cars in lane1 incorrect after move", false, lane.getCars().contains(car2));
         assertEquals("Cars in lane1 incorrect after move", false, lane.getCars().contains(car1));

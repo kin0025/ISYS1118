@@ -164,6 +164,14 @@ public class Direction {
         }
     }
 
+    public Orientation getOrientation(){
+        if(direction == north || direction == south){
+            return Orientation.VERTICAL;
+        }else{
+            return Orientation.HORIZONTAL;
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

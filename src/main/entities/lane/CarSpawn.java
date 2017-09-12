@@ -11,10 +11,7 @@ import main.entities.Road;
 import main.entities.interfaces.CarMoveable;
 import main.entities.intersection.Intersection;
 import main.exceptions.PathNotFoundException;
-import main.utils.Direction;
-import main.utils.Orientation;
-import main.utils.Position;
-import main.utils.TurnDirection;
+import main.utils.*;
 
 import java.util.ArrayList;
 
@@ -39,9 +36,9 @@ public class CarSpawn extends Lane {
      * @param spawnPosition     the spawn position
      * @param spawnDelay        the spawn delay
      */
-    public CarSpawn(Direction direction, ArrayList<TurnDirection> turnDirections , int lanesFromEdge, Position position, ArrayList<Intersection> pathIntersections, CarDestroy
+    public CarSpawn(Direction direction, ArrayList<TurnDirection> turnDirections , int lanesFromEdge, BoundingBox laneBox, ArrayList<Intersection> pathIntersections, CarDestroy
             endLane, Position spawnPosition, int spawnDelay) throws PathNotFoundException {
-        super(direction, turnDirections,lanesFromEdge, position);
+        super(direction, turnDirections,lanesFromEdge, laneBox);
 
         this.spawnDelay = spawnDelay;
         this.spawnPosition = spawnPosition;

@@ -4,7 +4,9 @@
 
 package main.entities.interfaces;
 
+import javafx.geometry.Pos;
 import main.entities.Car;
+import main.utils.BoundingBox;
 import main.utils.Direction;
 import main.utils.Position;
 
@@ -31,7 +33,11 @@ public interface CarMoveable {
      */
     boolean moveCar(CarMoveable moveTo);
 
-    Position getPosition();
+    BoundingBox getBoundingBox();
+
+    boolean isInsideBoundingBox(Position position);
+
+    Position getCentre();
 
     Direction getDirection();
 }

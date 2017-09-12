@@ -11,15 +11,15 @@ import java.util.HashMap;
 public class Road {
     private ArrayList<Lane> lanes;
     private Orientation orientation;
-    private HashMap<Intersection, CardinalDirection> intersectionDirections;
-    private Position position;
+    private HashMap<Intersection, CardinalDirection> intersectionDirections =  new HashMap<>();
+    private BoundingBox boundingBox;
     private int row;
     private int column;
 
 
-    public Road(Orientation orientation, Position position) {
+    public Road(Orientation orientation, BoundingBox boundingBox) {
         this.orientation = orientation;
-        this.position = position;
+        this.boundingBox = boundingBox;
         lanes = new ArrayList<>(4);
         //TODO: @Adithya Please rewrite or comment. Not very good code, but needed for adding gui/prototyping
         for (int i = 0; i < lanes.size(); i++) {
@@ -47,8 +47,8 @@ public class Road {
                     laneDirection = new Direction(CardinalDirection.WEST);
                 }
             }
-            //FIXME Incorrect position applied here.
-            lanes.add(new Lane(laneDirection, turnDirections, laneDistance, new Position(this.position.getX(), this.position.getY())));
+            //FIXME Incorrect boundingBox applied here.
+  //          lanes.add(new Lane(laneDirection, turnDirections, laneDistance, new Position(this.boundingBox.getX(), this.boundingBox.getY())));
         }
     }
 
@@ -73,6 +73,24 @@ public class Road {
 
     }
 
+    public void stopCars(Intersection intersection){
+        CardinalDirection direction = intersectionDirections.get(intersection);
+        for(Lane lane : lanes){
+            if(lane.getDirection().getDirection() == direction){
+                lane.stopFirstCar();
+            }
+        }
+    }
+
+    public void startCars(Intersection intersection){
+        CardinalDirection direction = intersectionDirections.get(intersection);
+        for(Lane lane : lanes){
+            if(lane.getDirection().getDirection() == direction){
+                lane.startFirstCar();
+            }
+        }
+    }
+
 
     public void incrementTime() {
         for (Lane lane : lanes) {
@@ -90,8 +108,8 @@ public class Road {
         return false;
     }
 
-    public Position getPosition() {
-        return position;
+    public BoundingBox getBoundingBox() {
+        return boundingBox;
     }
 
     public ArrayList<Lane> getLanes() {
@@ -112,4 +130,6 @@ public class Road {
     public CardinalDirection getIntersectionDirection(Intersection intersection) {
         return intersectionDirections.get(intersection);
     }
+
+
 }

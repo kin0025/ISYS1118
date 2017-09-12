@@ -6,10 +6,7 @@ package main.entities.lane;
 
 import main.entities.MapGrid;
 import main.entities.intersection.Intersection;
-import main.utils.CardinalDirection;
-import main.utils.Direction;
-import main.utils.Position;
-import main.utils.TurnDirection;
+import main.utils.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +14,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 public class CarSpawnTest {
     CarSpawn carSpawn;
@@ -31,9 +27,8 @@ public class CarSpawnTest {
         ArrayList<Intersection> intersections = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
-            mapGrid.addIntersection(0, i);
+            mapGrid.addIntersection(0, i, 10, 10, Orientation.HORIZONTAL);
             intersections.add(mapGrid.getIntersection(0, i));
-
         }
         mapGrid.fillRoads();
 
@@ -42,8 +37,9 @@ public class CarSpawnTest {
         turndir.add(TurnDirection.STRAIGHT);
         turndir.add(TurnDirection.LEFT);
 
-        endLane = new CarDestroy(new Direction(CardinalDirection.NORTH), turndir, 0, new Position(0, 40));
-        carSpawn = new CarSpawn(new Direction(CardinalDirection.NORTH), turndir, 0, new Position(0, 0), intersections, endLane, new Position(0, 0),
+        endLane = new CarDestroy(new Direction(CardinalDirection.NORTH), turndir, 0, new BoundingBox(new Position(0, 40), 5, 100));
+        carSpawn = new CarSpawn(new Direction(CardinalDirection.NORTH), turndir, 0, new BoundingBox(new Position(0, 40), 5, 100), intersections,
+                endLane, new Position(0, 0),
                 10);
     }
 
@@ -54,8 +50,8 @@ public class CarSpawnTest {
 
     @Test
     public void checkPathing() throws Exception {
-        for(int i = 1; i < 11; i+=2){
-            assertEquals("Incorrect Spawn path generated",mapGrid.getIntersection(0,i/2),carSpawn.getCarPath().get(i));
+        for (int i = 1; i < 11; i += 2) {
+            assertEquals("Incorrect Spawn path generated", mapGrid.getIntersection(0, i / 2), carSpawn.getCarPath().get(i));
         }
     }
 

@@ -1,9 +1,9 @@
 package main;
 
-import main.entities.*;
+import main.entities.MapGrid;
+import main.entities.Road;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarSpawn;
-import main.entities.lane.Lane;
 
 
 public class Simulator {
@@ -19,7 +19,9 @@ public class Simulator {
 
         for (Intersection[] row : mapGrid.getGrid()) {
             for (Intersection intersection : row) {
-                intersection.incrementTime();
+                if (intersection != null) {
+                    intersection.incrementTime();
+                }
             }
 
         }
@@ -41,7 +43,7 @@ public class Simulator {
 
 
     public boolean addSpawnPoint(CarSpawn spawner, int roadColumn, int roadRow) {
-return mapGrid.addLane(spawner,roadColumn,roadRow);
+        return mapGrid.addLane(spawner, roadColumn, roadRow);
     }
 
     public void addDestroyPoint() {

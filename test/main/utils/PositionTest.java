@@ -1,5 +1,6 @@
 package main.utils;
 
+import javafx.geometry.Pos;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -261,7 +262,7 @@ public class PositionTest {
      */
     @Test
     public void getDifferenceX()  {
-        BoundingBox difference = new Position(10,15);
+        Position difference = new Position(10,15);
         assertEquals("Difference calculation returned incorrect result",9,position.getDifference(difference, Position.DIMENSION.X),0.05);
 
     }
@@ -272,7 +273,7 @@ public class PositionTest {
      */
     @Test
     public void getDifferenceY()  {
-        BoundingBox difference = new Position(10,15);
+        Position difference = new Position(10,15);
         assertEquals("Difference calculation returned incorrect result",14,position.getDifference(difference, Position.DIMENSION.Y),0.05);
 
     }

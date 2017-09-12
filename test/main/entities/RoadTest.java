@@ -1,10 +1,7 @@
 package main.entities;
 
 import main.entities.intersection.Intersection;
-import main.utils.CardinalDirection;
-import main.utils.Direction;
-import main.utils.Orientation;
-import main.utils.Position;
+import main.utils.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,12 +12,12 @@ public class RoadTest {
 
     @Before
     public void setUp() throws Exception {
-        road = new Road(Orientation.HORIZONTAL, new Position(0, 0));
+        road = new Road(Orientation.HORIZONTAL, new BoundingBox(new Position(0, 0), 20, 100));
     }
 
     @Test
     public void addIntersection() throws Exception {
-        Intersection intersection = new Intersection(new Position(0, 0));
+        Intersection intersection = new Intersection(new Position(0, 0), 10, 10, Orientation.HORIZONTAL);
         Direction direction = new Direction(CardinalDirection.NORTH);
         road.addIntersection(intersection, direction);
         assertEquals("Intersection not added correctly", CardinalDirection.SOUTH, road.getIntersectionDirection(intersection));

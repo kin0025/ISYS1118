@@ -1,5 +1,6 @@
 import main.Simulator;
 import main.gui.SimulationOutput;
+import main.utils.Orientation;
 
 public class TrafficSimulator {
 
@@ -11,7 +12,7 @@ public class TrafficSimulator {
 
         for(int i = 0; i < 4; i++){
             for(int j = 0; j <5; j++){
-                sim.getMapGrid().addIntersection(i,j);
+                sim.getMapGrid().addIntersection(i,j,10,10, Orientation.HORIZONTAL);
             }
         }
         sim.getMapGrid().fillRoads();

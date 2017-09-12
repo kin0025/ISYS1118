@@ -2,10 +2,7 @@ package main.entities.intersection;
 import static org.junit.Assert.*;
 
 import main.entities.Road;
-import main.utils.CardinalDirection;
-import main.utils.Direction;
-import main.utils.Orientation;
-import main.utils.Position;
+import main.utils.*;
 
 import org.junit.Test;
 import org.junit.Before;
@@ -16,7 +13,7 @@ public class IntersectionTest {
     
 	@Before
     public void createIntersection() throws Exception{
-		 intersection = new Intersection(new Position(0,0));
+		 intersection = new Intersection(new Position(0,0),10,10,Orientation.HORIZONTAL);
     }
 
    
@@ -24,7 +21,7 @@ public class IntersectionTest {
     @Test
     public void getRoadDirection(){
     	Direction roadDirection = new Direction(CardinalDirection.NORTH);
-    	Road road = new Road(Orientation.VERTICAL,new Position(0,0)); 
+    	Road road = new Road(Orientation.VERTICAL,new BoundingBox(new Position(0,0),DimensionManager.widthOfRoadPixels,DimensionManager.lengthOfRoadPixels));
 		intersection.addRoad(road,roadDirection);
     	assertEquals("Couldn't find added road", roadDirection, intersection.getRoadDirection(road));
     }

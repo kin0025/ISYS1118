@@ -14,24 +14,24 @@ public class BoundingBox {
     Position centre;
 
     public BoundingBox(double xMin, double yMin, double xMax, double yMax) throws NumberFormatException {
-        if(xMin >= xMax || yMin >= yMax){
+        if (xMin >= xMax || yMin >= yMax) {
             throw new NumberFormatException("Max must be greater than minimum");
         }
         this.xMin = xMin;
         this.yMin = yMin;
         this.xMax = xMax;
         this.yMax = yMax;
-        double xCenter = xMin + ((xMax - xMin)/2);
-        double yCenter = yMin + ((yMax - yMin)/2);
-        centre = new Position(xCenter,yCenter);
+        double xCenter = xMin + ((xMax - xMin) / 2);
+        double yCenter = yMin + ((yMax - yMin) / 2);
+        centre = new Position(xCenter, yCenter);
     }
 
-    public BoundingBox(Position centre, double xWidth, double yWidth){
+    public BoundingBox(Position centre, double xWidth, double yWidth) {
         this.centre = centre;
-        xMin = centre.getX() - (xWidth/2);
-        yMin = centre.getY() - (yWidth/2);
-        xMax = centre.getX() + (xWidth/2);
-        yMax = centre.getY() + (yWidth/2);
+        xMin = centre.getX() - (xWidth / 2);
+        yMin = centre.getY() - (yWidth / 2);
+        xMax = centre.getX() + (xWidth / 2);
+        yMax = centre.getY() + (yWidth / 2);
     }
 
 
@@ -67,7 +67,13 @@ public class BoundingBox {
         this.yMax = yMax;
     }
 
-    public
+    public double getWidth() {
+        return xMax - xMin;
+    }
+
+    public double getHeight() {
+        return yMax - yMin;
+    }
 
     public Position getCentre() {
         return centre;

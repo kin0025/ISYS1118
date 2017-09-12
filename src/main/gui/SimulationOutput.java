@@ -57,8 +57,8 @@ public class SimulationOutput extends JPanel {
         //Display all the roads
         for (Road road : grid.getRoads()) {
             g2.setPaint(roadColour);
-            Position roadBox = road.getBoundingBox().getCentre();
-            g2.draw(new Line2D.Double(roadBox.getX(),roadBox.getY(),roadBox.getyMax()));
+            BoundingBox roadBox = road.getBoundingBox();
+            g2.draw(new Line2D.Double(roadBox.getCentre().getX(),roadBox.getCentre().getY(),roadBox.getWidth(),roadBox.getHeight()));
 
             //Check if road hasn't already been displayed? and then show it
             for (Lane lane : road.getLanes()) {
@@ -77,10 +77,10 @@ public class SimulationOutput extends JPanel {
         //Display all the objects in intersections in the grid
         for (int i = 0; i < grid.getGrid().length; i++) {
             for (Intersection intersection : grid.getGrid()[i]) {
-                BoundingBox intersectionPos = intersection.getBoundingBox();
+                BoundingBox intersectionBox = intersection.getBoundingBox();
                 g2.setPaint(intersectionColour);
-                g2.fill(new Ellipse2D.Double(intersectionPos.getX(), intersectionPos.getY(), DimensionManager.widthOfIntersectionPixels,
-                        DimensionManager.widthOfIntersectionPixels));
+                g2.draw(new Line2D.Double(intersectionBox.getCentre().getX(),intersectionBox.getCentre().getY(),intersectionBox.getWidth(),intersectionBox.getHeight()));
+
 
                 for (Car intersectionCar : intersection.getCars()) {
                     Position carPos = intersectionCar.getPosition();

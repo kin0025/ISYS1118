@@ -15,6 +15,7 @@ public class TrafficSimulator {
                 sim.getMapGrid().addIntersection(i,j,10,10, Orientation.HORIZONTAL);
             }
         }
+        sim.getMapGrid().removeIntersections(1,2);
         sim.getMapGrid().fillRoads();
         //sim.getMapGrid().addSpawnPoint();
         sim.runSimulation();

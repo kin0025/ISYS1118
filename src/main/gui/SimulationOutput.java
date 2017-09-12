@@ -1,17 +1,16 @@
 package main.gui;
 
-import main.entities.*;
+import main.entities.Car;
+import main.entities.MapGrid;
+import main.entities.Road;
 import main.entities.intersection.Intersection;
 import main.entities.lane.Lane;
 import main.utils.BoundingBox;
 import main.utils.DimensionManager;
-import main.utils.Orientation;
 import main.utils.Position;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 public class SimulationOutput extends JPanel {
@@ -44,11 +43,14 @@ public class SimulationOutput extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Dimension d = getSize();
-        Color bgColour = Color.green;
+
+        //Set the colours for things here.
+        Color bgColour = Color.getHSBColor(0.33334f, 1f, 0.27f);
         Color carColour = Color.red;
         Color roadColour = Color.black;
         Color intersectionColour = Color.orange;
 
+        
         g2.setPaint(bgColour);
         g2.setBackground(bgColour);
         g2.fill(new Rectangle.Double(0, 0, d.width - 1, d.height - 1));
@@ -56,39 +58,46 @@ public class SimulationOutput extends JPanel {
 
         //Display all the roads
         for (Road road : grid.getRoads()) {
-            g2.setPaint(roadColour);
-            BoundingBox roadBox = road.getBoundingBox();
-            g2.draw(new Line2D.Double(roadBox.getCentre().getX(),roadBox.getCentre().getY(),roadBox.getWidth(),roadBox.getHeight()));
+            if (road != null) {
+                g2.setPaint(roadColour);
+                BoundingBox roadBox = road.getBoundingBox();
+                g2.draw(new Rectangle2D.Double(roadBox.getCentre().getX() - roadBox.getWidth() / 2 + (DimensionManager.widthOfIntersectionPixels/2),
+                        roadBox.getCentre().getY() - roadBox.getHeight() / 2 + (DimensionManager.widthOfIntersectionPixels/2),
+                        roadBox.getWidth(), roadBox.getHeight()));
 
-            //Check if road hasn't already been displayed? and then show it
-            for (Lane lane : road.getLanes()) {
-                for (Car laneCars : lane.getCars()) {
-                    Position carPos = laneCars.getPosition();
-                    g2.setPaint(carColour);
-                    g2.fill(new Rectangle2D.Double(carPos.getX(), carPos.getY(), DimensionManager.lengthOfCarPixels, DimensionManager
-                            .widthOfCarPixels));
-                    //Display the cars from here
+                //Check if road hasn't already been displayed? and then show it
+                for (Lane lane : road.getLanes()) {
+                    for (Car laneCars : lane.getCars()) {
+                        Position carPos = laneCars.getPosition();
+                        g2.setPaint(carColour);
+                        g2.fill(new Rectangle2D.Double(carPos.getX(), carPos.getY(), DimensionManager.lengthOfCarPixels, DimensionManager
+                                .widthOfCarPixels));
+                        //Display the cars from here
+                    }
+
                 }
 
             }
-
         }
 
         //Display all the objects in intersections in the grid
         for (int i = 0; i < grid.getGrid().length; i++) {
             for (Intersection intersection : grid.getGrid()[i]) {
-                BoundingBox intersectionBox = intersection.getBoundingBox();
-                g2.setPaint(intersectionColour);
-                g2.draw(new Line2D.Double(intersectionBox.getCentre().getX(),intersectionBox.getCentre().getY(),intersectionBox.getWidth(),intersectionBox.getHeight()));
+                if (intersection != null) {
+                    BoundingBox intersectionBox = intersection.getBoundingBox();
+                    g2.setPaint(intersectionColour);
+                    g2.draw(new Rectangle2D.Double(intersectionBox.getCentre().getX(), intersectionBox.getCentre().getY(), intersectionBox.getWidth(),
+                            intersectionBox.getHeight()));
 
 
-                for (Car intersectionCar : intersection.getCars()) {
-                    Position carPos = intersectionCar.getPosition();
-                    g2.setPaint(carColour);
-                    g2.fill(new Rectangle2D.Double(carPos.getX(), carPos.getY(), DimensionManager.lengthOfCarPixels, DimensionManager
-                            .widthOfCarPixels));
-                    //TODO Display cars here
+                    for (Car intersectionCar : intersection.getCars()) {
+                        Position carPos = intersectionCar.getPosition();
+                        g2.setPaint(carColour);
+                        g2.fill(new Rectangle2D.Double(carPos.getX(), carPos.getY(), DimensionManager.lengthOfCarPixels, DimensionManager
+                                .widthOfCarPixels));
+                        //TODO Display cars here
 
+                    }
                 }
 
 

@@ -93,6 +93,7 @@ public class Intersection implements CarMoveable, SimulationTimed {
 
     public void setLightTiming(Orientation orientation, int newGreenTime) {
         lights.get(orientation).setTiming(newGreenTime);
+
     }
 
     public boolean addCar(Car car) {

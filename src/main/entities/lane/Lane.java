@@ -5,19 +5,19 @@
 package main.entities.lane;
 
 import main.entities.Car;
-import main.entities.interfaces.CarMoveable;
+import main.entities.interfaces.CarMovable;
 import main.entities.interfaces.SimulationTimed;
 import main.utils.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class Lane implements CarMoveable, SimulationTimed {
-    private ArrayList<TurnDirection> turnDirections;
-    private LinkedList<Car> cars = new LinkedList<>();
-    private Direction direction;
-    private int lanesFromEdge;
-    private BoundingBox laneBox;
+public class Lane implements CarMovable, SimulationTimed {
+    private final ArrayList<TurnDirection> turnDirections;
+    private final LinkedList<Car> cars = new LinkedList<>();
+    private final Direction direction;
+    private final int lanesFromEdge;
+    private final BoundingBox laneBox;
 
     public Lane(Direction direction, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox) {
         this.turnDirections = turnDirections;
@@ -59,7 +59,7 @@ public class Lane implements CarMoveable, SimulationTimed {
 
     /**
      * Iterates through the linked list and stops any cars that are getting too close to each other.
-     * Returns True if no collisions occured
+     * Returns True if no collisions occurred
      */
     boolean checkCarCollisions() {
         boolean carTooClose = false;
@@ -113,7 +113,7 @@ public class Lane implements CarMoveable, SimulationTimed {
     }
 
     @Override
-    public boolean moveCar(CarMoveable moveTo) {
+    public boolean moveCar(CarMovable moveTo) {
         addCar(cars.element());
         removeCar(cars.element());
         return false;

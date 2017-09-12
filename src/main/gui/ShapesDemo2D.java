@@ -160,7 +160,7 @@ public class ShapesDemo2D extends JApplet {
         polygon.moveTo(x1Points[0], y1Points[0]);
         for ( int index = 1; index < x1Points.length; index++ ) {
             polygon.lineTo(x1Points[index], y1Points[index]);
-        };
+        }
         polygon.closePath();
 
         g2.draw(polygon);
@@ -180,7 +180,7 @@ public class ShapesDemo2D extends JApplet {
         polyline.moveTo (x2Points[0], y2Points[0]);
         for ( int index = 1; index < x2Points.length; index++ ) {
             polyline.lineTo(x2Points[index], y2Points[index]);
-        };
+        }
 
         g2.draw(polyline);
         g2.drawString("GeneralPath (open)", x, stringY);
@@ -228,7 +228,7 @@ public class ShapesDemo2D extends JApplet {
         filledPolygon.moveTo(x3Points[0], y3Points[0]);
         for ( int index = 1; index < x3Points.length; index++ ) {
             filledPolygon.lineTo(x3Points[index], y3Points[index]);
-        };
+        }
         filledPolygon.closePath();
         g2.setPaint(red);
         g2.fill(filledPolygon);

@@ -6,7 +6,7 @@ package main.entities.intersection;
 
 import main.entities.Car;
 import main.entities.Road;
-import main.entities.interfaces.CarMoveable;
+import main.entities.interfaces.CarMovable;
 import main.entities.interfaces.SimulationTimed;
 import main.utils.*;
 
@@ -14,12 +14,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class Intersection implements CarMoveable, SimulationTimed {
-    private HashMap<Road, Direction> roadDirections = new HashMap<>();
+public class Intersection implements CarMovable, SimulationTimed {
+    private final HashMap<Road, Direction> roadDirections = new HashMap<>();
     private ArrayList<Road> roads = new ArrayList<>();
-    private BoundingBox boundingBox;
-    private HashMap<Orientation, TrafficLight> lights = new HashMap<>(2);
-    private LinkedList<Car> cars = new LinkedList<>();
+    private final BoundingBox boundingBox;
+    private final HashMap<Orientation, TrafficLight> lights = new HashMap<>(2);
+    private final LinkedList<Car> cars = new LinkedList<>();
 
     public Intersection(Position centre, int lightTimeVertical, int lightTimeHorizontal, Orientation startingLights) {
         lights.put(Orientation.VERTICAL, new TrafficLight(lightTimeVertical, Orientation.VERTICAL));
@@ -111,7 +111,7 @@ public class Intersection implements CarMoveable, SimulationTimed {
     }
 
     @Override
-    public boolean moveCar(CarMoveable moveTo) {
+    public boolean moveCar(CarMovable moveTo) {
         return false;
     }
 

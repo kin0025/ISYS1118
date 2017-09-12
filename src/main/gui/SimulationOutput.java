@@ -17,9 +17,10 @@ public class SimulationOutput extends JPanel {
 
     private MapGrid grid;
     private JFrame frame = new JFrame("Simulator Output");
+private boolean debug;
 
-
-    public SimulationOutput(MapGrid grid) {
+    public SimulationOutput(MapGrid grid, boolean graphicsDebug) {
+        this.debug = graphicsDebug;
         this.grid = grid;
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         int WIDTH = grid.getWidth() * (DimensionManager.widthOfIntersectionPixels + DimensionManager.lengthOfRoadPixels) + DimensionManager

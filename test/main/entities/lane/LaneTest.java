@@ -5,7 +5,7 @@
 package main.entities.lane;
 
 import main.entities.Car;
-import main.entities.interfaces.CarMoveable;
+import main.entities.interfaces.CarMovable;
 import main.utils.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,16 +16,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 public class LaneTest {
-    Lane lane;
+    private Lane lane;
 
     @Before
     public void setUp() throws Exception {
-        lane = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<TurnDirection>(), 0, new BoundingBox(new Position(0, 40),5,100));
+        lane = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 40),5,100));
     }
 
     @Test
     public void addCar() {
-        ArrayList<CarMoveable> carList = new ArrayList<>();
+        ArrayList<CarMovable> carList = new ArrayList<>();
         Car car1 = new Car(new Position(0, 0), carList);
         assertEquals("Cars in lane incorrect initial.", null, lane.getCars().peek());
         lane.addCar(car1);
@@ -34,7 +34,7 @@ public class LaneTest {
 
     @Test
     public void moveCar() {
-        ArrayList<CarMoveable> carList = new ArrayList<>();
+        ArrayList<CarMovable> carList = new ArrayList<>();
         Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 40),5,100));
         carList.add(lane);
         carList.add(lane2);
@@ -47,7 +47,7 @@ public class LaneTest {
 
     @Test
     public void moveMultipleCar() {
-        ArrayList<CarMoveable> carList = new ArrayList<>();
+        ArrayList<CarMovable> carList = new ArrayList<>();
         Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 40),5,100));
         carList.add(lane);
         carList.add(lane2);
@@ -70,7 +70,7 @@ public class LaneTest {
 
     @Test
     public void removeCar() throws Exception {
-        ArrayList<CarMoveable> carList = new ArrayList<>();
+        ArrayList<CarMovable> carList = new ArrayList<>();
         carList.add(lane);
         Car car = new Car(new Position(0, 0), carList);
         lane.addCar(car);

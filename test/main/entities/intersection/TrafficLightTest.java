@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 
 public class TrafficLightTest {
 
-	TrafficLight trafficLight;
+	private TrafficLight trafficLight;
 
 	@Before
 	public void setUp() throws Exception {

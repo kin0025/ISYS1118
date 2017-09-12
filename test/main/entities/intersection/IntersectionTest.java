@@ -9,7 +9,7 @@ import org.junit.Before;
 
 public class IntersectionTest {
 	
-	Intersection intersection;
+	private Intersection intersection;
     
 	@Before
     public void createIntersection() throws Exception{
@@ -21,7 +21,7 @@ public class IntersectionTest {
     @Test
     public void getRoadDirection(){
     	Direction roadDirection = new Direction(CardinalDirection.NORTH);
-    	Road road = new Road(Orientation.VERTICAL,new BoundingBox(new Position(0,0),DimensionManager.widthOfRoadPixels,DimensionManager.lengthOfRoadPixels),0,0);
+    	Road road = new Road(Orientation.VERTICAL,new BoundingBox(new Position(0,0),DimensionManager.widthOfRoadPixels,DimensionManager.lengthOfRoadPixels));
 		intersection.addRoad(road,roadDirection);
     	assertEquals("Couldn't find added road", roadDirection, intersection.getRoadDirection(road));
     }

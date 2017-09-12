@@ -1,14 +1,11 @@
 package main.entities;
-import static org.junit.Assert.*;
-import main.entities.intersection.Intersection;
 
 import org.junit.Test;
-import org.junit.After;
 import org.junit.Before;
 
 
 public class MapGridTest {
-	MapGrid grid;
+	private MapGrid grid;
 	@Before
     public void createMapGrid() throws Exception{
 		grid = new MapGrid(5, 5);		        

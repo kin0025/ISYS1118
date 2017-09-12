@@ -1,6 +1,6 @@
 package main.entities;
 
-import main.entities.interfaces.CarMoveable;
+import main.entities.interfaces.CarMovable;
 import main.entities.interfaces.SimulationTimed;
 import main.utils.BoundingBox;
 import main.utils.DimensionManager;
@@ -15,18 +15,18 @@ import java.util.ArrayList;
 public class Car implements SimulationTimed {
     private static final double maxSpeed = DimensionManager.kmphToPixelTick(50);
     private double speed = maxSpeed;
-    private Position carPosition;
+    private final Position carPosition;
 
     //Always set to the direction of the parent lane.
     private Direction direction;
 
     //The status of the next turn - 0 if left turn, 1 if straight, 2 if right turn.
     private int turning;
-    private ArrayList<CarMoveable> carPath;
+    private final ArrayList<CarMovable> carPath;
     private int carPathPosition = 0;
     private boolean moveMe = false;
 
-    public Car(Position carPosition, ArrayList<CarMoveable> carPath) {
+    public Car(Position carPosition, ArrayList<CarMovable> carPath) {
         this.carPosition = carPosition;
         this.carPath = carPath;
         if(carPath != null && carPath.size() != 0) {

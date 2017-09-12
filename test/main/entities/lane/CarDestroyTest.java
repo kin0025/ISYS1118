@@ -7,7 +7,7 @@
 package main.entities.lane;
 
 import main.entities.Car;
-import main.entities.interfaces.CarMoveable;
+import main.entities.interfaces.CarMovable;
 import main.utils.BoundingBox;
 import main.utils.CardinalDirection;
 import main.utils.Direction;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 
 public class CarDestroyTest {
-    CarDestroy carDestroy;
+    private CarDestroy carDestroy;
     @Before
     public void setUp() throws Exception {
         carDestroy = new CarDestroy(new Direction(CardinalDirection.NORTH), new ArrayList<>(),0,new BoundingBox(new Position(0,0),20,100));
@@ -28,7 +28,7 @@ public class CarDestroyTest {
 
     @Test
     public void addCar() throws Exception {
-        ArrayList<CarMoveable> carPath = new ArrayList<>();
+        ArrayList<CarMovable> carPath = new ArrayList<>();
         Car car = new Car(new Position(0,0), carPath);
         carDestroy.addCar(car);
         assertEquals("Destroying a car failed.",0,carDestroy.getCars().size());

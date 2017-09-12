@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 
 public class CarSpawnTest {
-    CarSpawn carSpawn;
-    MapGrid mapGrid;
-    CarDestroy endLane;
+    private CarSpawn carSpawn;
+    private MapGrid mapGrid;
+    private CarDestroy endLane;
 
     @Before
     public void setUp() throws Exception {
@@ -33,12 +33,12 @@ public class CarSpawnTest {
         mapGrid.fillRoads();
 
 
-        ArrayList<TurnDirection> turndir = new ArrayList<>();
-        turndir.add(TurnDirection.STRAIGHT);
-        turndir.add(TurnDirection.LEFT);
+        ArrayList<TurnDirection> turnDir = new ArrayList<>();
+        turnDir.add(TurnDirection.STRAIGHT);
+        turnDir.add(TurnDirection.LEFT);
 
-        endLane = new CarDestroy(new Direction(CardinalDirection.NORTH), turndir, 0, new BoundingBox(new Position(0, 40), 5, 100));
-        carSpawn = new CarSpawn(new Direction(CardinalDirection.NORTH), turndir, 0, new BoundingBox(new Position(0, 40), 5, 100), intersections,
+        endLane = new CarDestroy(new Direction(CardinalDirection.NORTH), turnDir, 0, new BoundingBox(new Position(0, 40), 5, 100));
+        carSpawn = new CarSpawn(new Direction(CardinalDirection.NORTH), turnDir, 0, new BoundingBox(new Position(0, 40), 5, 100), intersections,
                 endLane, new Position(0, 0),
                 10);
     }
@@ -57,15 +57,15 @@ public class CarSpawnTest {
 
     @Test
     public void spawnCar() throws Exception {
-        assertEquals("Intial conditions incorrect", 0, carSpawn.getCars().size());
+        assertEquals("Initial conditions incorrect", 0, carSpawn.getCars().size());
         carSpawn.spawnCar();
-        assertEquals("Car failed to spawn corredclty", 1, carSpawn.getCars().size());
+        assertEquals("Car failed to spawn correctly", 1, carSpawn.getCars().size());
     }
 
 
     @Test
     public void spawnCarTooQuickly() throws Exception {
-        assertEquals("Intial conditions incorrect", 0, carSpawn.getCars().size());
+        assertEquals("Initial conditions incorrect", 0, carSpawn.getCars().size());
         carSpawn.spawnCar();
         carSpawn.spawnCar();
         assertEquals("Car spawned on top of other car", 1, carSpawn.getCars().size());

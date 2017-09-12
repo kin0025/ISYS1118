@@ -6,12 +6,13 @@
 
 package main.utils;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class BoundingBox {
-    double xMin;
-    double yMin;
-    double xMax;
-    double yMax;
-    Position centre;
+    private double xMin;
+    private double yMin;
+    private double xMax;
+    private double yMax;
+    private Position centre;
 
     public BoundingBox(double xMin, double yMin, double xMax, double yMax) throws NumberFormatException {
         if (xMin >= xMax || yMin >= yMax) {

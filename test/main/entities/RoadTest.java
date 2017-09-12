@@ -8,11 +8,11 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class RoadTest {
-    Road road;
+    private Road road;
 
     @Before
     public void setUp() throws Exception {
-        road = new Road(Orientation.HORIZONTAL, new BoundingBox(new Position(0, 0), 20, 100),0,0);
+        road = new Road(Orientation.HORIZONTAL, new BoundingBox(new Position(0, 0), 20, 100));
     }
 
     @Test

@@ -1,6 +1,5 @@
 package main.utils;
 
-import javafx.geometry.Pos;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -212,7 +211,7 @@ public class PositionTest {
     }
 
     /**
-     * Tests for setworking properly with an , with bounds. Shouldn't error
+     * Tests for set working properly with an , with bounds. Shouldn't error
      *
      */
     @Test
@@ -231,7 +230,7 @@ public class PositionTest {
     }
 
     /**
-     * Tests for setworking properly with bounds. Shouldn't error
+     * Tests for set working properly with bounds. Shouldn't error
      *
      */
     @Test

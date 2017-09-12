@@ -1,6 +1,6 @@
 package main.entities;
 
-import main.entities.interfaces.CarMoveable;
+import main.entities.interfaces.CarMovable;
 import main.entities.lane.Lane;
 import main.utils.*;
 import org.junit.After;
@@ -14,13 +14,12 @@ import static org.junit.Assert.assertEquals;
 public class CarTest {
     private Car car;
     private Position carPosition;
-    private Direction carDirection;
-    private ArrayList<CarMoveable> carPath;
+    private ArrayList<CarMovable> carPath;
 
     @Before
     public void setUp() throws Exception {
         carPosition = new Position(1, 1);
-        ArrayList<CarMoveable> carPath = new ArrayList<>();
+        ArrayList<CarMovable> carPath = new ArrayList<>();
         carPath.add(new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 0),100,10)));
         carPath.add(new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 0),100,10)));
 
@@ -29,7 +28,7 @@ public class CarTest {
 
     @After
     public void tearDown() {
-        carDirection = null;
+        Direction carDirection = null;
         car = null;
         carPosition = null;
     }

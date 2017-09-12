@@ -7,7 +7,6 @@ package main.entities.lane;
 import main.entities.Car;
 import main.utils.BoundingBox;
 import main.utils.Direction;
-import main.utils.Position;
 import main.utils.TurnDirection;
 
 import java.util.ArrayList;
@@ -19,7 +18,6 @@ public class CarDestroy extends Lane {
 
     @Override
     public boolean addCar(Car car) {
-        car = null;
         return false;
     }
 }

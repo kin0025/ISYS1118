@@ -2,9 +2,9 @@ package main.entities.intersection;
 
 import main.utils.*;
 
-public class TrafficLight {
+class TrafficLight {
 
-	private Orientation orientation;
+	private final Orientation orientation;
 	private int greenLightTiming;
 	private int time;
 	private static int amberLightTimeOn = DimensionManager.amberLightTimeOn;
@@ -47,6 +47,6 @@ public class TrafficLight {
 	}
 
 	public void setTiming(int greenLightTimeOn){
-	    this.greenLightTiming =  greenLightTiming;
+	    this.greenLightTiming =  greenLightTimeOn;
     }
 }

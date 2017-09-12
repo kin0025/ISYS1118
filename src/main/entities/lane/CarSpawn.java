@@ -8,7 +8,7 @@ package main.entities.lane;
 
 import main.entities.Car;
 import main.entities.Road;
-import main.entities.interfaces.CarMoveable;
+import main.entities.interfaces.CarMovable;
 import main.entities.intersection.Intersection;
 import main.exceptions.PathNotFoundException;
 import main.utils.*;
@@ -20,11 +20,11 @@ import java.util.ArrayList;
  */
 public class CarSpawn extends Lane {
     //Generate this in the constructor
-    private ArrayList<CarMoveable> carPath = new ArrayList<>();
+    private final ArrayList<CarMovable> carPath = new ArrayList<>();
 
-    private Position spawnPosition;
+    private final Position spawnPosition;
     //Ticks between each car spawn
-    private int spawnDelay;
+    private final int spawnDelay;
 
     //The current time for the spawner - needed for delay logic.
     private long tick = 0;
@@ -102,7 +102,7 @@ public class CarSpawn extends Lane {
         if (found) {
             carPath.add(endLane);
         } else {
-            throw new PathNotFoundException("End Lane dissconnected");
+            throw new PathNotFoundException("End Lane disconnected");
         }
     }
 
@@ -136,7 +136,7 @@ public class CarSpawn extends Lane {
         tick++;
     }
 
-    public ArrayList<CarMoveable> getCarPath() {
+    public ArrayList<CarMovable> getCarPath() {
         return carPath;
     }
 }

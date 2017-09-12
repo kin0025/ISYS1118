@@ -4,14 +4,13 @@
 
 package main.entities.interfaces;
 
-import javafx.geometry.Pos;
 import main.entities.Car;
 import main.utils.BoundingBox;
 import main.utils.Direction;
 import main.utils.Position;
 
 
-public interface CarMoveable {
+public interface CarMovable {
     /**
      * Adds a car to the object
      * @param car The car to be added
@@ -31,7 +30,7 @@ public interface CarMoveable {
      * @param moveTo The object a car is been moved to.
      * @return whether the move operations succeeded - i.e if addCar failed on the move to lane.
      */
-    boolean moveCar(CarMoveable moveTo);
+    boolean moveCar(CarMovable moveTo);
 
     BoundingBox getBoundingBox();
 

@@ -10,19 +10,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Road {
-    private ArrayList<Lane> lanes;
-    private Orientation orientation;
-    private HashMap<Intersection, CardinalDirection> intersectionDirections = new HashMap<>();
-    private BoundingBox boundingBox;
-    private int row;
-    private int column;
+    private final ArrayList<Lane> lanes;
+    private final Orientation orientation;
+    private final HashMap<Intersection, CardinalDirection> intersectionDirections = new HashMap<>();
+    private final BoundingBox boundingBox;
 
 
-    public Road(Orientation orientation, BoundingBox boundingBox, int row, int column) {
+    public Road(Orientation orientation, BoundingBox boundingBox) {
         this.orientation = orientation;
         this.boundingBox = boundingBox;
-        this.row = row;
-        this.column = column;
+
         lanes = new ArrayList<>(4);
 
         for (int i = 0; i < DimensionManager.numberOfLanesPerRoad; i++) {
@@ -73,10 +70,6 @@ public class Road {
     public void addLane(Lane lane) {
         lanes.add(lane);
 
-    }
-
-    public int[] getRoadCoordinate() {
-        return new int[]{column, row};
     }
 
     public void addDestroyerLane() {

@@ -1,6 +1,5 @@
 package main.gui;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
 import main.entities.Car;
 import main.entities.MapGrid;
 import main.entities.Road;
@@ -17,7 +16,7 @@ public class SimulationOutput extends JPanel {
 
     private MapGrid grid;
     private JFrame frame = new JFrame("Simulator Output");
-private boolean debug;
+    private boolean debug;
 
     public SimulationOutput(MapGrid grid, boolean graphicsDebug) {
         this.debug = graphicsDebug;
@@ -72,7 +71,8 @@ private boolean debug;
                 for (Lane lane : road.getLanes()) {
                     if (lane != null) {
                         g2.setPaint(laneColour);
-                        g2.draw(new Rectangle2D.Double(lane.getBoundingBox().getxMin(), lane.getBoundingBox().getyMin(), lane.getBoundingBox().getWidth(), lane
+                        g2.draw(new Rectangle2D.Double(lane.getBoundingBox().getxMin(), lane.getBoundingBox().getyMin(), lane.getBoundingBox()
+                                .getWidth(), lane
                                 .getBoundingBox().getHeight()));
 
                         for (Car laneCars : lane.getCars()) {
@@ -97,8 +97,8 @@ private boolean debug;
                     g2.fill(new Rectangle2D.Double(intersectionBox.getxMin(), intersectionBox.getyMin(), intersectionBox.getWidth(),
                             intersectionBox.getHeight()));
 
-                    Orientation[] orientations = {Orientation.HORIZONTAL,Orientation.VERTICAL};
-                    for(int x = 0; x < orientations.length;x++) {
+                    Orientation[] orientations = {Orientation.HORIZONTAL, Orientation.VERTICAL};
+                    for (int x = 0; x < orientations.length; x++) {
                         LightStatus lightStatus = intersection.getLightStatus(orientations[x]);
                         switch (lightStatus) {
                             case RED:
@@ -109,8 +109,36 @@ private boolean debug;
                                 break;
                             case GREEN:
                                 g2.setPaint(Color.green);
+                                break;
+                            default:
+                                g2.setPaint(Color.white);
+
                         }
-                        g2.fill(new Ellipse2D.Double(intersection.getCentre().getX() + (x*5), intersection.getCentre().getY() + (x*5), 5, 5));
+                        double xPos1 = -DimensionManager
+                                .sizeOfLightPixels / 2;
+                        double yPos1 = -DimensionManager
+                                .sizeOfLightPixels / 2;
+                        double yPos2 = -DimensionManager
+                                .sizeOfLightPixels / 2;
+                        double xPos2 = -DimensionManager
+                                .sizeOfLightPixels / 2;
+                        ;
+                        if (orientations[x] == Orientation.HORIZONTAL) {
+                            xPos1 += intersection.getCentre().getX() - (DimensionManager.widthOfIntersectionPixels / 2);
+                            xPos2 += intersection.getCentre().getX() + (DimensionManager.widthOfIntersectionPixels / 2);
+                            yPos1 += intersection.getCentre().getY();
+                            yPos2 += intersection.getCentre().getY();
+                        } else {
+                            xPos1 += intersection.getCentre().getX();
+                            xPos2 += intersection.getCentre().getX();
+                            yPos1 += intersection.getCentre().getY() - (DimensionManager.widthOfIntersectionPixels / 2);
+                            yPos2 += intersection.getCentre().getY() + (DimensionManager.widthOfIntersectionPixels / 2);
+                        }
+                        g2.fill(new Ellipse2D.Double(xPos1, yPos1, DimensionManager.sizeOfLightPixels, DimensionManager.sizeOfLightPixels));
+                        g2.fill(new Ellipse2D.Double(xPos2, yPos2, DimensionManager.sizeOfLightPixels, DimensionManager.sizeOfLightPixels));
+                        g2.setPaint(Color.white);
+                        g2.draw(new Ellipse2D.Double(xPos1, yPos1, DimensionManager.sizeOfLightPixels, DimensionManager.sizeOfLightPixels));
+                        g2.draw(new Ellipse2D.Double(xPos2, yPos2, DimensionManager.sizeOfLightPixels, DimensionManager.sizeOfLightPixels));
                     }
                     for (Car intersectionCar : intersection.getCars()) {
                         Position carPos = intersectionCar.getPosition();

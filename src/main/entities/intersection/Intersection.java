@@ -4,6 +4,7 @@
 
 package main.entities.intersection;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
 import main.entities.Car;
 import main.entities.Road;
 import main.entities.interfaces.CarMovable;
@@ -71,8 +72,8 @@ public class Intersection implements CarMovable, SimulationTimed {
         return cars;
     }
 
-    public HashMap<Orientation, TrafficLight> getLights() {
-        return lights;
+    public LightStatus getLightStatus(Orientation orientation) {
+        return lights.get(orientation).getStatus();
     }
 
     /**
@@ -104,6 +105,7 @@ public class Intersection implements CarMovable, SimulationTimed {
         roads = null;
         roads = new ArrayList<>();
     }
+
 
     @Override
     public boolean removeCar(Car car) {

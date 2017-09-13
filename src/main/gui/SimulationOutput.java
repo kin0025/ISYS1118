@@ -1,16 +1,16 @@
 package main.gui;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
 import main.entities.Car;
 import main.entities.MapGrid;
 import main.entities.Road;
 import main.entities.intersection.Intersection;
 import main.entities.lane.Lane;
-import main.utils.BoundingBox;
-import main.utils.DimensionManager;
-import main.utils.Position;
+import main.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 public class SimulationOutput extends JPanel {
@@ -97,7 +97,21 @@ private boolean debug;
                     g2.fill(new Rectangle2D.Double(intersectionBox.getxMin(), intersectionBox.getyMin(), intersectionBox.getWidth(),
                             intersectionBox.getHeight()));
 
-
+                    Orientation[] orientations = {Orientation.HORIZONTAL,Orientation.VERTICAL};
+                    for(int x = 0; x < orientations.length;x++) {
+                        LightStatus lightStatus = intersection.getLightStatus(orientations[x]);
+                        switch (lightStatus) {
+                            case RED:
+                                g2.setPaint(Color.red);
+                                break;
+                            case AMBER:
+                                g2.setPaint(Color.orange);
+                                break;
+                            case GREEN:
+                                g2.setPaint(Color.green);
+                        }
+                        g2.fill(new Ellipse2D.Double(intersection.getCentre().getX() + (x*5), intersection.getCentre().getY() + (x*5), 5, 5));
+                    }
                     for (Car intersectionCar : intersection.getCars()) {
                         Position carPos = intersectionCar.getPosition();
                         g2.setPaint(carColour);

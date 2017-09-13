@@ -19,7 +19,6 @@ public class Car implements SimulationTimed {
 
     //Always set to the direction of the parent lane.
     private Direction direction;
-
     //The status of the next turn - 0 if left turn, 1 if straight, 2 if right turn.
     private int turning;
     private final ArrayList<CarMovable> carPath;

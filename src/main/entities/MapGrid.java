@@ -10,9 +10,9 @@ public class MapGrid {
     private final Intersection[][] grid;
     private final int width;
     private final int height;
-    private ArrayList<Road> roads = new ArrayList<>();
     private final Road[][] horizontalRoads;
     private final Road[][] verticalRoads;
+    private ArrayList<Road> roads = new ArrayList<>();
 
     //FIXME Not final at all.
     public MapGrid(int width, int height) {
@@ -31,8 +31,7 @@ public class MapGrid {
     public boolean addIntersection(int x, int y, int lightTimeV, int lightTimeH, Orientation startingLight) {
         //FIXME Needs a hilarious amount added
         int offset = DimensionManager.lengthOfRoadPixels + DimensionManager.widthOfIntersectionPixels;
-        grid[x][y] = new Intersection(new Position((x * offset) + DimensionManager.lengthOfRoadPixels, (y * offset) + DimensionManager
-                .lengthOfRoadPixels), lightTimeV, lightTimeH, startingLight);
+        grid[x][y] = new Intersection(new Position((x * offset) + offset, (y * offset) + offset), lightTimeV, lightTimeH, startingLight);
         return false;
     }
 
@@ -52,7 +51,6 @@ public class MapGrid {
     }
 
     public boolean addRoad(int x, int y, Orientation orientation) {
-        boolean roadFound = false;
         if (x > width || x < -1 || y > height || y < -1) {
             return false;
         }
@@ -60,19 +58,25 @@ public class MapGrid {
         double yPos, yWidth;
         int offset = DimensionManager.lengthOfRoadPixels + DimensionManager.widthOfIntersectionPixels;
         if (orientation == Orientation.VERTICAL) {
-            xPos = (x * offset);
-            yPos = (y * offset);
+            if (verticalRoads[x][y] != null) {
+                return false;
+            }
+            xPos = (x) * offset + offset;
+            yPos = (y) * offset + (offset/2);
             xWidth = DimensionManager.widthOfRoadPixels;
             yWidth = DimensionManager.lengthOfRoadPixels;
         } else {
-            xPos = (x * offset);
-            yPos = (y * offset);
+            if (horizontalRoads[x][y] != null) {
+                return false;
+            }
+            xPos = (x * offset) + (offset/2);
+            yPos = (y * offset) + offset;
             xWidth = DimensionManager.lengthOfRoadPixels;
             yWidth = DimensionManager.widthOfRoadPixels;
 
 
         }
-        roads.add(new Road(orientation, new BoundingBox(new Position(xPos,yPos),xWidth,yWidth)));
+        roads.add(new Road(orientation, new BoundingBox(new Position(xPos, yPos), xWidth, yWidth)));
         return true;
     }
 
@@ -112,7 +116,7 @@ public class MapGrid {
                         Road newRoad = new Road(Orientation.VERTICAL, new BoundingBox(new Position(posX, posY), DimensionManager
                                 .widthOfRoadPixels, DimensionManager.lengthOfRoadPixels));
                         roads.add(newRoad);
-                        horizontalRoads[i][j+1] = newRoad;
+                        horizontalRoads[i][j + 1] = newRoad;
                         grid[i][j].addRoad(newRoad, new Direction(CardinalDirection.EAST));
                         grid[i][j + 1].addRoad(newRoad, new Direction(CardinalDirection.WEST));
                     }
@@ -125,7 +129,7 @@ public class MapGrid {
                         Road newRoad = new Road(Orientation.HORIZONTAL, new BoundingBox(new Position(posX, posY), DimensionManager.lengthOfRoadPixels,
                                 DimensionManager.widthOfIntersectionPixels));
                         roads.add(newRoad);
-                        verticalRoads[i+1][j] = newRoad;
+                        verticalRoads[i + 1][j] = newRoad;
                         grid[i][j].addRoad(newRoad, new Direction(CardinalDirection.SOUTH));
                         grid[i + 1][j].addRoad(newRoad, new Direction(CardinalDirection.NORTH));
                     }

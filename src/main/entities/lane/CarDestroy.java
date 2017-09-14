@@ -7,7 +7,7 @@ package main.entities.lane;
 import main.entities.Car;
 import main.utils.BoundingBox;
 import main.utils.Direction;
-import main.utils.TurnDirection;
+import main.utils.enums.TurnDirection;
 
 import java.util.ArrayList;
 

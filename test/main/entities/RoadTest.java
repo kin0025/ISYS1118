@@ -2,6 +2,8 @@ package main.entities;
 
 import main.entities.intersection.Intersection;
 import main.utils.*;
+import main.utils.enums.CardinalDirection;
+import main.utils.enums.Orientation;
 import org.junit.Before;
 import org.junit.Test;
 

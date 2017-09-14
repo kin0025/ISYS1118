@@ -6,21 +6,24 @@ package main.entities.lane;
 
 import main.entities.Car;
 import main.entities.interfaces.CarMovable;
-import main.utils.*;
+import main.utils.BoundingBox;
+import main.utils.DimensionManager;
+import main.utils.Direction;
+import main.utils.Position;
+import main.utils.enums.CardinalDirection;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class LaneTest {
     private Lane lane;
 
     @Before
     public void setUp() throws Exception {
-        lane = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 40),5,100));
+        lane = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 40), 5, 100));
     }
 
     @Test
@@ -35,7 +38,7 @@ public class LaneTest {
     @Test
     public void moveCar() {
         ArrayList<CarMovable> carList = new ArrayList<>();
-        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 40),5,100));
+        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 40), 5, 100));
         carList.add(lane);
         carList.add(lane2);
         Car car1 = new Car(new Position(0, 0), carList);
@@ -48,7 +51,7 @@ public class LaneTest {
     @Test
     public void moveMultipleCar() {
         ArrayList<CarMovable> carList = new ArrayList<>();
-        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 40),5,100));
+        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 40), 5, 100));
         carList.add(lane);
         carList.add(lane2);
         Car car1 = new Car(new Position(0, 0), carList);
@@ -56,11 +59,25 @@ public class LaneTest {
         lane.addCar(car1);
         lane.addCar(car2);
         lane.moveCar(lane2);
-        assertEquals("Cars in lane1 incorrect after move", false, lane.getCars().contains(car2));
-        assertEquals("Cars in lane1 incorrect after move", true, lane.getCars().contains(car1));
-        assertEquals("Cars in lane2 incorrect after move", true, lane2.getCars().contains(car2));
-        assertEquals("Cars in lane2 incorrect after move", false, lane2.getCars().contains(car1));
-        //FIXME DONT ALTERNATE TESTS
+        //First car in, first car out - car 1 should be in lane 2, car 2 should be in lane 1
+        assertTrue("Cars in lane1 incorrect after move", lane.getCars().contains(car2));
+        assertFalse("Cars in lane1 incorrect after move", lane.getCars().contains(car1));
+        assertFalse("Cars in lane2 incorrect after move", lane2.getCars().contains(car2));
+        assertTrue("Cars in lane2 incorrect after move", lane2.getCars().contains(car1));
+    }
+
+    @Test
+    public void moveMultipleCarMultipleTimes() {
+        ArrayList<CarMovable> carList = new ArrayList<>();
+        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 40), 5, 100));
+        carList.add(lane);
+        carList.add(lane2);
+        Car car1 = new Car(new Position(0, 0), carList);
+        Car car2 = new Car(new Position(0, 0), carList);
+        lane.addCar(car1);
+        lane.addCar(car2);
+        lane.moveCar(lane2);
+        //And now they should both be moved to the same lane
         lane.moveCar(lane2);
         assertEquals("Cars in lane1 incorrect after move", false, lane.getCars().contains(car2));
         assertEquals("Cars in lane1 incorrect after move", false, lane.getCars().contains(car1));
@@ -84,6 +101,19 @@ public class LaneTest {
         fail("Not yet implemented");
 
     }
+
+    @Test
+    public void carsGoBackwards() throws Exception {
+        lane.getDirection();
+        fail("Not yet implemented");
+    }
+
+    @Test
+    public void carsGoForwards() throws Exception {
+        lane.getDirection();
+        fail("Not yet implemented");
+    }
+
 
     @Test
     public void hasTurnDirection() throws Exception {

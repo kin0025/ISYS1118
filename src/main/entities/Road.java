@@ -5,6 +5,9 @@ import main.entities.intersection.Intersection;
 import main.entities.lane.CarDestroy;
 import main.entities.lane.Lane;
 import main.utils.*;
+import main.utils.enums.CardinalDirection;
+import main.utils.enums.Orientation;
+import main.utils.enums.TurnDirection;
 
 import java.util.ArrayList;
 import java.util.HashMap;

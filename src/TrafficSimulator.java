@@ -1,7 +1,7 @@
 import main.Simulator;
 import main.gui.SimulationOutput;
 import main.utils.DimensionManager;
-import main.utils.Orientation;
+import main.utils.enums.Orientation;
 
 import java.util.Timer;
 import java.util.TimerTask;

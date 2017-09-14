@@ -7,6 +7,9 @@ package main.entities.lane;
 import main.entities.MapGrid;
 import main.entities.intersection.Intersection;
 import main.utils.*;
+import main.utils.enums.CardinalDirection;
+import main.utils.enums.Orientation;
+import main.utils.enums.TurnDirection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +34,6 @@ public class CarSpawnTest {
             intersections.add(mapGrid.getIntersection(0, i));
         }
         mapGrid.fillRoads();
-
 
         ArrayList<TurnDirection> turnDir = new ArrayList<>();
         turnDir.add(TurnDirection.STRAIGHT);

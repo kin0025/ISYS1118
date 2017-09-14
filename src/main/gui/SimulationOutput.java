@@ -6,6 +6,8 @@ import main.entities.Road;
 import main.entities.intersection.Intersection;
 import main.entities.lane.Lane;
 import main.utils.*;
+import main.utils.enums.LightStatus;
+import main.utils.enums.Orientation;
 
 import javax.swing.*;
 import java.awt.*;

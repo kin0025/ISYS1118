@@ -4,6 +4,11 @@
 
 package main.utils;
 
+import com.sun.istack.internal.Nullable;
+import main.utils.enums.CardinalDirection;
+import main.utils.enums.Orientation;
+import main.utils.enums.TurnDirection;
+
 /**
  * The type main.utils.Direction. Used to indicate what direction an object is facing
  */
@@ -15,17 +20,17 @@ public class Direction {
     /**
      * The constant east.
      */
-    private static final int east = 1;
+    private static final int east = 90;
     /**
      * The constant south.
      */
-    private static final int south = 2;
+    private static final int south = 180;
     /**
      * The constant west.
      */
-    private static final int west = 3;
+    private static final int west = 270;
 
-    //Our actual stored direction
+    //Our actual stored direction. Angle in degrees.
     private int direction;
 
 
@@ -37,16 +42,16 @@ public class Direction {
     public Direction(CardinalDirection direction){
         switch (direction) {
             case NORTH:
-                this.direction = 0;
+                this.direction = north;
                 break;
             case EAST:
-                this.direction = 1;
+                this.direction = east;
                 break;
             case SOUTH:
-                this.direction = 2;
+                this.direction = south;
                 break;
             case WEST:
-                this.direction = 3;
+                this.direction = west;
                 break;
             default:
         }
@@ -57,7 +62,7 @@ public class Direction {
      */
     public void turnRight() {
         if (direction != west) {
-            direction++;
+            direction += 90;
         } else {
             direction = north;
         }
@@ -68,7 +73,7 @@ public class Direction {
      */
     public void turnLeft() {
         if (direction != north) {
-            direction--;
+            direction-=90;
         } else {
             direction = west;
         }
@@ -103,16 +108,16 @@ public class Direction {
         int[] array = new int[2];
         switch (direction) {
             case north:
-                array[0] = 1;
-                break;
-            case east:
                 array[1] = 1;
                 break;
+            case east:
+                array[0] = 1;
+                break;
             case south:
-                array[0] = -1;
+                array[1] = -1;
                 break;
             case west:
-                array[1] = -1;
+                array[0] = -1;
                 break;
         }
         return array;
@@ -123,6 +128,7 @@ public class Direction {
      *
      * @return the current direction
      */
+    @Nullable
     public CardinalDirection getDirection() {
         switch (direction) {
             case north:
@@ -145,17 +151,16 @@ public class Direction {
      * @return The turn direction enum
      */
     public TurnDirection getTurnDirection(Direction turningTo) {
-        //TODO make neater
         switch (turningTo.direction - direction) {
             //Right
-            case -3:
-            case 1:
+            case -270:
+            case 90:
                 return TurnDirection.RIGHT;
-            case 3:
-            case -1:
+            case 270:
+            case -90:
                 return TurnDirection.LEFT;
-            case -2:
-            case 2:
+            case -180:
+            case 180:
                 return TurnDirection.REVERSE;
             case 0:
                 return TurnDirection.STRAIGHT;

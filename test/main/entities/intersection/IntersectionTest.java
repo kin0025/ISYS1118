@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 import main.entities.Road;
 import main.utils.*;
 
+import main.utils.enums.CardinalDirection;
+import main.utils.enums.Orientation;
 import org.junit.Test;
 import org.junit.Before;
 

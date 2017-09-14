@@ -6,6 +6,8 @@
 
 package main.utils;
 
+import main.utils.enums.CollisionStatus;
+
 @SuppressWarnings("SpellCheckingInspection")
 public class BoundingBox {
     private double xMin;
@@ -27,6 +29,7 @@ public class BoundingBox {
         centre = new Position(xCenter, yCenter);
     }
 
+
     public BoundingBox(Position centre, double xWidth, double yWidth) {
         this.centre = centre;
         xMin = centre.getX() - (xWidth / 2);
@@ -34,7 +37,6 @@ public class BoundingBox {
         xMax = centre.getX() + (xWidth / 2);
         yMax = centre.getY() + (yWidth / 2);
     }
-
 
     public double getxMin() {
         return xMin;
@@ -84,5 +86,9 @@ public class BoundingBox {
         double y = position.getY();
         double x = position.getX();
         return x > xMin && x < xMax && y > yMin && y < yMax;
+    }
+
+    public CollisionStatus getBoundingCollision(BoundingBox boundingBox){
+        return null;
     }
 }

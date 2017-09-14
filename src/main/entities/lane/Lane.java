@@ -7,7 +7,11 @@ package main.entities.lane;
 import main.entities.Car;
 import main.entities.interfaces.CarMovable;
 import main.entities.interfaces.SimulationTimed;
-import main.utils.*;
+import main.utils.BoundingBox;
+import main.utils.DimensionManager;
+import main.utils.Direction;
+import main.utils.Position;
+import main.utils.enums.TurnDirection;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -107,22 +111,23 @@ public class Lane implements CarMovable, SimulationTimed {
 
     @Override
     public boolean addCar(Car car) {
-
-        cars.add(car);
-        return true;
+        return cars.add(car);
     }
 
     @Override
     public boolean moveCar(CarMovable moveTo) {
-        addCar(cars.element());
-        removeCar(cars.element());
-        return false;
+        moveTo.addCar(cars.element());
+        return this.removeCar(cars.element());
     }
 
     @Override
     public boolean removeCar(Car car) {
-        cars.remove();
-        return true;
+        if (cars.element() == car) {
+            cars.remove();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

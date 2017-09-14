@@ -6,8 +6,9 @@
 
 package main.entities.intersection;
 
-import main.utils.Orientation;
-import main.utils.LightStatus;
+import main.utils.DimensionManager;
+import main.utils.enums.Orientation;
+import main.utils.enums.LightStatus;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,7 +37,7 @@ public class TrafficLightTest {
 	@Test
 	public void testTrafficTime() throws Exception {
 		trafficLight.restartCycle();
-		for (int i = 0; i <= 29; i++) {
+		for (int i = 0; i < 30; i++) {
 			trafficLight.incrementTime();
 		}
 		assertEquals("Traffic Light time incorrect", LightStatus.GREEN, trafficLight.getStatus());
@@ -45,7 +46,7 @@ public class TrafficLightTest {
 	@Test
 	public void testAmberLight() throws Exception {
 		trafficLight.restartCycle();
-		for (int i = 0; i <= 34; i++) {
+		for (int i = 0; i <= 30; i++) {
 			trafficLight.incrementTime();
 		}
 		assertEquals("Traffic Light amber time incorrect", LightStatus.AMBER, trafficLight.getStatus());
@@ -54,7 +55,7 @@ public class TrafficLightTest {
 	@Test
 	public void testRedLight() throws Exception {
 		trafficLight.restartCycle();
-		for (int i = 0; i <= 35; i++) {
+		for (int i = 0; i <= (30+DimensionManager.amberLightTimeOn); i++) {
 			trafficLight.incrementTime();
 		}
 		assertEquals("Traffic Light red time incorrect", LightStatus.RED, trafficLight.getStatus());

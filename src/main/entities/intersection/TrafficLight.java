@@ -1,6 +1,8 @@
 package main.entities.intersection;
 
 import main.utils.*;
+import main.utils.enums.LightStatus;
+import main.utils.enums.Orientation;
 
 class TrafficLight {
 

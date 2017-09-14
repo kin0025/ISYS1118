@@ -12,6 +12,7 @@ import main.entities.interfaces.CarMovable;
 import main.entities.intersection.Intersection;
 import main.exceptions.PathNotFoundException;
 import main.utils.*;
+import main.utils.enums.TurnDirection;
 
 import java.util.ArrayList;
 

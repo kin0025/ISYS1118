@@ -4,9 +4,8 @@
  * File created by: Alexander Kinross-Smith, s3603437
  */
 
-package main.utils;
+package main.utils.enums;
 
-public enum CardinalDirection {
-    NORTH, EAST, SOUTH, WEST
-
+public enum CollisionStatus {
+    OUTSIDE,TOUCHING,INSIDE,ENCLOSED;
 }

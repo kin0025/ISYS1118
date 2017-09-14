@@ -4,12 +4,13 @@
 
 package main.entities.intersection;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
 import main.entities.Car;
 import main.entities.Road;
 import main.entities.interfaces.CarMovable;
 import main.entities.interfaces.SimulationTimed;
 import main.utils.*;
+import main.utils.enums.LightStatus;
+import main.utils.enums.Orientation;
 
 import java.util.ArrayList;
 import java.util.HashMap;

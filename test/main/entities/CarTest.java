@@ -3,6 +3,7 @@ package main.entities;
 import main.entities.interfaces.CarMovable;
 import main.entities.lane.Lane;
 import main.utils.*;
+import main.utils.enums.CardinalDirection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

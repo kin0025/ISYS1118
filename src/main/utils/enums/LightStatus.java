@@ -4,8 +4,8 @@
  * File created by: Alexander Kinross-Smith, s3603437
  */
 
-package main.utils;
+package main.utils.enums;
 
-public enum TurnDirection {
-    LEFT, STRAIGHT, RIGHT, REVERSE
+public enum LightStatus {
+RED,AMBER,GREEN
 }

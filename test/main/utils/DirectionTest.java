@@ -1,5 +1,7 @@
 package main.utils;
 
+import main.utils.enums.CardinalDirection;
+import main.utils.enums.TurnDirection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,9 +54,8 @@ public class DirectionTest {
 
     @Test
     public void getDirectionVector() {
-        int[] vector = {1, 0};
+        int[] vector = {0, 1};
         assertArrayEquals("Get Direction Vector Failed", vector, direction.getDirectionVector());
-
     }
 
     @Test

@@ -17,6 +17,8 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import static org.junit.Assert.assertEquals;
+
 public class CarDestroyTest {
     private CarDestroy carDestroy;
     @Before
@@ -27,9 +29,9 @@ public class CarDestroyTest {
     @Test
     public void addCar() throws Exception {
         ArrayList<CarMovable> carPath = new ArrayList<>();
-        Car car = new Car(new Position(0,0), carPath);
+        Car car = new Car(new Position(0,0), null);
         carDestroy.addCar(car);
-        //assertEquals("Destroying a car failed.",0,carDestroy.getCars().size());
+        assertEquals("Destroying a car failed.",0,carDestroy.getCars().size());
     }
 
 }

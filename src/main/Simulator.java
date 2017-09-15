@@ -46,8 +46,9 @@ public class Simulator {
 
     public boolean createSpawnPoint(ArrayList<Intersection> intersections, int roadColumn, int roadRow) {
         //addDestroyPoint();
-        CarSpawn spawner = new CarSpawn(mapGrid.findPathFromIntersections(intersections, this, this));
-        return mapGrid.addLane(spawner, roadColumn, roadRow);
+        //CarSpawn spawner = new CarSpawn(mapGrid.findPathFromIntersections(intersections, this, this));
+        //return mapGrid.addLane(spawner, roadColumn, roadRow);
+        return false;
     }
 
     public void addDestroyPoint(int roadColumn, int roadRow) {

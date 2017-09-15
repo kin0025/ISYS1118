@@ -7,6 +7,7 @@
 package main.entities.lane;
 
 import main.entities.car.Car;
+import main.entities.car.CarPath;
 import main.entities.interfaces.CarMovable;
 import main.utils.BoundingBox;
 import main.utils.Direction;
@@ -20,8 +21,7 @@ import java.util.ArrayList;
  */
 public class CarSpawn extends Lane {
     //Generate this in the constructor
-    private final ArrayList<CarMovable> carPath;
-
+private CarPath carPath;
     private final Position spawnPosition;
     //Ticks between each car spawn
     private final int spawnDelay;
@@ -35,8 +35,7 @@ public class CarSpawn extends Lane {
      * @param spawnPosition     the spawn position
      * @param spawnDelay        the spawn delay
      */
-    public CarSpawn(Direction direction, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox, ArrayList<CarMovable>
-            carPath, Position spawnPosition, int spawnDelay) {
+    public CarSpawn(Direction direction, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox, CarPath carPath, Position spawnPosition, int spawnDelay) {
         super(direction, turnDirections, lanesFromEdge, laneBox);
         this.carPath = carPath;
         this.spawnDelay = spawnDelay;
@@ -73,7 +72,7 @@ public class CarSpawn extends Lane {
         tick++;
     }
 
-    public ArrayList<CarMovable> getCarPath() {
+    public CarPath getCarPath() {
         return carPath;
     }
 }

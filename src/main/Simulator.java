@@ -5,6 +5,8 @@ import main.entities.Road;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarSpawn;
 
+import java.util.ArrayList;
+
 
 public class Simulator {
     private MapGrid mapGrid;
@@ -42,7 +44,9 @@ public class Simulator {
     }
 
 
-    public boolean addSpawnPoint(CarSpawn spawner, int roadColumn, int roadRow) {
+    public boolean createSpawnPoint(ArrayList<Intersection> intersections, int roadColumn, int roadRow) {
+        //addDestroyPoint();
+        CarSpawn spawner = new CarSpawn(mapGrid.findPathFromIntersections(intersections, this, this));
         return mapGrid.addLane(spawner, roadColumn, roadRow);
     }
 

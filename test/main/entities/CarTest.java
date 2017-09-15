@@ -1,5 +1,6 @@
 package main.entities;
 
+import main.entities.car.Car;
 import main.entities.interfaces.CarMovable;
 import main.entities.lane.Lane;
 import main.utils.*;

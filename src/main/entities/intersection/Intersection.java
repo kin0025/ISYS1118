@@ -4,7 +4,7 @@
 
 package main.entities.intersection;
 
-import main.entities.Car;
+import main.entities.car.Car;
 import main.entities.Road;
 import main.entities.interfaces.CarMovable;
 import main.entities.interfaces.SimulationTimed;

@@ -1,4 +1,4 @@
-package main.entities;
+package main.entities.car;
 
 import main.entities.interfaces.CarMovable;
 import main.entities.interfaces.SimulationTimed;
@@ -10,7 +10,7 @@ import main.utils.Position;
 import java.util.ArrayList;
 
 /**
- * The type main.entities.Car.
+ * The type main.entities.car.Car.
  */
 public class Car implements SimulationTimed {
     private static final double maxSpeed = DimensionManager.kmphToPixelTick(50);

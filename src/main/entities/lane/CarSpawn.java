@@ -6,7 +6,7 @@
 
 package main.entities.lane;
 
-import main.entities.Car;
+import main.entities.car.Car;
 import main.entities.interfaces.CarMovable;
 import main.utils.BoundingBox;
 import main.utils.Direction;
@@ -32,7 +32,6 @@ public class CarSpawn extends Lane {
     /**
      * Instantiates a new Car spawn. Creates a lanes list for cars to follow and figures out the...
      *
-     * @param pathIntersections the path intersections
      * @param spawnPosition     the spawn position
      * @param spawnDelay        the spawn delay
      */

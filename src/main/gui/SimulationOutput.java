@@ -1,6 +1,6 @@
 package main.gui;
 
-import main.entities.Car;
+import main.entities.car.Car;
 import main.entities.MapGrid;
 import main.entities.Road;
 import main.entities.intersection.Intersection;

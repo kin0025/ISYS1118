@@ -4,7 +4,7 @@
 
 package main.entities.lane;
 
-import main.entities.Car;
+import main.entities.car.Car;
 import main.entities.interfaces.CarMovable;
 import main.entities.interfaces.SimulationTimed;
 import main.utils.BoundingBox;

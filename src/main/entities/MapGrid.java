@@ -1,10 +1,16 @@
 package main.entities;
 
+import main.entities.interfaces.CarMovable;
 import main.entities.intersection.Intersection;
 import main.entities.lane.Lane;
-import main.utils.*;
+import main.exceptions.PathNotFoundException;
+import main.utils.BoundingBox;
+import main.utils.DimensionManager;
+import main.utils.Direction;
+import main.utils.Position;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.Orientation;
+import main.utils.enums.TurnDirection;
 
 import java.util.ArrayList;
 
@@ -64,14 +70,14 @@ public class MapGrid {
                 return false;
             }
             xPos = (x) * offset + offset;
-            yPos = (y) * offset + (offset/2);
+            yPos = (y) * offset + (offset / 2);
             xWidth = DimensionManager.widthOfRoadPixels;
             yWidth = DimensionManager.lengthOfRoadPixels;
         } else {
             if (horizontalRoads[x][y] != null) {
                 return false;
             }
-            xPos = (x * offset) + (offset/2);
+            xPos = (x * offset) + (offset / 2);
             yPos = (y * offset) + offset;
             xWidth = DimensionManager.lengthOfRoadPixels;
             yWidth = DimensionManager.widthOfRoadPixels;
@@ -141,7 +147,16 @@ public class MapGrid {
 
     }
 
+
     public ArrayList<Road> getRoads() {
         return roads;
+    }
+
+    public Road getRoad(int x, int y, Orientation orientation) {
+        if (orientation == Orientation.HORIZONTAL) {
+            return horizontalRoads[x][y];
+        } else {
+            return verticalRoads[x][y];
+        }
     }
 }

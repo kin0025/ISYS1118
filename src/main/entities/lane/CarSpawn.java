@@ -6,12 +6,13 @@
 
 package main.entities.lane;
 
-import main.entities.Car;
-import main.entities.Road;
+import main.entities.car.Car;
+import main.entities.car.CarPath;
 import main.entities.interfaces.CarMovable;
-import main.entities.intersection.Intersection;
 import main.exceptions.PathNotFoundException;
-import main.utils.*;
+import main.utils.BoundingBox;
+import main.utils.Direction;
+import main.utils.Position;
 import main.utils.enums.TurnDirection;
 
 import java.util.ArrayList;
@@ -21,8 +22,7 @@ import java.util.ArrayList;
  */
 public class CarSpawn extends Lane {
     //Generate this in the constructor
-    private final ArrayList<CarMovable> carPath = new ArrayList<>();
-
+private CarPath carPath;
     private final Position spawnPosition;
     //Ticks between each car spawn
     private final int spawnDelay;
@@ -33,77 +33,18 @@ public class CarSpawn extends Lane {
     /**
      * Instantiates a new Car spawn. Creates a lanes list for cars to follow and figures out the...
      *
-     * @param pathIntersections the path intersections
      * @param spawnPosition     the spawn position
      * @param spawnDelay        the spawn delay
      */
-    public CarSpawn(Direction direction, ArrayList<TurnDirection> turnDirections , int lanesFromEdge, BoundingBox laneBox, ArrayList<Intersection> pathIntersections, CarDestroy
-            endLane, Position spawnPosition, int spawnDelay) throws PathNotFoundException {
-        super(direction, turnDirections,lanesFromEdge, laneBox);
-
+    public CarSpawn(Direction direction, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox, CarPath carPath, Position spawnPosition, int spawnDelay) throws PathNotFoundException {
+        super(direction, turnDirections, lanesFromEdge, laneBox);
         this.spawnDelay = spawnDelay;
         this.spawnPosition = spawnPosition;
+        if(carPath.isPathComplete() == true){
+            this.carPath = carPath;
 
-        //Add this lane as the first one in the path
-        carPath.add(this);
-
-        Lane currentLane = this;
-
-        //Then iterate through all the intersections this will pass through.
-        for (int i = 0; i < pathIntersections.size() - 1; i++) {
-            //Add the intersection the car will go to first
-            carPath.add(pathIntersections.get(i));
-
-            //Now we figure out what lane we want to go to next
-            Intersection currentIntersection = pathIntersections.get(i);
-            Intersection nextIntersection = pathIntersections.get(i + 1);
-            boolean laneFound = false;
-            //Find the next road.
-            for (Road intersectionRoad : nextIntersection.getRoads()) {
-                if (intersectionRoad.getIntersectionDirection(nextIntersection) != null) {
-                    //We've found the road! Now find the turn direction.
-                    TurnDirection turnDirection = currentLane.getDirection().getTurnDirection
-                            (currentIntersection
-                                    .getRoadDirection(intersectionRoad));
-
-                    //Save the compass direction of the road as well.
-                    Direction laneDirection = nextIntersection.getRoadDirection(intersectionRoad);
-
-                    //Now we pick a lane to go to - find the correct lane in the road to move the car to.
-                    for (Lane lane : intersectionRoad.getLanes()) {
-                        //We've iterated through all lanes, now we find a lane that is going in the right direction
-                        // and has the correct turn direction.
-                        if (lane.getDirection().getDirection().equals(laneDirection.getDirection()) &&
-                                lane.hasTurnDirection(turnDirection)) {
-                            laneFound = true;
-                            //If we find the right lane, add and move the lane.
-                            carPath.add(lane);
-                            currentLane = lane;
-                            break;
-                        }
-
-                    }
-                }
-            }
-            if (!laneFound) {
-                throw new PathNotFoundException("Couldn't find a connecting lane when generating a path.");
-            }
-
-        }
-        boolean found = false;
-        for (Road road : pathIntersections.get(pathIntersections.size() - 1).getRoads()
-                ) {
-            for (Lane lane : road.getLanes()
-                    ) {
-                if (lane.equals(endLane)) {
-                    found = true;
-                }
-            }
-        }
-        if (found) {
-            carPath.add(endLane);
-        } else {
-            throw new PathNotFoundException("End Lane disconnected");
+        }else{
+            throw new PathNotFoundException("Path incomplete, car spawn cannot be created.");
         }
     }
 
@@ -114,7 +55,7 @@ public class CarSpawn extends Lane {
      * @return the boolean
      */
     public boolean spawnCar() {
-        addCar(new Car(new Position(spawnPosition.getX(),spawnPosition.getY()),carPath));
+        addCar(new Car(new Position(spawnPosition.getX(), spawnPosition.getY()), carPath));
         return false;
     }
 
@@ -124,7 +65,7 @@ public class CarSpawn extends Lane {
      */
     public void incrementTime() {
         //Checks that the last car added has moved enough. Might throw a null.
-        if(getCars().getLast() != null) {
+        if (getCars().getLast() != null) {
             if (getCars().getLast().getPosition().getDifference(spawnPosition) <= 20) {
                 //Too close, don't spawn a car.
                 //TODO: What sort of logic do we expect here for spawning cars if they are already full?
@@ -137,7 +78,7 @@ public class CarSpawn extends Lane {
         tick++;
     }
 
-    public ArrayList<CarMovable> getCarPath() {
+    public CarPath getCarPath() {
         return carPath;
     }
 }

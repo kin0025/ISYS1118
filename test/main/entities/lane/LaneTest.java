@@ -4,7 +4,7 @@
 
 package main.entities.lane;
 
-import main.entities.Car;
+import main.entities.car.Car;
 import main.entities.interfaces.CarMovable;
 import main.utils.BoundingBox;
 import main.utils.DimensionManager;
@@ -29,7 +29,7 @@ public class LaneTest {
     @Test
     public void addCar() {
         ArrayList<CarMovable> carList = new ArrayList<>();
-        Car car1 = new Car(new Position(0, 0), carList);
+        Car car1 = new Car(new Position(0, 0), null);
         assertEquals("Cars in lane incorrect initial.", null, lane.getCars().peek());
         lane.addCar(car1);
         assertEquals("Cars in lane incorrect car 1.", true, lane.getCars().contains(car1));
@@ -41,7 +41,7 @@ public class LaneTest {
         Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 40), 5, 100));
         carList.add(lane);
         carList.add(lane2);
-        Car car1 = new Car(new Position(0, 0), carList);
+        Car car1 = new Car(new Position(0, 0), null);
         lane.addCar(car1);
         lane.moveCar(lane2);
         assertEquals("Cars in lane1 incorrect after move", false, lane.getCars().contains(car1));
@@ -54,8 +54,8 @@ public class LaneTest {
         Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 40), 5, 100));
         carList.add(lane);
         carList.add(lane2);
-        Car car1 = new Car(new Position(0, 0), carList);
-        Car car2 = new Car(new Position(0, 0), carList);
+        Car car1 = new Car(new Position(0, 0), null);
+        Car car2 = new Car(new Position(0, 0), null);
         lane.addCar(car1);
         lane.addCar(car2);
         lane.moveCar(lane2);
@@ -72,8 +72,8 @@ public class LaneTest {
         Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 40), 5, 100));
         carList.add(lane);
         carList.add(lane2);
-        Car car1 = new Car(new Position(0, 0), carList);
-        Car car2 = new Car(new Position(0, 0), carList);
+        Car car1 = new Car(new Position(0, 0), null);
+        Car car2 = new Car(new Position(0, 0), null);
         lane.addCar(car1);
         lane.addCar(car2);
         lane.moveCar(lane2);
@@ -89,7 +89,7 @@ public class LaneTest {
     public void removeCar() throws Exception {
         ArrayList<CarMovable> carList = new ArrayList<>();
         carList.add(lane);
-        Car car = new Car(new Position(0, 0), carList);
+        Car car = new Car(new Position(0, 0), null);
         lane.addCar(car);
         assertEquals("Removing car failed", true, lane.removeCar(car));
         assertEquals("Car was not removed from lane correctly", false, lane.getCars().contains(car));

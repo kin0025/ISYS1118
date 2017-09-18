@@ -5,16 +5,17 @@ import main.entities.Road;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarSpawn;
 
+import java.util.ArrayList;
+
 
 public class Simulator {
     private MapGrid mapGrid;
+    boolean pause = true;
 
     /**
      * Runs the simulation through one step
      */
     public void runSimulation() {
-        boolean stop = false;
-        boolean pause = false;
         //This entire thing is temporary.
 
         for (Intersection[] row : mapGrid.getGrid()) {
@@ -33,6 +34,18 @@ public class Simulator {
 
     }
 
+    public boolean isPaused() {
+        return pause;
+    }
+
+    public void pause() {
+        pause = true;
+    }
+
+    public void start() {
+        pause = false;
+    }
+
     public MapGrid getMapGrid() {
         return mapGrid;
     }
@@ -42,8 +55,11 @@ public class Simulator {
     }
 
 
-    public boolean addSpawnPoint(CarSpawn spawner, int roadColumn, int roadRow) {
-        return mapGrid.addLane(spawner, roadColumn, roadRow);
+    public boolean createSpawnPoint(ArrayList<Intersection> intersections, int roadColumn, int roadRow) {
+        //addDestroyPoint();
+        //CarSpawn spawner = new CarSpawn(mapGrid.findPathFromIntersections(intersections, this, this));
+        //return mapGrid.addLane(spawner, roadColumn, roadRow);
+        return false;
     }
 
     public void addDestroyPoint(int roadColumn, int roadRow) {

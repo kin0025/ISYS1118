@@ -1,5 +1,6 @@
 package main.entities;
 
+import main.entities.car.Car;
 import main.entities.interfaces.CarMovable;
 import main.entities.lane.Lane;
 import main.utils.*;
@@ -20,11 +21,7 @@ public class CarTest {
     @Before
     public void setUp() throws Exception {
         carPosition = new Position(1, 1);
-        ArrayList<CarMovable> carPath = new ArrayList<>();
-        carPath.add(new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 0),100,10)));
-        carPath.add(new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 0),100,10)));
-
-        car = new Car(carPosition, carPath);
+        car = new Car(carPosition, null);
     }
 
     @After

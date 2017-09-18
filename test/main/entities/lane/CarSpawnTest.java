@@ -38,11 +38,11 @@ public class CarSpawnTest {
         ArrayList<TurnDirection> turnDir = new ArrayList<>();
         turnDir.add(TurnDirection.STRAIGHT);
         turnDir.add(TurnDirection.LEFT);
-
+        //FIXME
+/*
         endLane = new CarDestroy(new Direction(CardinalDirection.NORTH), turnDir, 0, new BoundingBox(new Position(0, 40), 5, 100));
         carSpawn = new CarSpawn(new Direction(CardinalDirection.NORTH), turnDir, 0, new BoundingBox(new Position(0, 40), 5, 100), intersections,
-                endLane, new Position(0, 0),
-                10);
+                endLane, new Position(0, 0), 10);*/
     }
 
     @After

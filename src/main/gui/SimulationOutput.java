@@ -1,6 +1,6 @@
 package main.gui;
 
-import main.entities.Car;
+import main.entities.car.Car;
 import main.entities.MapGrid;
 import main.entities.Road;
 import main.entities.intersection.Intersection;
@@ -18,10 +18,10 @@ public class SimulationOutput extends JPanel {
 
     private MapGrid grid;
     private JFrame frame = new JFrame("Simulator Output");
-    private boolean debug;
+    private boolean displayGrid;
 
-    public SimulationOutput(MapGrid grid, boolean graphicsDebug) {
-        this.debug = graphicsDebug;
+    public SimulationOutput(MapGrid grid, boolean displayGrid) {
+        this.displayGrid = displayGrid;
         this.grid = grid;
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         int WIDTH = grid.getWidth() * (DimensionManager.widthOfIntersectionPixels + DimensionManager.lengthOfRoadPixels) + DimensionManager

@@ -10,13 +10,12 @@ import java.util.ArrayList;
 
 public class Simulator {
     private MapGrid mapGrid;
+    boolean pause = true;
 
     /**
      * Runs the simulation through one step
      */
     public void runSimulation() {
-        boolean stop = false;
-        boolean pause = false;
         //This entire thing is temporary.
 
         for (Intersection[] row : mapGrid.getGrid()) {
@@ -33,6 +32,18 @@ public class Simulator {
         }
 
 
+    }
+
+    public boolean isPaused() {
+        return pause;
+    }
+
+    public void pause() {
+        pause = true;
+    }
+
+    public void start() {
+        pause = false;
     }
 
     public MapGrid getMapGrid() {

@@ -9,6 +9,7 @@ package main.entities.lane;
 import main.entities.car.Car;
 import main.entities.car.CarPath;
 import main.entities.interfaces.CarMovable;
+import main.exceptions.PathNotFoundException;
 import main.utils.BoundingBox;
 import main.utils.Direction;
 import main.utils.Position;
@@ -35,11 +36,16 @@ private CarPath carPath;
      * @param spawnPosition     the spawn position
      * @param spawnDelay        the spawn delay
      */
-    public CarSpawn(Direction direction, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox, CarPath carPath, Position spawnPosition, int spawnDelay) {
+    public CarSpawn(Direction direction, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox, CarPath carPath, Position spawnPosition, int spawnDelay) throws PathNotFoundException {
         super(direction, turnDirections, lanesFromEdge, laneBox);
-        this.carPath = carPath;
         this.spawnDelay = spawnDelay;
         this.spawnPosition = spawnPosition;
+        if(carPath.isPathComplete() == true){
+            this.carPath = carPath;
+
+        }else{
+            throw new PathNotFoundException("Path incomplete, car spawn cannot be created.");
+        }
     }
 
 

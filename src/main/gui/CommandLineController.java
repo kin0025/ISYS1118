@@ -1,8 +1,11 @@
 package main.gui;
 
 import main.Simulator;
+import main.entities.intersection.Intersection;
+import main.utils.Direction;
 
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class CommandLineController implements InputController {
 
@@ -53,9 +56,9 @@ public class CommandLineController implements InputController {
         String centreText = title;
         String rightText;
 
-        if(!simulator.isPaused()){
+        if (!simulator.isPaused()) {
             rightText = "Running";
-        }else{
+        } else {
             rightText = "Paused";
         }
         //Find the length of the menu areas.
@@ -100,7 +103,9 @@ public class CommandLineController implements InputController {
     }
 
     /**
-     * Receives an input. Prints the flavourText, then requests input from the user. Will continue requesting input from the user until input matches an entry in the array options. if printOptionText is false will not show the user what options are avaliable. Final number is length of returned string
+     * Receives an input. Prints the flavourText, then requests input from the user. Will continue requesting input from the user until input
+     * matches an entry in the array options. if printOptionText is false will not show the user what options are avaliable. Final number is length
+     * of returned string
      **/
     private String receiveStringInput(String flavourText, String[] options, boolean printOptionText, int outputLength) {
         //Print the flavour text.
@@ -149,8 +154,56 @@ public class CommandLineController implements InputController {
         return (inputChar);
     }
 
+
     /**
-     * Receives an input. Prints the flavourText, then requests input from the user. Will continue requesting input from the user until input matches an entry in the array options or is empty. if it is empty returns the defaultAnswer. Final number is length of returned string
+     * Prompts the user for input of a co-ordinate between 0 and maxX/Y.
+     *
+     * @param flavourText the text printed to prompt the user
+     * @param max        the maximum valid value for the coordinates
+     * @return the co-ordinates of the intersection, or null if input was invalid
+     */
+    private int[] receiveCoordinateInput(String flavourText, int[] max) {
+        int[] output = new int[2];
+        //Print the flavour text.
+        System.out.print(flavourText);
+        //If we have enabled option printing, print the array.
+        System.out.println("(x < " + max[0] + 1 + " and y < " + max[1] + 1);
+        //Receive input
+        String inputString = input.nextLine().toLowerCase();
+        //If it is too short, prompt for input again.
+        while (inputString.length() == 0) {
+            //Print the stuff again.
+            System.out.println("An answer needs to be entered");
+            System.out.print(flavourText);
+            //Request input again.
+            inputString = input.nextLine().toLowerCase();
+        }
+
+        StringTokenizer tokenizer = new StringTokenizer(inputString, ",");
+        if (tokenizer.countTokens() != 2) {
+            System.out.println("Two coordinates were not entered, please try again.");
+            return receiveCoordinateInput(flavourText, max);
+        }
+        int i = 0;
+        while (tokenizer.hasMoreTokens()) {
+            try {
+                output[i] = Integer.getInteger(tokenizer.nextToken());
+            } catch (NumberFormatException e) {
+                System.out.println("Numbers were not entered in parseable format, please try again");
+                return receiveCoordinateInput(flavourText, max);
+            }
+            i++;
+            if (output[i] > max[i]) {
+                System.out.println("Coordinate was too large, please try again");
+                return receiveCoordinateInput(flavourText, max);
+            }
+        }
+        return output;
+    }
+
+    /**
+     * Receives an input. Prints the flavourText, then requests input from the user. Will continue requesting input from the user until input
+     * matches an entry in the array options or is empty. if it is empty returns the defaultAnswer. Final number is length of returned string
      **/
     private String receiveStringInput(String flavourText, String[] options, String defaultAnswer, int outputLength) {
         //Print a prompt for the user to enter input.
@@ -181,7 +234,8 @@ public class CommandLineController implements InputController {
             return (inputChar);
         } else {
             System.out.println("Input was not an option. Please try again.");
-            inputChar = receiveStringInput(flavourText, options, defaultAnswer, outputLength);//If they didn't get it right the first time, supply options.
+            inputChar = receiveStringInput(flavourText, options, defaultAnswer, outputLength);//If they didn't get it right the first time, supply
+            // options.
         }
         return inputChar;
     }
@@ -240,7 +294,9 @@ public class CommandLineController implements InputController {
 
     @Override
     public void addSpawnPoint() {
-
+        Intersection intersection1 = simulator.getIntersection(receiveCoordinateInput("Please enter the co-ordinates of the intersection in the form x,y", simulator.getGridSize()));
+        Direction intersection = simulator.getIntersection(receiveCoordinateInput("Please enter the co-ordinates of the intersection in the form x,y", simulator.getGridSize()));
+        simulator.createSpawnPoint();
     }
 
     @Override
@@ -250,6 +306,7 @@ public class CommandLineController implements InputController {
 
     @Override
     public void createSpawnPath() {
+        simulator.createSpawnPath();
 
     }
 

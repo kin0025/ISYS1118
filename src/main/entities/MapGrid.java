@@ -32,10 +32,24 @@ public class MapGrid {
         verticalRoads = new Road[width][height + 1];
     }
 
+    /**
+     * Gets the grid of intersections
+     * @return the intersection grid
+     **/
     public Intersection[][] getGrid() {
         return grid;
     }
 
+    /**
+     * Adds an intersection to the map grid
+     *
+     * @param x                   the column in the grid the intersection will be placed in
+     * @param y                   the row in the grid the intersection will be placed in
+     * @param lightTimeV  the time in ticks the vertical lights will be green for
+     * @param lightTimeH the time in ticks the horizontal lights will be green for
+     * @param startingLight       the orientation (horizontal or vertical) of the lights.
+     * @return whether the intersection was added successfully - if there was already an intersection in the location it will fail to add.
+     */
     public boolean addIntersection(int x, int y, int lightTimeV, int lightTimeH, Orientation startingLight) {
         //FIXME Needs a hilarious amount added
         int offset = DimensionManager.lengthOfRoadPixels + DimensionManager.widthOfIntersectionPixels;
@@ -43,6 +57,11 @@ public class MapGrid {
         return false;
     }
 
+    /**
+     * Removes an intersection at the grid co-ordinates x and y
+     * @param x the column in the grid the intersection will be placed in
+     * @param y the row the intersection will be placed in
+     */
     public void removeIntersections(int x, int y) {
         grid[x][y] = null;
     }
@@ -100,6 +119,9 @@ public class MapGrid {
         return height;
     }
 
+    public int[] getSize(){
+        return new int[] {width,height};
+    }
     /**
      * Needs to empty any roads in intersections if there are any - call removeAllRoads on intersections?
      * Generate all connecting roads - lanes are auto created by the roads.
@@ -152,11 +174,17 @@ public class MapGrid {
         return roads;
     }
 
-    public Road getRoad(int x, int y, Orientation orientation) {
+    public Road getRoad(Intersection intersection1, Intersection intersection2, Orientation orientation) {
         if (orientation == Orientation.HORIZONTAL) {
             return horizontalRoads[x][y];
         } else {
             return verticalRoads[x][y];
         }
     }
+
+    public int[] getIntersectionCoords(Intersection intersection){
+        return null;
+    }
+
+
 }

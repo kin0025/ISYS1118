@@ -318,7 +318,7 @@ public class CommandLineController implements InputController {
             spawn = simulator.createSpawnPoint(intersection, direction);
 
         }
-        createSpawnPath();
+        createSpawnPath(spawn);
     }
 
     @Override
@@ -327,10 +327,10 @@ public class CommandLineController implements InputController {
     }
 
     @Override
-    public void createSpawnPath() {
+    public void createSpawnPath(CarSpawn spawn) {
         boolean keepGoing = true;
         while(keepGoing){
-            System.out.println();
+            System.out.println(spawn.get);
         }
 
     }

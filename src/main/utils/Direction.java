@@ -5,6 +5,7 @@
 package main.utils;
 
 import com.sun.istack.internal.Nullable;
+import main.entities.car.Car;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.Orientation;
 import main.utils.enums.TurnDirection;
@@ -39,7 +40,7 @@ public class Direction {
      *
      * @param direction the direction to start facing
      */
-    public Direction(CardinalDirection direction){
+    public Direction(CardinalDirection direction) {
         switch (direction) {
             case NORTH:
                 this.direction = north;
@@ -73,7 +74,7 @@ public class Direction {
      */
     public void turnLeft() {
         if (direction != north) {
-            direction-=90;
+            direction -= 90;
         } else {
             direction = west;
         }
@@ -83,7 +84,7 @@ public class Direction {
      * Reverses direction.
      */
     public void reverse() {
-        switch (direction){
+        switch (direction) {
             case north:
                 direction = south;
                 break;
@@ -169,11 +170,28 @@ public class Direction {
         }
     }
 
-    public Orientation getOrientation(){
-        if(direction == north || direction == south){
+    public Orientation getOrientation() {
+        if (direction == north || direction == south) {
             return Orientation.VERTICAL;
-        }else{
+        } else {
             return Orientation.HORIZONTAL;
+        }
+    }
+
+    public static CardinalDirection stringToDirection(String input) {
+        input = input.toLowerCase();
+        switch (input) {
+            case "north":
+                return CardinalDirection.NORTH;
+            case "east":
+                return CardinalDirection.EAST;
+            case "south":
+                return CardinalDirection.SOUTH;
+            case "west":
+                return CardinalDirection.WEST;
+            default:
+                return null;
+
         }
     }
 

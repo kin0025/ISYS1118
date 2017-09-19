@@ -8,6 +8,7 @@ package main.entities.lane;
 
 import main.entities.car.Car;
 import main.entities.car.CarPath;
+import main.entities.interfaces.CarMovable;
 import main.utils.BoundingBox;
 import main.utils.Direction;
 import main.utils.Position;
@@ -34,13 +35,12 @@ public class CarSpawn extends Lane {
      * @param spawnPosition the spawn position
      * @param spawnDelay    the spawn delay
      */
-    public CarSpawn(Direction direction, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox, CarPath carPath, Position
+    public CarSpawn(Direction direction, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox, Position
             spawnPosition, int spawnDelay) {
         super(direction, turnDirections, lanesFromEdge, laneBox);
         this.spawnDelay = spawnDelay;
         this.spawnPosition = spawnPosition;
-        this.active = carPath.isPathComplete();
-        this.carPath = carPath;
+        this.active = false;
     }
 
 
@@ -77,7 +77,16 @@ public class CarSpawn extends Lane {
         tick++;
     }
 
-    public CarPath getCarPath() {
-        return carPath;
+    public boolean initialiseCarPath() {
+        carPath = new CarPath();
+        return carPath.initialisePath(this);
+    }
+
+    public boolean addToPath(CarMovable toAdd){
+        return carPath.addPartToPath(toAdd);
+    }
+
+    public boolean finalisePath(CarDestroy destructor){
+        return carPath.finalisePath(destructor);
     }
 }

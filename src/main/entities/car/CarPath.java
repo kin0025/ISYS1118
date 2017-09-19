@@ -3,6 +3,7 @@ package main.entities.car;
 import main.entities.Road;
 import main.entities.interfaces.CarMovable;
 import main.entities.intersection.Intersection;
+import main.entities.lane.CarDestroy;
 import main.entities.lane.CarSpawn;
 import main.entities.lane.Lane;
 import main.exceptions.PathNotFoundException;
@@ -119,10 +120,10 @@ public class CarPath {
         return false;
     }
 
-    public boolean finalisePath() {
+    public boolean finalisePath(CarDestroy destructor) {
         if (!pathComplete) {
-
-
+            //TODO Some logic to prevent errors and check that the path is valid
+            addPartToPath(destructor);
             pathComplete = true;
         }
         return false;

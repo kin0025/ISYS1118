@@ -40,25 +40,25 @@ public class CarSpawn extends Lane {
         this.spawnDelay = spawnDelay;
         this.active = false;
 
-        double xpos = 0;
-        double ypos = 0;
+        double xPos = 0;
+        double yPos = 0;
         if (directionOfLane == CardinalDirection.NORTH) {
-            xpos = (laneBox.getxMin() + laneBox.getxMax()) / 2;
-            ypos = laneBox.getyMin();
+            xPos = (laneBox.getxMin() + laneBox.getxMax()) / 2;
+            yPos = laneBox.getyMin();
         }
         if (directionOfLane == CardinalDirection.SOUTH) {
-            xpos = (laneBox.getxMin() + laneBox.getxMax()) / 2;
-            ypos = laneBox.getyMax();
+            xPos = (laneBox.getxMin() + laneBox.getxMax()) / 2;
+            yPos = laneBox.getyMax();
         }
         if (directionOfLane == CardinalDirection.EAST) {
-            xpos = laneBox.getxMin();
-            ypos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
+            xPos = laneBox.getxMin();
+            yPos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
         }
         if (directionOfLane == CardinalDirection.WEST) {
-            xpos = laneBox.getxMax();
-            ypos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
+            xPos = laneBox.getxMax();
+            yPos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
         }
-        spawnPosition = new Position(xpos, ypos);
+        spawnPosition = new Position(xPos, yPos);
     }
 
 

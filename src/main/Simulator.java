@@ -2,7 +2,6 @@ package main;
 
 import main.entities.MapGrid;
 import main.entities.Road;
-import main.entities.car.Car;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarSpawn;
 import main.utils.enums.CardinalDirection;

@@ -12,9 +12,9 @@ import java.util.StringTokenizer;
 
 public class CommandLineController implements InputController {
 
-    private Scanner input = new Scanner(System.in);
+    private final Scanner input = new Scanner(System.in);
 
-    private Simulator simulator;
+    private final Simulator simulator;
 
 
     public CommandLineController(Simulator simulator) {
@@ -56,7 +56,6 @@ public class CommandLineController implements InputController {
         printCharTimes('=', pageWidth, true);
         //Set the three components of a menu screen.
         String leftText = "Traffic Light Simulator";
-        String centreText = title;
         String rightText;
 
         if (!simulator.isPaused()) {
@@ -66,18 +65,18 @@ public class CommandLineController implements InputController {
         }
         //Find the length of the menu areas.
         int left = leftText.length();
-        int centre = centreText.length();
+        int centre = title.length();
         int right = rightText.length();
         //Find the spacing between the three elements. Total width/2 - the size of left and half of the centre.
-        int leftSpacing = pageWidth / 2 - left - (int) centre / 2;
+        int leftSpacing = pageWidth / 2 - left - centre / 2;
         //Due to float to int conversion, subtract 1 more than the length.
-        int rightSpacing = (pageWidth / 2) - 1 - right - (int) centre / 2;
+        int rightSpacing = (pageWidth / 2) - 1 - right - centre / 2;
         //Print the left
         System.out.print(leftText);
         //Print the spacing
         printCharTimes(' ', leftSpacing, false);
         //Print the centre
-        System.out.print(centreText);
+        System.out.print(title);
         //Print the right spacing
         printCharTimes(' ', rightSpacing, false);
         //Print the right text
@@ -146,7 +145,7 @@ public class CommandLineController implements InputController {
 
     /**
      * Receives an input. Prints the flavourText, then requests input from the user. Will continue requesting input from the user until input
-     * matches an entry in the array options. if printOptionText is false will not show the user what options are avaliable. Final number is max
+     * matches an entry in the array options. if printOptionText is false will not show the user what options are available. Final number is max
      * length
      * of returned string
      **/
@@ -164,7 +163,7 @@ public class CommandLineController implements InputController {
 
     /**
      * Receives an input. Prints the flavourText, then requests input from the user. Will continue requesting input from the user until input
-     * matches an entry in the array options. if printOptionText is false will not show the user what options are avaliable. Final number is max
+     * matches an entry in the array options. if printOptionText is false will not show the user what options are available. Final number is max
      * length
      * of returned string
      **/

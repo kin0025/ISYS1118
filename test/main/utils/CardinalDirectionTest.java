@@ -1,7 +1,5 @@
 package main.utils;
 
-import main.entities.car.Car;
-import main.entities.lane.CarDestroy;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.TurnDirection;
 import org.junit.After;

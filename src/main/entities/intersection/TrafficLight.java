@@ -9,7 +9,7 @@ class TrafficLight {
 	private final Orientation orientation;
 	private int greenLightTiming;
 	private int time;
-	private static int amberLightTimeOn = DimensionManager.amberLightTimeOn;
+	private static final int amberLightTimeOn = DimensionManager.amberLightTimeOn;
 
 	public TrafficLight(int greenLightTiming, Orientation orientationEnum) {
 		this.greenLightTiming = greenLightTiming;
@@ -22,12 +22,10 @@ class TrafficLight {
 		this.time++;
 	}
 
-	public boolean restartCycle() {
+	public void restartCycle() {
 		if(time >= (greenLightTiming + amberLightTimeOn)){
 			time = 0;
-			return true;
 		}else{
-			return false;
 		}
 	}
 

@@ -16,7 +16,7 @@ public class Car implements SimulationTimed {
 
     //Always set to the direction of the parent lane.
     private CardinalDirection direction;
-    private CarPath carPath;
+    private final CarPath carPath;
     private int carPathPosition = 0;
     private boolean moveMe = false;
 

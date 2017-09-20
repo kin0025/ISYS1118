@@ -22,7 +22,7 @@ public class RoadTest {
     public void addIntersection() throws Exception {
         Intersection intersection = new Intersection(new Position(0, 0), 10, 10, Orientation.HORIZONTAL);
         road.addIntersection(intersection, CardinalDirection.NORTH);
-        assertEquals("Intersection not added correctly", CardinalDirection.SOUTH, road.hasIntersection(intersection));
+        assertEquals("Intersection not added correctly", CardinalDirection.SOUTH, road.getIntersectionDirection(intersection));
     }
 
 

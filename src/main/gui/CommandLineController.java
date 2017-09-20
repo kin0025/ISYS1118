@@ -1,7 +1,6 @@
 package main.gui;
 
 import main.Simulator;
-import main.entities.car.CarPath;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarSpawn;
 import main.utils.DimensionManager;
@@ -50,9 +49,9 @@ public class CommandLineController implements InputController {
         //Sets the width of the page.
         int pageWidth = 150;
         //Print a new line a bunch to clear the screen.
-        for (int i = 30; i != 0; i--) {
-            System.out.printf("\n");
-        }
+//        for (int i = 30; i != 0; i--) {
+//            System.out.printf("\n");
+//        }
         //Print the first line, made of equal signs.
         printCharTimes('=', pageWidth, true);
         //Set the three components of a menu screen.
@@ -106,46 +105,49 @@ public class CommandLineController implements InputController {
         return (result.toString());
     }
 
-    private String receiveFixedString(String flavourText, String[] options, boolean printOptionText, int outputLength){
-        //Receive input
-        String inputString = input.nextLine().toLowerCase();
-        //If it is too short, prompt for input again.
-        while (inputString.length() == 0) {
-            //Print the stuff again.
-            System.out.println("Answer needs to be entered");
-            System.out.print(flavourText + " ");
-            if (printOptionText) {
-                System.out.println(stringArrayToString(options));
-            } else System.out.println();
-            //Request input again.
-            inputString = input.nextLine().toLowerCase();
-        }
+    /**
+     * Reads a string of fixed length.
+     *
+     * @param flavourText     The text to be printed asking for input
+     * @param options         the valid values for input
+     * @param printOptionText whether the options are displayed to the user
+     * @param outputLength
+     * @return
+     */
+    private String receiveFixedString(String flavourText, String[] options, boolean printOptionText, int outputLength) {
+        String inputString;
+        do {
+            //Receive input
+            inputString = receiveStringInput(flavourText, options, printOptionText, false);
+        } while (inputString.length() == 0);
         //Ensure input is the same.
-        String inputChar = inputString.toLowerCase();
+
+        inputString = inputString.toLowerCase();
+
         //If the input we are given is longer than the specified maximum output, make it shorter.
-        if (inputChar.length() >= outputLength) {
-            inputChar = inputChar.substring(0, outputLength);
+        if (inputString.length() >= outputLength) {
+            inputString = inputString.substring(0, outputLength);
         }
         boolean isCorrect = false;
         int i = 0;
         while (i < options.length && !isCorrect) {
-            if (options[i].equals(inputChar)) {
+            if (options[i].equals(inputString)) {
                 isCorrect = true;
             }
             i++;
         }
-        if (isCorrect) {
-            return (inputChar);
-        } else {
+        if (!isCorrect) {
             System.out.println("Input was not an option. Please try again.");
-            inputChar = receiveStringInput(flavourText, options, true, outputLength);//If they didn't get it right the first time, supply options.
+            return receiveFixedString(flavourText, options, true, outputLength);
+            //If they didn't get it right the first time, supply options.
         }
-        return (inputChar);
+        return (inputString);
     }
 
     /**
      * Receives an input. Prints the flavourText, then requests input from the user. Will continue requesting input from the user until input
-     * matches an entry in the array options. if printOptionText is false will not show the user what options are avaliable. Final number is max length
+     * matches an entry in the array options. if printOptionText is false will not show the user what options are avaliable. Final number is max
+     * length
      * of returned string
      **/
     private String receiveStringInput(String flavourText, String[] options, boolean printOptionText, boolean caseSensitive) {
@@ -156,26 +158,25 @@ public class CommandLineController implements InputController {
         if (printOptionText) {
             System.out.println(stringArrayToString(options));
         } else System.out.println(); //Otherwise end the line.
-        return receiveStringInput(options,caseSensitive);
+        return receiveStringInput(options, caseSensitive);
     }
-
 
 
     /**
      * Receives an input. Prints the flavourText, then requests input from the user. Will continue requesting input from the user until input
-     * matches an entry in the array options. if printOptionText is false will not show the user what options are avaliable. Final number is max length
+     * matches an entry in the array options. if printOptionText is false will not show the user what options are avaliable. Final number is max
+     * length
      * of returned string
      **/
     private String receiveStringInput(String[] options, boolean caseSensitive) {
         String output = receiveStringInput();
-        if(!caseSensitive){
-            output = output.toLowerCase();
-        }
 
         boolean isCorrect = false;
         int i = 0;
         while (i < options.length && !isCorrect) {
-            if (options[i].equals(output)) {
+            if (caseSensitive && options[i].equalsIgnoreCase(output)) {
+                isCorrect = true;
+            } else if (options[i].equals(output)) {
                 isCorrect = true;
             }
             i++;
@@ -188,8 +189,14 @@ public class CommandLineController implements InputController {
         }
     }
 
+    private String receiveStringInput(String flavourText) {
+        System.out.println(flavourText);
+        return receiveStringInput();
+    }
+
     /**
      * Gets a non-null string input
+     *
      * @return the string input received
      */
     private String receiveStringInput() {
@@ -215,19 +222,7 @@ public class CommandLineController implements InputController {
     private int[] receiveCoordinateInput(String flavourText, int[] max) {
         int[] output = new int[2];
         //Print the flavour text.
-        System.out.print(flavourText);
-        //If we have enabled option printing, print the array.
-        System.out.println("(x < " + max[0] + 1 + " and y < " + max[1] + 1);
-        //Receive input
-        String inputString = input.nextLine().toLowerCase();
-        //If it is too short, prompt for input again.
-        while (inputString.length() == 0) {
-            //Print the stuff again.
-            System.out.println("An answer needs to be entered");
-            System.out.print(flavourText);
-            //Request input again.
-            inputString = input.nextLine().toLowerCase();
-        }
+        String inputString = receiveStringInput(flavourText + " (x < " + (max[0] + 1) + " and y < " + (max[1] + 1) + ")");
 
         StringTokenizer tokenizer = new StringTokenizer(inputString, ",");
         if (tokenizer.countTokens() != 2) {
@@ -237,16 +232,16 @@ public class CommandLineController implements InputController {
         int i = 0;
         while (tokenizer.hasMoreTokens()) {
             try {
-                output[i] = Integer.getInteger(tokenizer.nextToken());
+                output[i] = Integer.parseInt(tokenizer.nextToken());
             } catch (NumberFormatException e) {
-                System.out.println("Numbers were not entered in parseable format, please try again");
+                System.out.println("Numbers were not entered in parsable format, please try again");
                 return receiveCoordinateInput(flavourText, max);
             }
-            i++;
-            if (output[i] > max[i]) {
+            if (output[i] > max[i] || output[i] < 0) {
                 System.out.println("Coordinate was too large, please try again");
                 return receiveCoordinateInput(flavourText, max);
             }
+            i++;
         }
         return output;
     }
@@ -255,44 +250,37 @@ public class CommandLineController implements InputController {
      * Receives an input. Prints the flavourText, then requests input from the user. Will continue requesting input from the user until input
      * matches an entry in the array options or is empty. if it is empty returns the defaultAnswer. Final number is length of returned string
      **/
-    private String receiveStringInput(String flavourText, String[] options, String defaultAnswer, int outputLength) {
+    private String receiveStringInput(String flavourText, String[] options, String defaultAnswer) {
         //Print a prompt for the user to enter input.
         System.out.println(flavourText + " " + stringArrayToString(options) + "[" + defaultAnswer + "]");
-        //Ensure we don't try to access a negative array index.
-        if (outputLength <= 0) {
-            outputLength = 1;
-        }
+
         //Actually get input.
         String inputString = input.nextLine().toLowerCase();
         //If the user entered nothing, return the default input.
         if (inputString.length() == 0) {
-            return ("" + defaultAnswer);
+            return (defaultAnswer);
         }
-        String inputChar = inputString.toLowerCase();
-        if (inputChar.length() >= outputLength) {
-            inputChar = inputChar.substring(0, outputLength);
-        }
+
         boolean isCorrect = false;
         int i = 0;
         while (i < options.length && !isCorrect) {
-            if (options[i].equals(inputChar)) {
+            if (options[i].equals(inputString)) {
                 isCorrect = true;
             }
             i++;
         }
         if (isCorrect) {
-            return (inputChar);
+            return inputString;
         } else {
             System.out.println("Input was not an option. Please try again.");
-            inputChar = receiveStringInput(flavourText, options, defaultAnswer, outputLength);//If they didn't get it right the first time, supply
+            return receiveStringInput(flavourText, options, defaultAnswer);//If they didn't get it right the first time, supply
             // options.
         }
-        return inputChar;
     }
 
     private double readDouble(String flavourText, double defaultAnswer, double min, double max) {
         //Print a prompt for the user to enter input.
-        System.out.println(flavourText + " Min:" + min + " Max:" + max + "[" + defaultAnswer + "]");
+        System.out.println(flavourText + " Min:" + min + ", Max:" + max + "[" + defaultAnswer + "]");
         //Actually get input.
         String inputString = input.nextLine().toLowerCase();
         //If the user entered nothing, return the default input.
@@ -324,10 +312,11 @@ public class CommandLineController implements InputController {
         System.out.println(" 7. Remove Intersection");
         System.out.println(" 8. Remove Road");
         System.out.println(" 9. Remove spawn point");
-        System.out.println("10. Exit");
+        System.out.println("10. Fill grid with intersections and roads");
+        System.out.println("11. Exit");
         printCharTimes('=', 150, true);
-        String[] options = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
-        String choice = receiveStringInput("Enter an option:", options, false, 2);
+        String[] options = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10","11"};
+        String choice = receiveStringInput("Enter an option:", options, false, false);
         switch (choice) {
             case "1":
                 simulator.start();
@@ -357,6 +346,9 @@ public class CommandLineController implements InputController {
                 removeSpawnPoint();
                 break;
             case "10":
+                fillIntersections();
+                break;
+            case "11":
                 return false;
             default:
                 break;
@@ -371,20 +363,20 @@ public class CommandLineController implements InputController {
         Intersection intersection = simulator.getIntersection(receiveCoordinateInput("Please enter the co-ordinates of the intersection you want " +
                 "cars to spawn from in the form x,y", simulator.getGridSize()));
         Direction direction = new Direction(Direction.stringToDirection(receiveStringInput("Please enter the side you want cars to spawn from", new
-                String[]{"north", "south", "east", "west"}, true, 4)));
+                String[]{"north", "south", "east", "west"}, true, false)));
 
         CarSpawn spawn = simulator.createSpawnPoint(intersection, direction);
 
         //If it was invalid keep prompting them till they get it right or quit
         while (spawn == null) {
-            char go = receiveStringInput("Please enter the side you want cars to spawn from", new String[]{"y", "n"}, true, 1).charAt(0);
+            char go = receiveFixedString("Please enter the side you want cars to spawn from", new String[]{"y", "n"}, true, 1).charAt(0);
             if (go == 'n') {
                 break;
             }
             intersection = simulator.getIntersection(receiveCoordinateInput("Please enter the co-ordinates of the intersection you " +
                     "want cars to spawn from in the form x,y", simulator.getGridSize()));
             direction = new Direction(Direction.stringToDirection(receiveStringInput("Please enter the side you want cars to spawn from",
-                    new String[]{"north", "south", "east", "west"}, true, 4)));
+                    new String[]{"north", "south", "east", "west"}, true, false)));
             spawn = simulator.createSpawnPoint(intersection, direction);
 
         }
@@ -400,7 +392,7 @@ public class CommandLineController implements InputController {
         Orientation orientation = null;
         do {
             orientation = Orientation.stringToOrientation(receiveStringInput("Enter the orientation of the starting lights", new
-                    String[]{"Horizontal", "Vertical"}, true, 10));
+                    String[]{"Horizontal", "Vertical"}, true, false));
         } while (orientation == null);
 
         int[] coordinates = receiveCoordinateInput("Please enter the co-ordinates that you want to add the intersection to", simulator.getGridSize());
@@ -411,8 +403,8 @@ public class CommandLineController implements InputController {
     @Override
     public void createSpawnPath(CarSpawn spawn) {
         boolean keepGoing = true;
-        while(keepGoing){
-            System.out.println(spawn.get);
+        while (keepGoing) {
+            //System.out.println(spawn.get);
         }
 
     }
@@ -433,11 +425,24 @@ public class CommandLineController implements InputController {
 
     @Override
     public void removeIntersection() {
+        int[] coordinates = receiveCoordinateInput("Please enter the co-ordinates that you want to remove the intersection from", simulator.getGridSize());
+        simulator.removeIntersection(coordinates[0],coordinates[1]);
+
 
     }
 
     @Override
     public void removeRoad() {
 
+    }
+
+    private void fillIntersections() {
+        for (int i = 0; i < simulator.getGridSize()[0]; i++) {
+            for (int j = 0; j < simulator.getGridSize()[1]; j++) {
+                System.out.println("Adding intersection at " + i + "," + j);
+                simulator.addIntersection(i, j, DimensionManager.secondsToTicks(10), DimensionManager.secondsToTicks(10), Orientation.HORIZONTAL);
+            }
+        }
+        simulator.getMapGrid().fillRoads();
     }
 }

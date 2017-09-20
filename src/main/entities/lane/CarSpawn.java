@@ -49,11 +49,8 @@ public class CarSpawn extends Lane {
      *
      * @return if the car couldn't spawn due to been blocked returns false.
      */
-    private boolean spawnCar() {
-        if (active) {
-            return addCar(new Car(new Position(spawnPosition.getX(), spawnPosition.getY()), carPath));
-        }
-        return false;
+    boolean spawnCar() {
+        return active && addCar(new Car(new Position(spawnPosition.getX(), spawnPosition.getY()), carPath));
     }
 
     /**

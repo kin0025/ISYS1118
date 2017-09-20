@@ -1,7 +1,8 @@
 package main.entities;
 
 import main.entities.intersection.Intersection;
-import main.utils.*;
+import main.utils.BoundingBox;
+import main.utils.Position;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.Orientation;
 import org.junit.Before;
@@ -20,9 +21,8 @@ public class RoadTest {
     @Test
     public void addIntersection() throws Exception {
         Intersection intersection = new Intersection(new Position(0, 0), 10, 10, Orientation.HORIZONTAL);
-        Direction direction = new Direction(CardinalDirection.NORTH);
-        road.addIntersection(intersection, direction);
-        assertEquals("Intersection not added correctly", CardinalDirection.SOUTH, road.getIntersectionDirection(intersection));
+        road.addIntersection(intersection, CardinalDirection.NORTH);
+        assertEquals("Intersection not added correctly", CardinalDirection.SOUTH, road.hasIntersection(intersection));
     }
 
 

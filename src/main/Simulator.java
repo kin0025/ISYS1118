@@ -2,18 +2,15 @@ package main;
 
 import main.entities.MapGrid;
 import main.entities.Road;
-import main.entities.car.Car;
-import main.entities.car.CarPath;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarSpawn;
 import main.utils.Direction;
 import main.utils.enums.Orientation;
 
-import java.util.ArrayList;
-
 
 public class Simulator {
-    boolean pause = true;
+    private boolean makingChanges = false;
+    private boolean pause = true;
     private MapGrid mapGrid;
 
     /**
@@ -21,21 +18,33 @@ public class Simulator {
      */
     public void runSimulation() {
         //This entire thing is temporary.
-
-        for (Intersection[] row : mapGrid.getGrid()) {
-            for (Intersection intersection : row) {
-                if (intersection != null) {
-                    intersection.incrementTime();
+        if (!pause) {
+            for (Intersection[] row : mapGrid.getGrid()) {
+                for (Intersection intersection : row) {
+                    if (intersection != null) {
+                        intersection.incrementTime();
+                    }
                 }
+
             }
+            for (Road roads : mapGrid.getRoads()) {
+                roads.incrementTime();
 
+            }
         }
-        for (Road roads : mapGrid.getRoads()) {
-            roads.incrementTime();
 
-        }
+    }
 
+    public boolean isLocked(){
+        return makingChanges;
+    }
 
+    public void lock(){
+        makingChanges = true;
+    }
+
+    public void unlock(){
+        makingChanges = false;
     }
 
     public boolean isPaused() {
@@ -62,23 +71,25 @@ public class Simulator {
         return mapGrid.getSize();
     }
 
-    public Intersection getIntersection(int[] coords){
-        if(coords.length == 2) {
+    public Intersection getIntersection(int[] coords) {
+        if (coords.length == 2) {
             return mapGrid.getIntersection(coords[0], coords[1]);
         }
         return null;
     }
 
-    public Intersection getIntersection(int x, int y){
-        return mapGrid.getIntersection(x,y);
+    public Intersection getIntersection(int x, int y) {
+        return mapGrid.getIntersection(x, y);
     }
 
 
     public CarSpawn createSpawnPoint(Intersection intersection, Direction directionSpawnFrom) {
+        lock();
         //addDestroyPoint();
         //CarSpawn spawner = new CarSpawn(mapGrid.findPathFromIntersections(intersections, this, this));
         //return mapGrid.addLane(spawner, roadColumn, roadRow);
-        return false;
+        unlock();
+        return null;
     }
 
     public void addDestroyPoint(int roadColumn, int roadRow) {
@@ -94,7 +105,9 @@ public class Simulator {
      * @return Whether the road can be added to the map - if a road already exists, or the intersections are not adjacent it will return false.
      */
     public boolean addRoad(Intersection intersection1, Intersection intersection2) {
+        lock();
         //TODO Add road between these two intersections if possible.
+        unlock();
         return false;
     }
 
@@ -147,8 +160,10 @@ public class Simulator {
     }
 
 
-    public void removeIntersection() {
-
+    public void removeIntersection(int x, int y) {
+        lock();
+        mapGrid.removeIntersection(x,y);
+        unlock();
     }
 
 

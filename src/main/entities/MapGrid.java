@@ -1,25 +1,20 @@
 package main.entities;
 
-import main.entities.interfaces.CarMovable;
 import main.entities.intersection.Intersection;
 import main.entities.lane.Lane;
-import main.exceptions.PathNotFoundException;
 import main.utils.BoundingBox;
 import main.utils.DimensionManager;
 import main.utils.Direction;
 import main.utils.Position;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.Orientation;
-import main.utils.enums.TurnDirection;
 
 import java.util.ArrayList;
 
 public class MapGrid {
-    private final Intersection[][] grid;
     private final int width;
     private final int height;
-    private final Road[][] horizontalRoads;
-    private final Road[][] verticalRoads;
+    private Intersection[][] grid;
     private ArrayList<Road> roads = new ArrayList<>();
 
     //FIXME Not final at all.
@@ -28,12 +23,11 @@ public class MapGrid {
         this.height = height;
         grid = new Intersection[width][height];
         //A list of all the roads in the grid - used to create roads and display them.
-        horizontalRoads = new Road[width + 1][height];
-        verticalRoads = new Road[width][height + 1];
     }
 
     /**
      * Gets the grid of intersections
+     *
      * @return the intersection grid
      **/
     public Intersection[][] getGrid() {
@@ -43,11 +37,11 @@ public class MapGrid {
     /**
      * Adds an intersection to the map grid
      *
-     * @param x                   the column in the grid the intersection will be placed in
-     * @param y                   the row in the grid the intersection will be placed in
-     * @param lightTimeV  the time in ticks the vertical lights will be green for
-     * @param lightTimeH the time in ticks the horizontal lights will be green for
-     * @param startingLight       the orientation (horizontal or vertical) of the lights.
+     * @param x             the column in the grid the intersection will be placed in
+     * @param y             the row in the grid the intersection will be placed in
+     * @param lightTimeV    the time in ticks the vertical lights will be green for
+     * @param lightTimeH    the time in ticks the horizontal lights will be green for
+     * @param startingLight the orientation (horizontal or vertical) of the lights.
      * @return whether the intersection was added successfully - if there was already an intersection in the location it will fail to add.
      */
     public boolean addIntersection(int x, int y, int lightTimeV, int lightTimeH, Orientation startingLight) {
@@ -59,53 +53,85 @@ public class MapGrid {
 
     /**
      * Removes an intersection at the grid co-ordinates x and y
+     *
      * @param x the column in the grid the intersection will be placed in
      * @param y the row the intersection will be placed in
      */
-    public void removeIntersections(int x, int y) {
+    public void removeIntersection(int x, int y) {
+        Intersection intersection = grid[x][y];
+        for (Road road : roads) {
+            if (road.hasIntersection(intersection)) {
+                System.out.println("Removing Road");
+                roads.remove(road);
+            }
+        }
         grid[x][y] = null;
     }
 
-    public boolean addLane(Lane lane, int column, int row) {
-        if (lane.getDirection().getOrientation() == Orientation.HORIZONTAL && horizontalRoads[column][row] != null) {
-            horizontalRoads[column][row].addLane(lane);
-            return true;
-        } else if (verticalRoads[column][row] != null) {
-            verticalRoads[column][row].addLane(lane);
+    public boolean addLane(Lane lane, Intersection intersection1, Intersection intersection2) {
+        Road road = getRoad(intersection1, intersection2);
+        if (road.getOrientation() == lane.getDirection().getOrientation()) {
+            road.addLane(lane);
             return true;
         }
         return false;
     }
 
-    public boolean addRoad(int x, int y, Orientation orientation) {
-        if (x > width || x < -1 || y > height || y < -1) {
-            return false;
-        }
-        double xPos, xWidth;
-        double yPos, yWidth;
-        int offset = DimensionManager.lengthOfRoadPixels + DimensionManager.widthOfIntersectionPixels;
-        if (orientation == Orientation.VERTICAL) {
-            if (verticalRoads[x][y] != null) {
-                return false;
-            }
-            xPos = (x) * offset + offset;
-            yPos = (y) * offset + (offset / 2);
-            xWidth = DimensionManager.widthOfRoadPixels;
-            yWidth = DimensionManager.lengthOfRoadPixels;
-        } else {
-            if (horizontalRoads[x][y] != null) {
-                return false;
-            }
-            xPos = (x * offset) + (offset / 2);
-            yPos = (y * offset) + offset;
-            xWidth = DimensionManager.lengthOfRoadPixels;
-            yWidth = DimensionManager.widthOfRoadPixels;
+    public boolean addRoad(Intersection intersection1, Intersection intersection2, Orientation orientation) {
+        if (intersectionsAreAdjacent(intersection1, intersection2, orientation) && getRoad(intersection1, intersection2) == null) {
+
+            double xPos, xWidth;
+            double yPos, yWidth;
+            int offset = DimensionManager.lengthOfRoadPixels + DimensionManager.widthOfIntersectionPixels;
+            if (orientation == Orientation.VERTICAL) {
+                xPos = (getIntersectionCoords(intersection1)[0]) * offset + offset;
+                yPos = (getIntersectionCoords(intersection1)[1]) * offset + (offset / 2);
+                xWidth = DimensionManager.widthOfRoadPixels;
+                yWidth = DimensionManager.lengthOfRoadPixels;
+            } else {
+                xPos = (getIntersectionCoords(intersection1)[0] * offset) + (offset / 2);
+                yPos = (getIntersectionCoords(intersection1)[1] * offset) + offset;
+                xWidth = DimensionManager.lengthOfRoadPixels;
+                yWidth = DimensionManager.widthOfRoadPixels;
 
 
+            }
+            roads.add(new Road(orientation, new BoundingBox(new Position(xPos, yPos), xWidth, yWidth)));
+            return true;
         }
-        roads.add(new Road(orientation, new BoundingBox(new Position(xPos, yPos), xWidth, yWidth)));
-        return true;
+        return false;
     }
+
+    public boolean intersectionsAreAdjacent(Intersection intersection1, Intersection intersection2) {
+        return intersectionsAreAdjacent(intersection1, intersection2, null);
+    }
+
+    public boolean intersectionsAreAdjacent(Intersection intersection1, Intersection intersection2, Orientation orientation) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (grid[x][y] == intersection1) {
+                    if (orientation == null || orientation == Orientation.VERTICAL) {
+                        if (grid[x][y + 1] == intersection2) {
+                            return true;
+                        }
+                        if (grid[x][y - 1] == intersection2) {
+                            return true;
+                        }
+                    }
+                    if (orientation == null || orientation == Orientation.HORIZONTAL) {
+                        if (grid[x + 1][y] == intersection2) {
+                            return true;
+                        }
+                        if (grid[x - 1][y] == intersection2) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 
     public Intersection getIntersection(int x, int y) {
         return grid[x][y];
@@ -119,9 +145,10 @@ public class MapGrid {
         return height;
     }
 
-    public int[] getSize(){
-        return new int[] {width,height};
+    public int[] getSize() {
+        return new int[]{width, height};
     }
+
     /**
      * Needs to empty any roads in intersections if there are any - call removeAllRoads on intersections?
      * Generate all connecting roads - lanes are auto created by the roads.
@@ -145,8 +172,9 @@ public class MapGrid {
                                 .DIMENSION.Y)) / 2;
                         Road newRoad = new Road(Orientation.VERTICAL, new BoundingBox(new Position(posX, posY), DimensionManager
                                 .widthOfRoadPixels, DimensionManager.lengthOfRoadPixels));
+                        newRoad.addIntersection(grid[i][j],CardinalDirection.EAST);
+                        newRoad.addIntersection(grid[i][j+1],CardinalDirection.WEST);
                         roads.add(newRoad);
-                        horizontalRoads[i][j + 1] = newRoad;
                         grid[i][j].addRoad(newRoad, new Direction(CardinalDirection.EAST));
                         grid[i][j + 1].addRoad(newRoad, new Direction(CardinalDirection.WEST));
                     }
@@ -159,7 +187,8 @@ public class MapGrid {
                         Road newRoad = new Road(Orientation.HORIZONTAL, new BoundingBox(new Position(posX, posY), DimensionManager.lengthOfRoadPixels,
                                 DimensionManager.widthOfIntersectionPixels));
                         roads.add(newRoad);
-                        verticalRoads[i + 1][j] = newRoad;
+                        newRoad.addIntersection(grid[i][j],CardinalDirection.SOUTH);
+                        newRoad.addIntersection(grid[i+1][j],CardinalDirection.NORTH);
                         grid[i][j].addRoad(newRoad, new Direction(CardinalDirection.SOUTH));
                         grid[i + 1][j].addRoad(newRoad, new Direction(CardinalDirection.NORTH));
                     }
@@ -170,19 +199,57 @@ public class MapGrid {
     }
 
 
+    /**
+     * Expands the grid so its
+     *
+     * @param x
+     * @param y
+     */
+    public void expandGrid(int x, int y) {
+        if (x > width && y > height) {
+            Intersection[][] gridReplace = new Intersection[x][y];
+            for (int i = 0; i < width; x++) {
+                System.arraycopy(grid[i], 0, gridReplace[i], 0, height);
+            }
+            grid = gridReplace;
+        }
+    }
+
+
     public ArrayList<Road> getRoads() {
         return roads;
     }
 
-    public Road getRoad(Intersection intersection1, Intersection intersection2, Orientation orientation) {
-        if (orientation == Orientation.HORIZONTAL) {
-            return horizontalRoads[x][y];
-        } else {
-            return verticalRoads[x][y];
+    /**
+     * Gets the road that runs between two intersections
+     *
+     * @param intersection1 an intersection
+     * @param intersection2 another intersection
+     * @return null if no road, or the road between two intersections
+     */
+    public Road getRoad(Intersection intersection1, Intersection intersection2) {
+        for (Road road : roads) {
+            if (road.hasIntersection(intersection1) && road.hasIntersection(intersection2)) {
+                return road;
+            }
         }
+        return null;
     }
 
-    public int[] getIntersectionCoords(Intersection intersection){
+    /**
+     * Returns the co-ordinates of an intersection
+     *
+     * @param intersection the intersection
+     * @return the co-ordinates or null if no intersection exists
+     */
+    public int[] getIntersectionCoords(Intersection intersection) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (grid[x][y] == intersection) {
+                    return new int[]{x, y};
+                }
+            }
+        }
         return null;
     }
 

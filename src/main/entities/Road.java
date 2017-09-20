@@ -4,7 +4,9 @@ package main.entities;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarDestroy;
 import main.entities.lane.Lane;
-import main.utils.*;
+import main.utils.BoundingBox;
+import main.utils.DimensionManager;
+import main.utils.Direction;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.Orientation;
 import main.utils.enums.TurnDirection;
@@ -63,11 +65,9 @@ public class Road {
         }
     }
 
-    public void addIntersection(Intersection intersection, Direction directionFromIntersection) {
-        directionFromIntersection.reverse();
-        intersectionDirections.put(intersection, directionFromIntersection.getDirection());
-        //We don't want to change the original value
-        directionFromIntersection.reverse();
+    public void addIntersection(Intersection intersection, CardinalDirection directionFromIntersection) {
+        intersectionDirections.put(intersection, directionFromIntersection.reverse());
+
     }
 
     public void addLane(Lane lane) {
@@ -82,7 +82,7 @@ public class Road {
     }
 
     public void stopCars(Intersection intersection) {
-        CardinalDirection direction = intersectionDirections.get(intersection);
+        CardinalDirection direction = getIntersectionDirection(intersection);
         for (Lane lane : lanes) {
             if (lane.getDirection().getDirection() == direction) {
                 lane.stopFirstCar();
@@ -91,7 +91,7 @@ public class Road {
     }
 
     public void startCars(Intersection intersection) {
-        CardinalDirection direction = intersectionDirections.get(intersection);
+        CardinalDirection direction = getIntersectionDirection(intersection);
         for (Lane lane : lanes) {
             if (lane.getDirection().getDirection() == direction) {
                 lane.startFirstCar();
@@ -138,6 +138,17 @@ public class Road {
      */
     public CardinalDirection getIntersectionDirection(Intersection intersection) {
         return intersectionDirections.get(intersection);
+    }
+
+    /**
+     * Gets the direction of an intersection relative to the road, if it is attached to one.
+     *
+     * @param intersection The intersection you want the direction of
+     * @return a direction, or null. E.g if a road is leaving the east end of an intersection, the intersection is on
+     * the west end of the road. The road will return a direction of the value west.
+     */
+    public boolean hasIntersection(Intersection intersection) {
+        return intersectionDirections.containsKey(intersection);
     }
 
 

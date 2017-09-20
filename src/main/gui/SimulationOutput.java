@@ -100,8 +100,8 @@ public class SimulationOutput extends JPanel {
                             intersectionBox.getHeight()));
 
                     Orientation[] orientations = {Orientation.HORIZONTAL, Orientation.VERTICAL};
-                    for (int x = 0; x < orientations.length; x++) {
-                        LightStatus lightStatus = intersection.getLightStatus(orientations[x]);
+                    for (Orientation orientation : orientations) {
+                        LightStatus lightStatus = intersection.getLightStatus(orientation);
                         switch (lightStatus) {
                             case RED:
                                 g2.setPaint(Color.red);
@@ -125,7 +125,7 @@ public class SimulationOutput extends JPanel {
                         double xPos2 = -DimensionManager
                                 .sizeOfLightPixels / 2;
                         ;
-                        if (orientations[x] == Orientation.HORIZONTAL) {
+                        if (orientation == Orientation.HORIZONTAL) {
                             xPos1 += intersection.getCentre().getX() - (DimensionManager.widthOfIntersectionPixels / 2);
                             xPos2 += intersection.getCentre().getX() + (DimensionManager.widthOfIntersectionPixels / 2);
                             yPos1 += intersection.getCentre().getY();

@@ -1,6 +1,7 @@
 package main.gui;
 
 import main.Simulator;
+import main.entities.lane.CarSpawn;
 
 public class GraphicsController implements InputController {
     private Simulator simulator;
@@ -28,7 +29,7 @@ public class GraphicsController implements InputController {
     }
 
     @Override
-    public void createSpawnPath() {
+    public void createSpawnPath(CarSpawn carSpawn) {
 
     }
 

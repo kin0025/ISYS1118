@@ -2,8 +2,10 @@ package main;
 
 import main.entities.MapGrid;
 import main.entities.Road;
+import main.entities.car.Car;
 import main.entities.car.CarPath;
 import main.entities.intersection.Intersection;
+import main.entities.lane.CarSpawn;
 import main.utils.Direction;
 import main.utils.enums.Orientation;
 
@@ -72,7 +74,7 @@ public class Simulator {
     }
 
 
-    public boolean createSpawnPoint(ArrayList<Intersection> intersections, int roadColumn, int roadRow) {
+    public CarSpawn createSpawnPoint(Intersection intersection, Direction directionSpawnFrom) {
         //addDestroyPoint();
         //CarSpawn spawner = new CarSpawn(mapGrid.findPathFromIntersections(intersections, this, this));
         //return mapGrid.addLane(spawner, roadColumn, roadRow);
@@ -139,20 +141,6 @@ public class Simulator {
     public boolean addIntersection(int x, int y, int lightTimeVertical, int lightTimeHorizontal, Orientation startingLight) {
         return mapGrid.addIntersection(x, y, lightTimeVertical, lightTimeHorizontal, startingLight);
     }
-
-
-    /**
-     * Creates a spawn path after a spawn point has already been created.
-     *
-     * @param intersection1
-     * @param intersection2
-     * @return
-     */
-    public CarPath createSpawnPath() {
-        //Create the spawn pathh
-        return new CarPath();
-    }
-
 
     public void removeSpawnPoint() {
 

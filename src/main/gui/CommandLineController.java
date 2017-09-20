@@ -1,7 +1,9 @@
 package main.gui;
 
 import main.Simulator;
+import main.entities.car.CarPath;
 import main.entities.intersection.Intersection;
+import main.entities.lane.CarSpawn;
 import main.utils.DimensionManager;
 import main.utils.Direction;
 import main.utils.enums.Orientation;
@@ -364,11 +366,29 @@ public class CommandLineController implements InputController {
 
     @Override
     public void addSpawnPoint() {
-        Intersection intersection1 = simulator.getIntersection(receiveCoordinateInput("Please enter the co-ordinates of the intersection in the " +
-                "form x,y", simulator.getGridSize()));
-        Direction intersection = simulator.getIntersection(receiveCoordinateInput("Please enter the co-ordinates of the intersection in the form x," +
-                "y", simulator.getGridSize()));
-        simulator.createSpawnPoint();
+
+        //Get the intersection and direction from the user
+        Intersection intersection = simulator.getIntersection(receiveCoordinateInput("Please enter the co-ordinates of the intersection you want " +
+                "cars to spawn from in the form x,y", simulator.getGridSize()));
+        Direction direction = new Direction(Direction.stringToDirection(receiveStringInput("Please enter the side you want cars to spawn from", new
+                String[]{"north", "south", "east", "west"}, true, 4)));
+
+        CarSpawn spawn = simulator.createSpawnPoint(intersection, direction);
+
+        //If it was invalid keep prompting them till they get it right or quit
+        while (spawn == null) {
+            char go = receiveStringInput("Please enter the side you want cars to spawn from", new String[]{"y", "n"}, true, 1).charAt(0);
+            if (go == 'n') {
+                break;
+            }
+            intersection = simulator.getIntersection(receiveCoordinateInput("Please enter the co-ordinates of the intersection you " +
+                    "want cars to spawn from in the form x,y", simulator.getGridSize()));
+            direction = new Direction(Direction.stringToDirection(receiveStringInput("Please enter the side you want cars to spawn from",
+                    new String[]{"north", "south", "east", "west"}, true, 4)));
+            spawn = simulator.createSpawnPoint(intersection, direction);
+
+        }
+        createSpawnPath(spawn);
     }
 
     @Override
@@ -389,8 +409,11 @@ public class CommandLineController implements InputController {
     }
 
     @Override
-    public void createSpawnPath() {
-        simulator.createSpawnPath();
+    public void createSpawnPath(CarSpawn spawn) {
+        boolean keepGoing = true;
+        while(keepGoing){
+            System.out.println(spawn.get);
+        }
 
     }
 

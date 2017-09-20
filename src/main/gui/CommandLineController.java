@@ -174,7 +174,7 @@ public class CommandLineController implements InputController {
         boolean isCorrect = false;
         int i = 0;
         while (i < options.length && !isCorrect) {
-            if (caseSensitive && options[i].equalsIgnoreCase(output)) {
+            if (!caseSensitive && options[i].equalsIgnoreCase(output)) {
                 isCorrect = true;
             } else if (options[i].equals(output)) {
                 isCorrect = true;
@@ -201,8 +201,7 @@ public class CommandLineController implements InputController {
      */
     private String receiveStringInput() {
         //Receive input
-        String inputString = input.nextLine().toLowerCase();
-        //If it is too short, prompt for input again.
+        String inputString = input.nextLine().trim();       //If it is too short, prompt for input again.
         while (inputString.length() == 0) {
             //Print the stuff again.
             System.out.println("Answer needs to be entered");
@@ -389,7 +388,7 @@ public class CommandLineController implements InputController {
         int horizontalTime = DimensionManager.secondsToTicks(readDouble("Please enter the length of the horizontal light in seconds", 5, 1, 100));
         int verticalTime = DimensionManager.secondsToTicks(readDouble("Please enter the length of the vertical light in seconds", 5, 1, 100));
 
-        Orientation orientation = null;
+        Orientation orientation;
         do {
             orientation = Orientation.stringToOrientation(receiveStringInput("Enter the orientation of the starting lights", new
                     String[]{"Horizontal", "Vertical"}, true, false));

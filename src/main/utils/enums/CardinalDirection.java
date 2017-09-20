@@ -28,7 +28,34 @@ public enum CardinalDirection {
             default:
                 return null;
         }
+    }
 
+    public Orientation getAxis() {
+        switch (this) {
+            case NORTH:
+            case SOUTH:
+                return Orientation.VERTICAL;
+            case EAST:
+            case WEST:
+                return Orientation.HORIZONTAL;
+            default:
+                return null;
+        }
+    }
+
+    public int toDegrees() {
+        switch (this) {
+            case NORTH:
+                return 0;
+            case SOUTH:
+                return 180;
+            case EAST:
+                return 90;
+            case WEST:
+                return 270;
+            default:
+                return -1;
+        }
     }
 
 }

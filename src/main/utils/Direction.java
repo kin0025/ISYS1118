@@ -5,7 +5,6 @@
 package main.utils;
 
 import com.sun.istack.internal.Nullable;
-import main.entities.car.Car;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.Orientation;
 import main.utils.enums.TurnDirection;
@@ -55,6 +54,23 @@ public class Direction {
                 this.direction = west;
                 break;
             default:
+        }
+    }
+
+    public static CardinalDirection stringToDirection(String input) {
+        input = input.toLowerCase();
+        switch (input) {
+            case "north":
+                return CardinalDirection.NORTH;
+            case "east":
+                return CardinalDirection.EAST;
+            case "south":
+                return CardinalDirection.SOUTH;
+            case "west":
+                return CardinalDirection.WEST;
+            default:
+                return null;
+
         }
     }
 
@@ -146,13 +162,28 @@ public class Direction {
     }
 
     /**
-     * Gets the turn direction from this direction turning into the argument direction
+     * Gets the turn direction from this direction turning into the argument
      *
      * @param turningTo the direction we are turning to
      * @return The turn direction enum
      */
     public TurnDirection getTurnDirection(Direction turningTo) {
-        switch (turningTo.direction - direction) {
+        return turnDegreesToDirection(turningTo.direction - direction);
+
+    }
+
+    /**
+     * Gets the turn direction from this direction turning into the argument
+     *
+     * @param turningTo the direction we are turning to
+     * @return The turn direction enum
+     */
+    public TurnDirection getTurnDirection(CardinalDirection turningTo) {
+        return turnDegreesToDirection(turningTo.toDegrees() - direction);
+    }
+
+    private TurnDirection turnDegreesToDirection(int degrees) {
+        switch (degrees) {
             //Right
             case -270:
             case 90:
@@ -175,23 +206,6 @@ public class Direction {
             return Orientation.VERTICAL;
         } else {
             return Orientation.HORIZONTAL;
-        }
-    }
-
-    public static CardinalDirection stringToDirection(String input) {
-        input = input.toLowerCase();
-        switch (input) {
-            case "north":
-                return CardinalDirection.NORTH;
-            case "east":
-                return CardinalDirection.EAST;
-            case "south":
-                return CardinalDirection.SOUTH;
-            case "west":
-                return CardinalDirection.WEST;
-            default:
-                return null;
-
         }
     }
 

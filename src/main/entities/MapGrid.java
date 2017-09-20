@@ -59,12 +59,14 @@ public class MapGrid {
      */
     public void removeIntersection(int x, int y) {
         Intersection intersection = grid[x][y];
+        ArrayList<Road> removalRoads = new ArrayList<>();
         for (Road road : roads) {
             if (road.hasIntersection(intersection)) {
                 System.out.println("Removing Road");
-                roads.remove(road);
+                removalRoads.add(road);
             }
         }
+        roads.removeAll(removalRoads);
         grid[x][y] = null;
     }
 
@@ -78,7 +80,7 @@ public class MapGrid {
     }
 
     public boolean addRoad(Intersection intersection1, Intersection intersection2, Orientation orientation) {
-        if (intersectionsAreAdjacent(intersection1, intersection2, orientation) && getRoad(intersection1, intersection2) == null) {
+        if (intersectionsAreAdjacent(intersection1, intersection2) && getRoad(intersection1, intersection2) == null) {
 
             double xPos, xWidth;
             double yPos, yWidth;
@@ -96,7 +98,14 @@ public class MapGrid {
 
 
             }
-            roads.add(new Road(orientation, new BoundingBox(new Position(xPos, yPos), xWidth, yWidth)));
+            Road newRoad = new Road(orientation, new BoundingBox(new Position(xPos, yPos), xWidth, yWidth));
+            roads.add(newRoad);
+
+            CardinalDirection direction = getDirectionFrom(intersection1,intersection2);
+            newRoad.addIntersection(intersection1,direction);
+            newRoad.addIntersection(intersection2,direction.reverse());
+            intersection1.addRoad(newRoad,direction);
+            intersection2.addRoad(newRoad,direction.reverse());
             return true;
         }
         return false;
@@ -107,29 +116,38 @@ public class MapGrid {
     }
 
     public boolean intersectionsAreAdjacent(Intersection intersection1, Intersection intersection2, Orientation orientation) {
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (grid[x][y] == intersection1) {
-                    if (orientation == null || orientation == Orientation.VERTICAL) {
-                        if (grid[x][y + 1] == intersection2) {
-                            return true;
-                        }
-                        if (grid[x][y - 1] == intersection2) {
-                            return true;
-                        }
-                    }
-                    if (orientation == null || orientation == Orientation.HORIZONTAL) {
-                        if (grid[x + 1][y] == intersection2) {
-                            return true;
-                        }
-                        if (grid[x - 1][y] == intersection2) {
-                            return true;
-                        }
-                    }
-                }
-            }
+        CardinalDirection direction = getDirectionFrom(intersection1, intersection2);
+        return direction != null && (orientation == null || direction.getAxis() == orientation);
+    }
+
+    public Orientation getIntersectionAxis(Intersection intersection1, Intersection intersection2) {
+        CardinalDirection direction = getDirectionFrom(intersection1, intersection2);
+        if (direction != null) {
+            return direction.getAxis();
         }
-        return false;
+        return null;
+    }
+
+    public CardinalDirection getDirectionFrom(Intersection from, Intersection to) {
+        int[] coords = getIntersectionCoords(from);
+        if (coords == null) {
+            return null;
+        }
+        int x = coords[0];
+        int y = coords[1];
+        if (grid[x][y + 1] == to) {
+            return CardinalDirection.NORTH;
+        }
+        if (grid[x][y - 1] == to) {
+            return CardinalDirection.SOUTH;
+        }
+        if (grid[x + 1][y] == to) {
+            return CardinalDirection.EAST;
+        }
+        if (grid[x - 1][y] == to) {
+            return CardinalDirection.WEST;
+        }
+        return null;
     }
 
 
@@ -172,11 +190,11 @@ public class MapGrid {
                                 .DIMENSION.Y)) / 2;
                         Road newRoad = new Road(Orientation.VERTICAL, new BoundingBox(new Position(posX, posY), DimensionManager
                                 .widthOfRoadPixels, DimensionManager.lengthOfRoadPixels));
-                        newRoad.addIntersection(grid[i][j],CardinalDirection.EAST);
-                        newRoad.addIntersection(grid[i][j+1],CardinalDirection.WEST);
+                        newRoad.addIntersection(grid[i][j], CardinalDirection.EAST);
+                        newRoad.addIntersection(grid[i][j + 1], CardinalDirection.WEST);
                         roads.add(newRoad);
-                        grid[i][j].addRoad(newRoad, new Direction(CardinalDirection.EAST));
-                        grid[i][j + 1].addRoad(newRoad, new Direction(CardinalDirection.WEST));
+                        grid[i][j].addRoad(newRoad, CardinalDirection.EAST);
+                        grid[i][j + 1].addRoad(newRoad, CardinalDirection.WEST);
                     }
                     //Check the vertical grid
                     if (i + 1 != grid.length && grid[i][j] != null && grid[i + 1][j] != null) {
@@ -187,10 +205,10 @@ public class MapGrid {
                         Road newRoad = new Road(Orientation.HORIZONTAL, new BoundingBox(new Position(posX, posY), DimensionManager.lengthOfRoadPixels,
                                 DimensionManager.widthOfIntersectionPixels));
                         roads.add(newRoad);
-                        newRoad.addIntersection(grid[i][j],CardinalDirection.SOUTH);
-                        newRoad.addIntersection(grid[i+1][j],CardinalDirection.NORTH);
-                        grid[i][j].addRoad(newRoad, new Direction(CardinalDirection.SOUTH));
-                        grid[i + 1][j].addRoad(newRoad, new Direction(CardinalDirection.NORTH));
+                        newRoad.addIntersection(grid[i][j], CardinalDirection.SOUTH);
+                        newRoad.addIntersection(grid[i + 1][j], CardinalDirection.NORTH);
+                        grid[i][j].addRoad(newRoad, CardinalDirection.SOUTH);
+                        grid[i + 1][j].addRoad(newRoad, CardinalDirection.NORTH);
                     }
                 }
             }

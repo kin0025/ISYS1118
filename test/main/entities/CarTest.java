@@ -1,6 +1,7 @@
 package main.entities;
 
 import main.entities.car.Car;
+import main.entities.car.CarPath;
 import main.entities.interfaces.CarMovable;
 import main.entities.lane.Lane;
 import main.utils.*;
@@ -16,12 +17,13 @@ import static org.junit.Assert.assertEquals;
 public class CarTest {
     private Car car;
     private Position carPosition;
-    private ArrayList<CarMovable> carPath;
+    private CarPath carPath;
 
     @Before
     public void setUp() throws Exception {
         carPosition = new Position(1, 1);
-        car = new Car(carPosition, null);
+
+        car = new Car(carPosition, carPath);
     }
 
     @After

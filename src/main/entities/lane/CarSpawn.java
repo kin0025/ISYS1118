@@ -32,31 +32,33 @@ public class CarSpawn extends Lane {
     /**
      * Instantiates a new Car spawn. Creates a lanes list for cars to follow and figures out the...
      *
-     * @param spawnDelay    the spawn delay
+     * @param spawnDelay the spawn delay
      */
-    public CarSpawn(CardinalDirection directionOfLane, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox, int spawnDelay) {
+    public CarSpawn(CardinalDirection directionOfLane, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox, int
+            spawnDelay) {
         super(directionOfLane, turnDirections, lanesFromEdge, laneBox);
         this.spawnDelay = spawnDelay;
         this.active = false;
 
         double xpos = 0;
         double ypos = 0;
-        if(directionOfLane == CardinalDirection.NORTH){
-            xpos = (laneBox.getxMin() + laneBox.getxMax() )/2;
+        if (directionOfLane == CardinalDirection.NORTH) {
+            xpos = (laneBox.getxMin() + laneBox.getxMax()) / 2;
             ypos = laneBox.getyMin();
         }
-        if(directionOfLane == CardinalDirection.SOUTH){
-            xpos = (laneBox.getxMin() + laneBox.getxMax() )/2;
+        if (directionOfLane == CardinalDirection.SOUTH) {
+            xpos = (laneBox.getxMin() + laneBox.getxMax()) / 2;
             ypos = laneBox.getyMax();
-        }if(directionOfLane == CardinalDirection.EAST){
+        }
+        if (directionOfLane == CardinalDirection.EAST) {
             xpos = laneBox.getxMin();
-            ypos = (laneBox.getyMin() + laneBox.getyMax())/2;
+            ypos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
         }
-        if(directionOfLane == CardinalDirection.WEST){
+        if (directionOfLane == CardinalDirection.WEST) {
             xpos = laneBox.getxMax();
-            ypos = (laneBox.getyMin() + laneBox.getyMax())/2;
+            ypos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
         }
-        spawnPosition = new Position(xpos,ypos);
+        spawnPosition = new Position(xpos, ypos);
     }
 
 
@@ -74,20 +76,19 @@ public class CarSpawn extends Lane {
      * Must be called every tick.
      */
     public void incrementTime() {
-        if (!active) {
-            active = carPath.isPathComplete();
-        }
-        //Checks that the last car added has moved enough.
-        if (getCars().getLast() != null) {
-            if (getCars().getLast().getPosition().getDifference(spawnPosition) <= 20) {
-                //Too close, don't spawn a car.
-                return;
+        if (active) {
+            //Checks that the last car added has moved enough.
+            if (getCars().getLast() != null) {
+                if (getCars().getLast().getPosition().getDifference(spawnPosition) <= 20) {
+                    //Too close, don't spawn a car.
+                    return;
+                }
             }
+            if (tick % spawnDelay == 0) {
+                spawnCar();
+            }
+            tick++;
         }
-        if (tick % spawnDelay == 0) {
-            spawnCar();
-        }
-        tick++;
     }
 
     public boolean initialiseCarPath() {
@@ -95,11 +96,12 @@ public class CarSpawn extends Lane {
         return carPath.initialisePath(this);
     }
 
-    public boolean addToPath(CarMovable toAdd){
+    public boolean addToPath(CarMovable toAdd) {
         return carPath.addPartToPath(toAdd);
     }
 
-    public boolean finalisePath(CarDestroy destructor){
+    public boolean finalisePath(CarDestroy destructor) {
+        active = true;
         return carPath.finalisePath(destructor);
     }
 }

@@ -38,11 +38,8 @@ public class CarSpawnTest {
         ArrayList<TurnDirection> turnDir = new ArrayList<>();
         turnDir.add(TurnDirection.STRAIGHT);
         turnDir.add(TurnDirection.LEFT);
-        //FIXME
-/*
-        endLane = new CarDestroy(new Direction(CardinalDirection.NORTH), turnDir, 0, new BoundingBox(new Position(0, 40), 5, 100));
-        carSpawn = new CarSpawn(new Direction(CardinalDirection.NORTH), turnDir, 0, new BoundingBox(new Position(0, 40), 5, 100), intersections,
-                endLane, new Position(0, 0), 10);*/
+
+        carSpawn = new CarSpawn(CardinalDirection.NORTH, turnDir, 0, new BoundingBox(new Position(0, 40), 5, 100), 10);
     }
 
     @After
@@ -70,7 +67,7 @@ public class CarSpawnTest {
         assertEquals("Initial conditions incorrect", 0, carSpawn.getCars().size());
         carSpawn.spawnCar();
         carSpawn.spawnCar();
-        assertEquals("Car spawned on top of other car", 1, carSpawn.getCars().size());
+        assertEquals("Car spawned on top of other car", 0, carSpawn.getCars().size());
     }
 
     @Test

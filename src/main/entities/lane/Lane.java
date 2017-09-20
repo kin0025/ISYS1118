@@ -11,6 +11,7 @@ import main.utils.BoundingBox;
 import main.utils.DimensionManager;
 import main.utils.Direction;
 import main.utils.Position;
+import main.utils.enums.CardinalDirection;
 import main.utils.enums.TurnDirection;
 
 import java.util.ArrayList;
@@ -19,11 +20,11 @@ import java.util.LinkedList;
 public class Lane implements CarMovable, SimulationTimed {
     private final ArrayList<TurnDirection> turnDirections;
     private final LinkedList<Car> cars = new LinkedList<>();
-    private final Direction direction;
+    private final CardinalDirection direction;
     private final int lanesFromEdge;
     private final BoundingBox laneBox;
 
-    public Lane(Direction direction, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox) {
+    public Lane(CardinalDirection direction, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox) {
         this.turnDirections = turnDirections;
         this.direction = direction;
         this.lanesFromEdge = lanesFromEdge;
@@ -96,7 +97,7 @@ public class Lane implements CarMovable, SimulationTimed {
         return !carOutsideBox;
     }
 
-    public Direction getDirection() {
+    public CardinalDirection getDirection() {
         return direction;
     }
 

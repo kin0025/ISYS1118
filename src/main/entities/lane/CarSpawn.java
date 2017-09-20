@@ -12,6 +12,7 @@ import main.entities.interfaces.CarMovable;
 import main.utils.BoundingBox;
 import main.utils.Direction;
 import main.utils.Position;
+import main.utils.enums.CardinalDirection;
 import main.utils.enums.TurnDirection;
 
 import java.util.ArrayList;
@@ -32,15 +33,31 @@ public class CarSpawn extends Lane {
     /**
      * Instantiates a new Car spawn. Creates a lanes list for cars to follow and figures out the...
      *
-     * @param spawnPosition the spawn position
      * @param spawnDelay    the spawn delay
      */
-    public CarSpawn(Direction direction, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox, Position
-            spawnPosition, int spawnDelay) {
-        super(direction, turnDirections, lanesFromEdge, laneBox);
+    public CarSpawn(CardinalDirection directionOfLane, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox, int spawnDelay) {
+        super(directionOfLane, turnDirections, lanesFromEdge, laneBox);
         this.spawnDelay = spawnDelay;
-        this.spawnPosition = spawnPosition;
         this.active = false;
+
+        double xpos = 0;
+        double ypos = 0;
+        if(directionOfLane == CardinalDirection.NORTH){
+            xpos = (laneBox.getxMin() + laneBox.getxMax() )/2;
+            ypos = laneBox.getyMin();
+        }
+        if(directionOfLane == CardinalDirection.SOUTH){
+            xpos = (laneBox.getxMin() + laneBox.getxMax() )/2;
+            ypos = laneBox.getyMax();
+        }if(directionOfLane == CardinalDirection.EAST){
+            xpos = laneBox.getxMin();
+            ypos = (laneBox.getyMin() + laneBox.getyMax())/2;
+        }
+        if(directionOfLane == CardinalDirection.WEST){
+            xpos = laneBox.getxMax();
+            ypos = (laneBox.getyMin() + laneBox.getyMax())/2;
+        }
+        spawnPosition = new Position(xpos,ypos);
     }
 
 

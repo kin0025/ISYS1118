@@ -314,7 +314,7 @@ public class CommandLineController implements InputController {
         System.out.println("10. Fill grid with intersections and roads");
         System.out.println("11. Exit");
         printCharTimes('=', 150, true);
-        String[] options = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10","11"};
+        String[] options = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"};
         String choice = receiveStringInput("Enter an option:", options, false, false);
         switch (choice) {
             case "1":
@@ -361,16 +361,16 @@ public class CommandLineController implements InputController {
         //Get the intersection and direction from the user
         Intersection intersection = simulator.getIntersection(receiveCoordinateInput("Please enter the co-ordinates of the intersection you want " +
                 "cars to spawn from in the form x,y", simulator.getGridSize()));
-        Direction direction = new Direction(Direction.stringToDirection(receiveStringInput("Please enter the side you want cars to spawn from", new
-                String[]{"north", "south", "east", "west"}, true, false)));
+        Direction direction = (Direction.stringToDirection(receiveStringInput("Please enter the side you want cars to spawn from", new
+                String[]{"north", "south", "east", "west"}, true, false));
 
         CarSpawn spawn = simulator.createSpawnPoint(intersection, direction);
 
         //If it was invalid keep prompting them till they get it right or quit
         while (spawn == null) {
-            char go = receiveFixedString("Please enter the side you want cars to spawn from", new String[]{"y", "n"}, true, 1).charAt(0);
+            char go = receiveFixedString("Input was incorrect, do you want to continue? ", new String[]{"y", "n"}, true, 1).charAt(0);
             if (go == 'n') {
-                break;
+                return;
             }
             intersection = simulator.getIntersection(receiveCoordinateInput("Please enter the co-ordinates of the intersection you " +
                     "want cars to spawn from in the form x,y", simulator.getGridSize()));
@@ -424,8 +424,9 @@ public class CommandLineController implements InputController {
 
     @Override
     public void removeIntersection() {
-        int[] coordinates = receiveCoordinateInput("Please enter the co-ordinates that you want to remove the intersection from", simulator.getGridSize());
-        simulator.removeIntersection(coordinates[0],coordinates[1]);
+        int[] coordinates = receiveCoordinateInput("Please enter the co-ordinates that you want to remove the intersection from", simulator
+                .getGridSize());
+        simulator.removeIntersection(coordinates[0], coordinates[1]);
 
 
     }

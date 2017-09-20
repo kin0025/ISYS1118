@@ -62,7 +62,7 @@ public class Intersection implements CarMovable, SimulationTimed {
     }
 
     @Override
-    public Direction getDirection() {
+    public CardinalDirection getDirection() {
         return null;
     }
 

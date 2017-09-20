@@ -6,7 +6,6 @@ import main.entities.lane.CarDestroy;
 import main.entities.lane.Lane;
 import main.utils.BoundingBox;
 import main.utils.DimensionManager;
-import main.utils.Direction;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.Orientation;
 import main.utils.enums.TurnDirection;
@@ -29,7 +28,7 @@ public class Road {
 
         for (int i = 0; i < DimensionManager.numberOfLanesPerRoad; i++) {
             ArrayList<TurnDirection> turnDirections = new ArrayList<>();
-            Direction laneDirection;
+            CardinalDirection laneDirection;
             int laneDistance = i % (DimensionManager.numberOfLanesPerRoad / 2);
             if (i % 2 == 0) {
                 turnDirections.add(TurnDirection.LEFT);
@@ -45,9 +44,9 @@ public class Road {
                 yMax = boundingBox.getyMax();
                 yMin = boundingBox.getyMin();
                 if (i < DimensionManager.numberOfLanesPerRoad / 2) {
-                    laneDirection = new Direction(CardinalDirection.NORTH);
+                    laneDirection = CardinalDirection.NORTH;
                 } else {
-                    laneDirection = new Direction(CardinalDirection.SOUTH);
+                    laneDirection = CardinalDirection.SOUTH;
                 }
             } else {
                 yMin = boundingBox.getyMin() + (DimensionManager.widthOfLanePixels * i);
@@ -56,9 +55,9 @@ public class Road {
                 xMin = boundingBox.getxMin();
 
                 if (i < lanes.size() / 2) {
-                    laneDirection = new Direction(CardinalDirection.EAST);
+                    laneDirection = CardinalDirection.EAST;
                 } else {
-                    laneDirection = new Direction(CardinalDirection.WEST);
+                    laneDirection = CardinalDirection.WEST;
                 }
             }
             lanes.add(new Lane(laneDirection, turnDirections, laneDistance, new BoundingBox(xMin, yMin, xMax, yMax)));
@@ -84,7 +83,7 @@ public class Road {
     public void stopCars(Intersection intersection) {
         CardinalDirection direction = getIntersectionDirection(intersection);
         for (Lane lane : lanes) {
-            if (lane.getDirection().getDirection() == direction) {
+            if (lane.getDirection() == direction) {
                 lane.stopFirstCar();
             }
         }
@@ -93,7 +92,7 @@ public class Road {
     public void startCars(Intersection intersection) {
         CardinalDirection direction = getIntersectionDirection(intersection);
         for (Lane lane : lanes) {
-            if (lane.getDirection().getDirection() == direction) {
+            if (lane.getDirection() == direction) {
                 lane.startFirstCar();
             }
         }
@@ -151,5 +150,12 @@ public class Road {
         return intersectionDirections.containsKey(intersection);
     }
 
+    /**
+     * Returns the number of intersections added to the road
+     * @return the number of intersections
+     */
+    public int numberOfIntersections() {
+        return intersectionDirections.size();
+    }
 
 }

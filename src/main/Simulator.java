@@ -2,9 +2,11 @@ package main;
 
 import main.entities.MapGrid;
 import main.entities.Road;
+import main.entities.car.Car;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarSpawn;
 import main.utils.Direction;
+import main.utils.enums.CardinalDirection;
 import main.utils.enums.Orientation;
 
 
@@ -35,15 +37,15 @@ public class Simulator {
 
     }
 
-    public boolean isLocked(){
+    public boolean isLocked() {
         return makingChanges;
     }
 
-    public void lock(){
+    public void lock() {
         makingChanges = true;
     }
 
-    public void unlock(){
+    public void unlock() {
         makingChanges = false;
     }
 
@@ -83,11 +85,12 @@ public class Simulator {
     }
 
 
-    public CarSpawn createSpawnPoint(Intersection intersection, Direction directionSpawnFrom) {
+    public CarSpawn createSpawnPoint(Intersection intersection, CardinalDirection directionSpawnFrom) {
         lock();
-        //addDestroyPoint();
-        //CarSpawn spawner = new CarSpawn(mapGrid.findPathFromIntersections(intersections, this, this));
-        //return mapGrid.addLane(spawner, roadColumn, roadRow);
+        CarSpawn spawner = new CarSpawn(directionSpawnFrom.reverse(),));
+mapGrid.
+
+        return spawner;
         unlock();
         return null;
     }
@@ -162,7 +165,7 @@ public class Simulator {
 
     public void removeIntersection(int x, int y) {
         lock();
-        mapGrid.removeIntersection(x,y);
+        mapGrid.removeIntersection(x, y);
         unlock();
     }
 

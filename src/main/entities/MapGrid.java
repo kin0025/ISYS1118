@@ -1,6 +1,7 @@
 package main.entities;
 
 import main.entities.intersection.Intersection;
+import main.entities.lane.CarSpawn;
 import main.entities.lane.Lane;
 import main.utils.BoundingBox;
 import main.utils.DimensionManager;
@@ -8,6 +9,7 @@ import main.utils.Direction;
 import main.utils.Position;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.Orientation;
+import main.utils.enums.TurnDirection;
 
 import java.util.ArrayList;
 
@@ -72,7 +74,7 @@ public class MapGrid {
 
     public boolean addLane(Lane lane, Intersection intersection1, Intersection intersection2) {
         Road road = getRoad(intersection1, intersection2);
-        if (road.getOrientation() == lane.getDirection().getOrientation()) {
+        if (road.getOrientation() == lane.getDirection().getAxis()) {
             road.addLane(lane);
             return true;
         }
@@ -101,14 +103,26 @@ public class MapGrid {
             Road newRoad = new Road(orientation, new BoundingBox(new Position(xPos, yPos), xWidth, yWidth));
             roads.add(newRoad);
 
-            CardinalDirection direction = getDirectionFrom(intersection1,intersection2);
-            newRoad.addIntersection(intersection1,direction);
-            newRoad.addIntersection(intersection2,direction.reverse());
-            intersection1.addRoad(newRoad,direction);
-            intersection2.addRoad(newRoad,direction.reverse());
+            CardinalDirection direction = getDirectionFrom(intersection1, intersection2);
+            newRoad.addIntersection(intersection1, direction);
+            newRoad.addIntersection(intersection2, direction.reverse());
+            intersection1.addRoad(newRoad, direction);
+            intersection2.addRoad(newRoad, direction.reverse());
             return true;
         }
         return false;
+    }
+
+    public boolean createSpawnPoint(Intersection intersection, CardinalDirection direction, int spawnDelay){
+        ArrayList<TurnDirection> turnDirections = new ArrayList<>();
+        turnDirections.add(TurnDirection.LEFT);
+        turnDirections.add(TurnDirection.STRAIGHT);
+        turnDirections.add(TurnDirection.RIGHT);
+
+        getRoad(intersection,direction);
+        BoundingBox laneBox = new BoundingBox();
+
+        CarSpawn carSpawn = new CarSpawn(direction.reverse(),turnDirections,0,laneBox,spawnDelay);
     }
 
     public boolean intersectionsAreAdjacent(Intersection intersection1, Intersection intersection2) {
@@ -248,6 +262,21 @@ public class MapGrid {
     public Road getRoad(Intersection intersection1, Intersection intersection2) {
         for (Road road : roads) {
             if (road.hasIntersection(intersection1) && road.hasIntersection(intersection2)) {
+                return road;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets the road that runs between two intersections
+     *
+     * @param intersection1 an intersection
+     * @return null if no road, or the road between two intersections
+     */
+    public Road getRoad(Intersection intersection1, CardinalDirection direction) {
+        for (Road road : roads) {
+            if (road.getIntersectionDirection(intersection1) == direction && road.numberOfIntersections() == 1) {
                 return road;
             }
         }

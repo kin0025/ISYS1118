@@ -10,7 +10,6 @@ import main.entities.car.Car;
 import main.entities.car.CarPath;
 import main.entities.interfaces.CarMovable;
 import main.utils.BoundingBox;
-import main.utils.Direction;
 import main.utils.Position;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.TurnDirection;

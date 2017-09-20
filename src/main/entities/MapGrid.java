@@ -5,7 +5,6 @@ import main.entities.lane.CarSpawn;
 import main.entities.lane.Lane;
 import main.utils.BoundingBox;
 import main.utils.DimensionManager;
-import main.utils.Direction;
 import main.utils.Position;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.Orientation;
@@ -113,16 +112,59 @@ public class MapGrid {
         return false;
     }
 
-    public boolean createSpawnPoint(Intersection intersection, CardinalDirection direction, int spawnDelay){
+
+    public boolean addRoad(Intersection intersection1, CardinalDirection direction) {
+        if (getRoad(intersection1, direction) == null) {
+            double xPos, xWidth;
+            double yPos, yWidth;
+            int offset = DimensionManager.lengthOfRoadPixels + DimensionManager.widthOfIntersectionPixels;
+            if (direction == CardinalDirection.NORTH) {
+                xPos = (getIntersectionCoords(intersection1)[0]) * offset;
+                yPos = (getIntersectionCoords(intersection1)[1]) * offset + offset;
+                xWidth = DimensionManager.widthOfRoadPixels;
+                yWidth = DimensionManager.lengthOfRoadPixels;
+            }else if (direction == CardinalDirection.SOUTH) {
+                xPos = (getIntersectionCoords(intersection1)[0]) * offset;
+                yPos = (getIntersectionCoords(intersection1)[1]) * offset - offset;
+                xWidth = DimensionManager.widthOfRoadPixels;
+                yWidth = DimensionManager.lengthOfRoadPixels;
+            }else if (direction == CardinalDirection.EAST) {
+                xPos = (getIntersectionCoords(intersection1)[0]) * offset + offset;
+                yPos = (getIntersectionCoords(intersection1)[1]) * offset;
+                xWidth = DimensionManager.widthOfRoadPixels;
+                yWidth = DimensionManager.lengthOfRoadPixels;
+            }else {
+                xPos = (getIntersectionCoords(intersection1)[0]) * offset;
+                yPos = (getIntersectionCoords(intersection1)[1]) * offset - offset;
+                xWidth = DimensionManager.widthOfRoadPixels;
+                yWidth = DimensionManager.lengthOfRoadPixels;
+            }
+            Road newRoad = new Road(direction.getAxis(), new BoundingBox(new Position(xPos, yPos), xWidth, yWidth));
+            roads.add(newRoad);
+
+            newRoad.addIntersection(intersection1, direction);
+            intersection1.addRoad(newRoad, direction);
+            return true;
+        }
+        return false;
+    }
+
+    public CarSpawn createSpawnPoint(Intersection intersection, CardinalDirection direction, int spawnDelay){
         ArrayList<TurnDirection> turnDirections = new ArrayList<>();
         turnDirections.add(TurnDirection.LEFT);
         turnDirections.add(TurnDirection.STRAIGHT);
         turnDirections.add(TurnDirection.RIGHT);
 
-        getRoad(intersection,direction);
-        BoundingBox laneBox = new BoundingBox();
+        if(getRoad(intersection,direction) == null){
+            addRoad(intersection,direction);
+        }
+        Road road = getRoad(intersection,direction);
+
+        BoundingBox laneBox = road.getLanes().get(0).getBoundingBox();
 
         CarSpawn carSpawn = new CarSpawn(direction.reverse(),turnDirections,0,laneBox,spawnDelay);
+        road.addLane(carSpawn);
+        return carSpawn;
     }
 
     public boolean intersectionsAreAdjacent(Intersection intersection1, Intersection intersection2) {
@@ -289,7 +331,7 @@ public class MapGrid {
      * @param intersection the intersection
      * @return the co-ordinates or null if no intersection exists
      */
-    public int[] getIntersectionCoords(Intersection intersection) {
+    public int[] getIntersectionCoords(Intersection intersection     ) {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 if (grid[x][y] == intersection) {

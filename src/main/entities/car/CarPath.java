@@ -7,7 +7,6 @@ import main.entities.lane.CarDestroy;
 import main.entities.lane.CarSpawn;
 import main.entities.lane.Lane;
 import main.exceptions.PathNotFoundException;
-import main.utils.Direction;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.TurnDirection;
 
@@ -45,8 +44,8 @@ public class CarPath {
             for (Road intersectionRoad : nextIntersection.getRoads()) {
                 if (intersectionRoad.getIntersectionDirection(nextIntersection) != null) {
                     //We've found the road! Now find the turn direction.
-                    TurnDirection turnDirection = currentLane.getDirection().getTurnDirection
-                            (currentIntersection.getRoadDirection(intersectionRoad));
+                    TurnDirection turnDirection = currentLane.getDirection().getTurnDirection(
+                            (currentIntersection.getRoadDirection(intersectionRoad)));
 
                     //Save the compass direction of the road as well.
                     CardinalDirection laneDirection = nextIntersection.getRoadDirection(intersectionRoad);
@@ -55,7 +54,7 @@ public class CarPath {
                     for (Lane lane : intersectionRoad.getLanes()) {
                         //We've iterated through all lanes, now we find a lane that is going in the right direction
                         // and has the correct turn direction.
-                        if (lane.getDirection().getDirection().equals(laneDirection) &&
+                        if (lane.getDirection().equals(laneDirection) &&
                                 lane.hasTurnDirection(turnDirection)) {
                             laneFound = true;
                             //If we find the right lane, add and move the lane.

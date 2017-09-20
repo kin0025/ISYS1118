@@ -26,7 +26,7 @@ public class CarTest {
 
     @After
     public void tearDown() {
-        Direction carDirection = null;
+        CardinalDirection carDirection = null;
         car = null;
         carPosition = null;
     }

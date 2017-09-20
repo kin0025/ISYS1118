@@ -58,4 +58,100 @@ public enum CardinalDirection {
         }
     }
 
+    public TurnDirection getTurnDirection(CardinalDirection cardinalDirection) {
+        switch (cardinalDirection.toDegrees() - this.toDegrees()) {
+            //Right
+            case -270:
+            case 90:
+                return TurnDirection.RIGHT;
+            case 270:
+            case -90:
+                return TurnDirection.LEFT;
+            case -180:
+            case 180:
+                return TurnDirection.REVERSE;
+            case 0:
+                return TurnDirection.STRAIGHT;
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * Gets current direction.
+     *
+     * @return the current direction
+     */
+    public int[] getDirectionVector() {
+        int[] array = new int[2];
+        switch (this) {
+            case NORTH:
+                array[1] = 1;
+                break;
+            case EAST:
+                array[0] = 1;
+                break;
+            case SOUTH:
+                array[1] = -1;
+                break;
+            case WEST:
+                array[0] = -1;
+                break;
+        }
+        return array;
+    }
+
+    /**
+     * Turns right.
+     */
+    public CardinalDirection turnRight() {
+        switch (this) {
+            case NORTH:
+                return EAST;
+            case EAST:
+                return SOUTH;
+            case SOUTH:
+                return WEST;
+            case WEST:
+                return NORTH;
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * Turns left.
+     */
+    public CardinalDirection turnLeft() {
+        switch (this) {
+            case NORTH:
+                return WEST;
+            case EAST:
+                return NORTH;
+            case SOUTH:
+                return EAST;
+            case WEST:
+                return SOUTH;
+            default:
+                return null;
+        }
+    }
+
+    public static CardinalDirection stringToDirection(String input) {
+        input = input.toLowerCase();
+        switch (input) {
+            case "north":
+                return CardinalDirection.NORTH;
+            case "east":
+                return CardinalDirection.EAST;
+            case "south":
+                return CardinalDirection.SOUTH;
+            case "west":
+                return CardinalDirection.WEST;
+            default:
+                return null;
+
+        }
+    }
+
 }

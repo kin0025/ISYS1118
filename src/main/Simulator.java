@@ -5,7 +5,6 @@ import main.entities.Road;
 import main.entities.car.Car;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarSpawn;
-import main.utils.Direction;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.Orientation;
 
@@ -85,14 +84,11 @@ public class Simulator {
     }
 
 
-    public CarSpawn createSpawnPoint(Intersection intersection, CardinalDirection directionSpawnFrom) {
+    public CarSpawn createSpawnPoint(Intersection intersection, CardinalDirection directionSpawnFrom, int spawnDelay) {
         lock();
-        CarSpawn spawner = new CarSpawn(directionSpawnFrom.reverse(),));
-mapGrid.
-
-        return spawner;
+        CarSpawn spawner = mapGrid.createSpawnPoint(intersection,directionSpawnFrom,spawnDelay);
         unlock();
-        return null;
+        return spawner;
     }
 
     public void addDestroyPoint(int roadColumn, int roadRow) {
@@ -134,7 +130,7 @@ mapGrid.
      * @return the road on the edge of the grid, or Null if there is not road attached to the intersection from
      * that direction/ the intersection is on the end of the grid
      */
-    public Road getRoad(Intersection intersectionFrom, Direction sideFrom) {
+    public Road getRoad(Intersection intersectionFrom, CardinalDirection sideFrom) {
         //TODO Test this
         return null;
     }

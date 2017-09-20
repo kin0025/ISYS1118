@@ -10,7 +10,6 @@ import main.entities.car.Car;
 import main.entities.interfaces.CarMovable;
 import main.utils.BoundingBox;
 import main.utils.enums.CardinalDirection;
-import main.utils.Direction;
 import main.utils.Position;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +22,7 @@ public class CarDestroyTest {
     private CarDestroy carDestroy;
     @Before
     public void setUp() throws Exception {
-        carDestroy = new CarDestroy(new Direction(CardinalDirection.NORTH), new ArrayList<>(),0,new BoundingBox(new Position(0,0),20,100));
+        carDestroy = new CarDestroy(CardinalDirection.NORTH, new ArrayList<>(),0,new BoundingBox(new Position(0,0),20,100));
     }
 
     @Test

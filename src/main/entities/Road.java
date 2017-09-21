@@ -1,7 +1,6 @@
 package main.entities;
 
 
-import main.entities.car.Car;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarDestroy;
 import main.entities.lane.Lane;
@@ -93,9 +92,9 @@ public class Road {
         return null;
     }
 
-    public void addDestroyerLane() {
+    public void addDestroyerLane(CardinalDirection direction) {
         //FIXME
-        lanes.add(new CarDestroy(null, null, 0, boundingBox));
+        lanes.add(new CarDestroy(direction, 0, boundingBox));
 
     }
 

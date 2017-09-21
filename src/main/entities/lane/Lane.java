@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Lane implements CarMovable, SimulationTimed {
-    private final ArrayList<TurnDirection> turnDirections;
+    final ArrayList<TurnDirection> turnDirections;
     private final LinkedList<Car> cars = new LinkedList<>();
     private final CardinalDirection direction;
     private final int lanesFromEdge;
@@ -50,8 +50,8 @@ public class Lane implements CarMovable, SimulationTimed {
      * Stops the first car in the list
      */
     public void stopFirstCar() {
-        if (cars.element() != null) {
-            cars.element().stop();
+        if (cars.peek() != null) {
+            cars.peek().stop();
         }
     }
 

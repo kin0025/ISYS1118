@@ -40,11 +40,11 @@ public class Simulator {
         return makingChanges;
     }
 
-    public void lock() {
+    private void lock() {
         makingChanges = true;
     }
 
-    public void unlock() {
+    private void unlock() {
         makingChanges = false;
     }
 
@@ -65,7 +65,9 @@ public class Simulator {
     }
 
     public void createNewMap(int width, int height) {
+        lock();
         mapGrid = new MapGrid(width, height);
+        unlock();
     }
 
     public int[] getGridSize() {
@@ -93,9 +95,9 @@ public class Simulator {
         if(intersection == null || directionSpawnFrom == null){
             return null;
         }
-        CarSpawn spawner = mapGrid.createSpawnPoint(intersection,directionSpawnFrom,spawnDelay);
+        CarSpawn carSpawn = mapGrid.createSpawnPoint(intersection,directionSpawnFrom,spawnDelay);
         unlock();
-        return spawner;
+        return carSpawn;
     }
 
     public void addDestroyPoint(int roadColumn, int roadRow) {

@@ -12,8 +12,12 @@ import main.utils.enums.TurnDirection;
 import java.util.ArrayList;
 
 public class CarDestroy extends Lane {
-    public CarDestroy(CardinalDirection direction, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox) {
-        super(direction, turnDirections, lanesFromEdge, laneBox);
+    public CarDestroy(CardinalDirection direction, int lanesFromEdge, BoundingBox laneBox) {
+        super(direction, new ArrayList<>(), lanesFromEdge, laneBox);
+        turnDirections.add(TurnDirection.STRAIGHT);
+        turnDirections.add(TurnDirection.LEFT);
+        turnDirections.add(TurnDirection.RIGHT);
+        turnDirections.add(TurnDirection.REVERSE);
     }
 
     @Override

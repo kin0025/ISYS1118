@@ -10,7 +10,7 @@ import main.utils.enums.Orientation;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-public class CommandLineController implements InputController{
+public class CommandLineController implements InputController {
 
     private final Scanner input = new Scanner(System.in);
 
@@ -437,7 +437,9 @@ public class CommandLineController implements InputController{
             } else {
                 index = intersectionCoordinates[0];
             }
-            simulator.createLinePath(spawn, index, spawn.getDirection());
+            if(!simulator.createLinePath(spawn, index, spawn.getDirection())){
+                System.out.println("Creating the spawn path failed.");
+            }
         }
 
 
@@ -472,8 +474,8 @@ public class CommandLineController implements InputController{
     }
 
     private void fillIntersections() {
-        for (int i = 0; i < simulator.getGridSize()[0]; i++) {
-            for (int j = 0; j < simulator.getGridSize()[1]; j++) {
+        for (int i = 1; i < simulator.getGridSize()[0] - 1; i++) {
+            for (int j = 1; j < simulator.getGridSize()[1] - 1; j++) {
                 System.out.println("Adding intersection at " + i + "," + j);
                 simulator.addIntersection(i, j, DimensionManager.secondsToTicks(10), DimensionManager.secondsToTicks(10), Orientation.HORIZONTAL);
             }

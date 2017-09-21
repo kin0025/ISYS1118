@@ -108,6 +108,7 @@ public class CarPath {
 
     /**
      * Adds an item to an initialised carPath
+     *
      * @param addedObject the object to be added to a path
      * @return whether the object could be added
      */
@@ -122,11 +123,27 @@ public class CarPath {
 
     public boolean finalisePath(CarDestroy destructor) {
         if (!pathComplete) {
-            //TODO Some logic to prevent errors and check that the path is valid
+            if (carPath.get(carPath.size() - 1).getClass() == Intersection.class) {
+                boolean foundConnection = false;
+                Intersection intersection = (Intersection) carPath.get(carPath.size() - 1);
+                for (Road road : intersection.getRoads()) {
+                    for (Lane lane : road.getLanes()) {
+                        if (lane == destructor) {
+                            foundConnection = true;
+                        }
+                    }
+
+                }
+                if (!foundConnection) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
             addPartToPath(destructor);
             pathComplete = true;
         }
-        return false;
+        return true;
     }
 
     public CarMovable get(int position) {

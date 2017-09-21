@@ -1,32 +1,30 @@
 package main.entities;
 
 import main.entities.car.Car;
-import main.entities.interfaces.CarMovable;
-import main.entities.lane.Lane;
+import main.entities.car.CarPath;
 import main.utils.*;
 import main.utils.enums.CardinalDirection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 import static org.junit.Assert.assertEquals;
 
 public class CarTest {
     private Car car;
     private Position carPosition;
-    private ArrayList<CarMovable> carPath;
+    private CarPath carPath;
 
     @Before
     public void setUp() throws Exception {
         carPosition = new Position(1, 1);
-        car = new Car(carPosition, null);
+
+        car = new Car(carPosition, carPath);
     }
 
     @After
     public void tearDown() {
-        Direction carDirection = null;
+        CardinalDirection carDirection = null;
         car = null;
         carPosition = null;
     }

@@ -3,10 +3,11 @@ package main.entities.car;
 import main.entities.Road;
 import main.entities.interfaces.CarMovable;
 import main.entities.intersection.Intersection;
+import main.entities.lane.CarDestroy;
 import main.entities.lane.CarSpawn;
 import main.entities.lane.Lane;
 import main.exceptions.PathNotFoundException;
-import main.utils.Direction;
+import main.utils.enums.CardinalDirection;
 import main.utils.enums.TurnDirection;
 
 import java.util.ArrayList;
@@ -43,18 +44,17 @@ public class CarPath {
             for (Road intersectionRoad : nextIntersection.getRoads()) {
                 if (intersectionRoad.getIntersectionDirection(nextIntersection) != null) {
                     //We've found the road! Now find the turn direction.
-                    TurnDirection turnDirection = currentLane.getDirection().getTurnDirection
-                            (currentIntersection
-                                    .getRoadDirection(intersectionRoad));
+                    TurnDirection turnDirection = currentLane.getDirection().getTurnDirection(
+                            (currentIntersection.getRoadDirection(intersectionRoad)));
 
                     //Save the compass direction of the road as well.
-                    Direction laneDirection = nextIntersection.getRoadDirection(intersectionRoad);
+                    CardinalDirection laneDirection = nextIntersection.getRoadDirection(intersectionRoad);
 
                     //Now we pick a lane to go to - find the correct lane in the road to move the car to.
                     for (Lane lane : intersectionRoad.getLanes()) {
                         //We've iterated through all lanes, now we find a lane that is going in the right direction
                         // and has the correct turn direction.
-                        if (lane.getDirection().getDirection().equals(laneDirection.getDirection()) &&
+                        if (lane.getDirection().equals(laneDirection) &&
                                 lane.hasTurnDirection(turnDirection)) {
                             laneFound = true;
                             //If we find the right lane, add and move the lane.
@@ -119,10 +119,10 @@ public class CarPath {
         return false;
     }
 
-    public boolean finalisePath() {
+    public boolean finalisePath(CarDestroy destructor) {
         if (!pathComplete) {
-
-
+            //TODO Some logic to prevent errors and check that the path is valid
+            addPartToPath(destructor);
             pathComplete = true;
         }
         return false;

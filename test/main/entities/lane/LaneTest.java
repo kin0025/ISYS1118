@@ -8,7 +8,6 @@ import main.entities.car.Car;
 import main.entities.interfaces.CarMovable;
 import main.utils.BoundingBox;
 import main.utils.DimensionManager;
-import main.utils.Direction;
 import main.utils.Position;
 import main.utils.enums.CardinalDirection;
 import org.junit.Before;
@@ -23,7 +22,7 @@ public class LaneTest {
 
     @Before
     public void setUp() throws Exception {
-        lane = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 40), 5, 100));
+        lane = new Lane(CardinalDirection.NORTH,new ArrayList<>(), 0, new BoundingBox(new Position(0, 40), 5, 100));
     }
 
     @Test
@@ -38,7 +37,7 @@ public class LaneTest {
     @Test
     public void moveCar() {
         ArrayList<CarMovable> carList = new ArrayList<>();
-        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 40), 5, 100));
+        Lane lane2 = new Lane(CardinalDirection.NORTH, new ArrayList<>(), 0, new BoundingBox(new Position(0, 40), 5, 100));
         carList.add(lane);
         carList.add(lane2);
         Car car1 = new Car(new Position(0, 0), null);
@@ -51,7 +50,7 @@ public class LaneTest {
     @Test
     public void moveMultipleCar() {
         ArrayList<CarMovable> carList = new ArrayList<>();
-        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 40), 5, 100));
+        Lane lane2 = new Lane(CardinalDirection.NORTH, new ArrayList<>(), 0, new BoundingBox(new Position(0, 40), 5, 100));
         carList.add(lane);
         carList.add(lane2);
         Car car1 = new Car(new Position(0, 0), null);
@@ -69,7 +68,7 @@ public class LaneTest {
     @Test
     public void moveMultipleCarMultipleTimes() {
         ArrayList<CarMovable> carList = new ArrayList<>();
-        Lane lane2 = new Lane(new Direction(CardinalDirection.NORTH), new ArrayList<>(), 0, new BoundingBox(new Position(0, 40), 5, 100));
+        Lane lane2 = new Lane(CardinalDirection.NORTH, new ArrayList<>(), 0, new BoundingBox(new Position(0, 40), 5, 100));
         carList.add(lane);
         carList.add(lane2);
         Car car1 = new Car(new Position(0, 0), null);

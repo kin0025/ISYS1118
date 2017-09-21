@@ -3,8 +3,6 @@ package main.entities.car;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class CarPathTest {
     @Before
     public void setUp() throws Exception {

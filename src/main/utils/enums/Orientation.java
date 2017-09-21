@@ -19,4 +19,13 @@ public enum Orientation {
             return HORIZONTAL;
         }
     }
+
+    public static Orientation stringToOrientation(String input){
+        if(input.equalsIgnoreCase("horizontal")){
+            return HORIZONTAL;
+        }else if(input.equalsIgnoreCase("vertical")){
+            return VERTICAL;
+        }
+        return null;
+    }
 }

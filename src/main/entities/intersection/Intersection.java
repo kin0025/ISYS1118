@@ -9,6 +9,7 @@ import main.entities.Road;
 import main.entities.interfaces.CarMovable;
 import main.entities.interfaces.SimulationTimed;
 import main.utils.*;
+import main.utils.enums.CardinalDirection;
 import main.utils.enums.LightStatus;
 import main.utils.enums.Orientation;
 
@@ -17,7 +18,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Intersection implements CarMovable, SimulationTimed {
-    private final HashMap<Road, Direction> roadDirections = new HashMap<>();
+    private final HashMap<Road, CardinalDirection> roadDirections = new HashMap<>();
     private ArrayList<Road> roads = new ArrayList<>();
     private final BoundingBox boundingBox;
     private final HashMap<Orientation, TrafficLight> lights = new HashMap<>(2);
@@ -61,7 +62,7 @@ public class Intersection implements CarMovable, SimulationTimed {
     }
 
     @Override
-    public Direction getDirection() {
+    public CardinalDirection getDirection() {
         return null;
     }
 
@@ -84,11 +85,11 @@ public class Intersection implements CarMovable, SimulationTimed {
      * @return a direction, or null. E.g if a road is leaving the east end of an intersection, a direction of the
      * value east will be returned.
      */
-    public Direction getRoadDirection(Road road) {
+    public CardinalDirection getRoadDirection(Road road) {
         return roadDirections.get(road);
     }
 
-    public void addRoad(Road road, Direction direction) {
+    public void addRoad(Road road, CardinalDirection direction) {
         roads.add(road);
         roadDirections.put(road, direction);
     }

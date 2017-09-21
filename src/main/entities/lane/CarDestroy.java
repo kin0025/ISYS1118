@@ -6,13 +6,13 @@ package main.entities.lane;
 
 import main.entities.car.Car;
 import main.utils.BoundingBox;
-import main.utils.Direction;
+import main.utils.enums.CardinalDirection;
 import main.utils.enums.TurnDirection;
 
 import java.util.ArrayList;
 
 public class CarDestroy extends Lane {
-    public CarDestroy(Direction direction, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox) {
+    public CarDestroy(CardinalDirection direction, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox) {
         super(direction, turnDirections, lanesFromEdge, laneBox);
     }
 

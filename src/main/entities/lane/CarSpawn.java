@@ -9,10 +9,9 @@ package main.entities.lane;
 import main.entities.car.Car;
 import main.entities.car.CarPath;
 import main.entities.interfaces.CarMovable;
-import main.exceptions.PathNotFoundException;
 import main.utils.BoundingBox;
-import main.utils.Direction;
 import main.utils.Position;
+import main.utils.enums.CardinalDirection;
 import main.utils.enums.TurnDirection;
 
 import java.util.ArrayList;
@@ -21,42 +20,55 @@ import java.util.ArrayList;
  * Spawns cars.
  */
 public class CarSpawn extends Lane {
-    //Generate this in the constructor
-private CarPath carPath;
     private final Position spawnPosition;
     //Ticks between each car spawn
     private final int spawnDelay;
-
+    //Generate this in the constructor
+    private CarPath carPath;
+    private boolean active;
     //The current time for the spawner - needed for delay logic.
     private long tick = 0;
 
     /**
      * Instantiates a new Car spawn. Creates a lanes list for cars to follow and figures out the...
      *
-     * @param spawnPosition     the spawn position
-     * @param spawnDelay        the spawn delay
+     * @param spawnDelay the spawn delay
      */
-    public CarSpawn(Direction direction, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox, CarPath carPath, Position spawnPosition, int spawnDelay) throws PathNotFoundException {
-        super(direction, turnDirections, lanesFromEdge, laneBox);
+    public CarSpawn(CardinalDirection directionOfLane, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox, int
+            spawnDelay) {
+        super(directionOfLane, turnDirections, lanesFromEdge, laneBox);
         this.spawnDelay = spawnDelay;
-        this.spawnPosition = spawnPosition;
-        if(carPath.isPathComplete() == true){
-            this.carPath = carPath;
+        this.active = false;
 
-        }else{
-            throw new PathNotFoundException("Path incomplete, car spawn cannot be created.");
+        double xPos = 0;
+        double yPos = 0;
+        if (directionOfLane == CardinalDirection.NORTH) {
+            xPos = (laneBox.getxMin() + laneBox.getxMax()) / 2;
+            yPos = laneBox.getyMin();
         }
+        if (directionOfLane == CardinalDirection.SOUTH) {
+            xPos = (laneBox.getxMin() + laneBox.getxMax()) / 2;
+            yPos = laneBox.getyMax();
+        }
+        if (directionOfLane == CardinalDirection.EAST) {
+            xPos = laneBox.getxMin();
+            yPos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
+        }
+        if (directionOfLane == CardinalDirection.WEST) {
+            xPos = laneBox.getxMax();
+            yPos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
+        }
+        spawnPosition = new Position(xPos, yPos);
     }
 
 
     /**
      * Spawns a car. Creates a new car, puts it in the correct lane and sends it off.
      *
-     * @return the boolean
+     * @return if the car couldn't spawn due to been blocked returns false.
      */
-    public boolean spawnCar() {
-        addCar(new Car(new Position(spawnPosition.getX(), spawnPosition.getY()), carPath));
-        return false;
+    boolean spawnCar() {
+        return active && addCar(new Car(new Position(spawnPosition.getX(), spawnPosition.getY()), carPath));
     }
 
     /**
@@ -64,21 +76,32 @@ private CarPath carPath;
      * Must be called every tick.
      */
     public void incrementTime() {
-        //Checks that the last car added has moved enough. Might throw a null.
-        if (getCars().getLast() != null) {
-            if (getCars().getLast().getPosition().getDifference(spawnPosition) <= 20) {
-                //Too close, don't spawn a car.
-                //TODO: What sort of logic do we expect here for spawning cars if they are already full?
-                return;
+        if (active) {
+            //Checks that the last car added has moved enough.
+            if (getCars().getLast() != null) {
+                if (getCars().getLast().getPosition().getDifference(spawnPosition) <= 20) {
+                    //Too close, don't spawn a car.
+                    return;
+                }
             }
+            if (tick % spawnDelay == 0) {
+                spawnCar();
+            }
+            tick++;
         }
-        if (tick % spawnDelay == 0) {
-            spawnCar();
-        }
-        tick++;
     }
 
-    public CarPath getCarPath() {
-        return carPath;
+    public boolean initialiseCarPath() {
+        carPath = new CarPath();
+        return carPath.initialisePath(this);
+    }
+
+    public boolean addToPath(CarMovable toAdd) {
+        return carPath.addPartToPath(toAdd);
+    }
+
+    public boolean finalisePath(CarDestroy destructor) {
+        active = true;
+        return carPath.finalisePath(destructor);
     }
 }

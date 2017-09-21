@@ -6,8 +6,8 @@ package main.entities.interfaces;
 
 import main.entities.car.Car;
 import main.utils.BoundingBox;
-import main.utils.Direction;
 import main.utils.Position;
+import main.utils.enums.CardinalDirection;
 
 
 public interface CarMovable {
@@ -38,5 +38,5 @@ public interface CarMovable {
 
     Position getCentre();
 
-    Direction getDirection();
+    CardinalDirection getDirection();
 }

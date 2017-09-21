@@ -1,13 +1,10 @@
 package main.entities.car;
 
-import main.entities.interfaces.CarMovable;
 import main.entities.interfaces.SimulationTimed;
 import main.utils.BoundingBox;
 import main.utils.DimensionManager;
-import main.utils.Direction;
 import main.utils.Position;
-
-import java.util.ArrayList;
+import main.utils.enums.CardinalDirection;
 
 /**
  * The type main.entities.car.Car.
@@ -18,8 +15,8 @@ public class Car implements SimulationTimed {
     private final Position carPosition;
 
     //Always set to the direction of the parent lane.
-    private Direction direction;
-    private CarPath carPath;
+    private CardinalDirection direction;
+    private final CarPath carPath;
     private int carPathPosition = 0;
     private boolean moveMe = false;
 
@@ -75,14 +72,14 @@ public class Car implements SimulationTimed {
     }
 
     public void turnLeft() {
-        direction.turnLeft();
+        direction = direction.turnLeft();
     }
 
     public void turnRight() {
-        direction.turnRight();
+        direction = direction.turnRight();
     }
 
-    public Direction getDirection() {
+    public CardinalDirection getDirection() {
         return direction;
     }
 

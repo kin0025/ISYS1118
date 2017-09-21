@@ -4,7 +4,8 @@ package main.entities;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarDestroy;
 import main.entities.lane.Lane;
-import main.utils.*;
+import main.utils.BoundingBox;
+import main.utils.DimensionManager;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.Orientation;
 import main.utils.enums.TurnDirection;
@@ -27,7 +28,7 @@ public class Road {
 
         for (int i = 0; i < DimensionManager.numberOfLanesPerRoad; i++) {
             ArrayList<TurnDirection> turnDirections = new ArrayList<>();
-            Direction laneDirection;
+            CardinalDirection laneDirection;
             int laneDistance = i % (DimensionManager.numberOfLanesPerRoad / 2);
             if (i % 2 == 0) {
                 turnDirections.add(TurnDirection.LEFT);
@@ -43,9 +44,9 @@ public class Road {
                 yMax = boundingBox.getyMax();
                 yMin = boundingBox.getyMin();
                 if (i < DimensionManager.numberOfLanesPerRoad / 2) {
-                    laneDirection = new Direction(CardinalDirection.NORTH);
+                    laneDirection = CardinalDirection.NORTH;
                 } else {
-                    laneDirection = new Direction(CardinalDirection.SOUTH);
+                    laneDirection = CardinalDirection.SOUTH;
                 }
             } else {
                 yMin = boundingBox.getyMin() + (DimensionManager.widthOfLanePixels * i);
@@ -54,20 +55,18 @@ public class Road {
                 xMin = boundingBox.getxMin();
 
                 if (i < lanes.size() / 2) {
-                    laneDirection = new Direction(CardinalDirection.EAST);
+                    laneDirection = CardinalDirection.EAST;
                 } else {
-                    laneDirection = new Direction(CardinalDirection.WEST);
+                    laneDirection = CardinalDirection.WEST;
                 }
             }
             lanes.add(new Lane(laneDirection, turnDirections, laneDistance, new BoundingBox(xMin, yMin, xMax, yMax)));
         }
     }
 
-    public void addIntersection(Intersection intersection, Direction directionFromIntersection) {
-        directionFromIntersection.reverse();
-        intersectionDirections.put(intersection, directionFromIntersection.getDirection());
-        //We don't want to change the original value
-        directionFromIntersection.reverse();
+    public void addIntersection(Intersection intersection, CardinalDirection directionFromIntersection) {
+        intersectionDirections.put(intersection, directionFromIntersection.reverse());
+
     }
 
     public void addLane(Lane lane) {
@@ -82,18 +81,18 @@ public class Road {
     }
 
     public void stopCars(Intersection intersection) {
-        CardinalDirection direction = intersectionDirections.get(intersection);
+        CardinalDirection direction = getIntersectionDirection(intersection);
         for (Lane lane : lanes) {
-            if (lane.getDirection().getDirection() == direction) {
+            if (lane.getDirection() == direction) {
                 lane.stopFirstCar();
             }
         }
     }
 
     public void startCars(Intersection intersection) {
-        CardinalDirection direction = intersectionDirections.get(intersection);
+        CardinalDirection direction = getIntersectionDirection(intersection);
         for (Lane lane : lanes) {
-            if (lane.getDirection().getDirection() == direction) {
+            if (lane.getDirection() == direction) {
                 lane.startFirstCar();
             }
         }
@@ -140,5 +139,23 @@ public class Road {
         return intersectionDirections.get(intersection);
     }
 
+    /**
+     * Gets the direction of an intersection relative to the road, if it is attached to one.
+     *
+     * @param intersection The intersection you want the direction of
+     * @return a direction, or null. E.g if a road is leaving the east end of an intersection, the intersection is on
+     * the west end of the road. The road will return a direction of the value west.
+     */
+    public boolean hasIntersection(Intersection intersection) {
+        return intersectionDirections.containsKey(intersection);
+    }
+
+    /**
+     * Returns the number of intersections added to the road
+     * @return the number of intersections
+     */
+    public int numberOfIntersections() {
+        return intersectionDirections.size();
+    }
 
 }

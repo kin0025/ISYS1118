@@ -107,8 +107,9 @@ public class CarPath {
     }
 
     /**
-     * @param addedObject
-     * @return
+     * Adds an item to an initialised carPath
+     * @param addedObject the object to be added to a path
+     * @return whether the object could be added
      */
     public boolean addPartToPath(CarMovable addedObject) {
         if (!pathComplete && !carPath.isEmpty() && carPath.get(carPath.size() - 1) != addedObject) {

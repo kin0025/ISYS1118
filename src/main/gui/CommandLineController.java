@@ -10,7 +10,7 @@ import main.utils.enums.Orientation;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-public class CommandLineController implements InputController {
+public class CommandLineController implements InputController{
 
     private final Scanner input = new Scanner(System.in);
 
@@ -110,8 +110,8 @@ public class CommandLineController implements InputController {
      * @param flavourText     The text to be printed asking for input
      * @param options         the valid values for input
      * @param printOptionText whether the options are displayed to the user
-     * @param outputLength
-     * @return
+     * @param outputLength    the length of the output string - only the first n characters are matched
+     * @return the output string
      */
     private String receiveFixedString(String flavourText, String[] options, boolean printOptionText, int outputLength) {
         String inputString;
@@ -297,7 +297,7 @@ public class CommandLineController implements InputController {
         return output;
     }
 
-    private double readInt(String flavourText, double defaultAnswer, double min, double max) {
+    private int readInt(String flavourText, int defaultAnswer, int min, int max) {
         //Print a prompt for the user to enter input.
         System.out.println(flavourText + " Min:" + min + ", Max:" + max + "[" + defaultAnswer + "]");
         //Actually get input.
@@ -306,14 +306,14 @@ public class CommandLineController implements InputController {
         if (inputString.length() == 0) {
             return defaultAnswer;
         }
-        double output;
+        int output;
         try {
             output = Integer.parseInt(inputString);
         } catch (NumberFormatException e) {
-            return readDouble("Number not in correct format", defaultAnswer, min, max);
+            return readInt("Number not in correct format", defaultAnswer, min, max);
         }
         if (output < min || output > max) {
-            return readDouble("Number not within range", defaultAnswer, min, max);
+            return readInt("Number not within range", defaultAnswer, min, max);
         }
         return output;
     }
@@ -383,8 +383,8 @@ public class CommandLineController implements InputController {
                 "cars to spawn from in the form x,y", simulator.getGridSize()));
         CardinalDirection direction = (CardinalDirection.stringToDirection(receiveStringInput("Please enter the side you want cars to spawn from", new
                 String[]{"north", "south", "east", "west"}, true, false)));
-        int spawnDelay = DimensionManager.secondsToTicks(readDouble("Enter the delay between cars spawning, in seconds",1,0.1,10));
-        CarSpawn spawn = simulator.createSpawnPoint(intersection, direction,spawnDelay);
+        int spawnDelay = DimensionManager.secondsToTicks(readDouble("Enter the delay between cars spawning, in seconds", 1, 0.1, 10));
+        CarSpawn spawn = simulator.createSpawnPoint(intersection, direction, spawnDelay);
 
         //If it was invalid keep prompting them till they get it right or quit
         while (spawn == null) {
@@ -396,10 +396,10 @@ public class CommandLineController implements InputController {
                     "want cars to spawn from in the form x,y", simulator.getGridSize()));
             direction = CardinalDirection.stringToDirection(receiveStringInput("Please enter the side you want cars to spawn from",
                     new String[]{"north", "south", "east", "west"}, true, false));
-            spawn = simulator.createSpawnPoint(intersection, direction,spawnDelay);
+            spawn = simulator.createSpawnPoint(intersection, direction, spawnDelay);
 
         }
-        createSpawnPath(spawn);
+        createSpawnPath(spawn, simulator.getIntersectionCoords(intersection));
     }
 
     @Override
@@ -419,12 +419,27 @@ public class CommandLineController implements InputController {
         simulator.addIntersection(coordinates[0], coordinates[1], verticalTime, horizontalTime, orientation);
     }
 
-    @Override
-    public void createSpawnPath(CarSpawn spawn) {
-        boolean keepGoing = true;
-        while (keepGoing) {
-            //System.out.println(spawn.get);
+    public void createSpawnPath(CarSpawn spawn, int[] intersectionCoordinates) {
+        String type = receiveStringInput("Do you want to create a path, or a line?", new String[]{"Path", "Line"}, true, false);
+        if (type.equalsIgnoreCase("path")) {
+            boolean keepGoing = true;
+            while (keepGoing) {
+
+                //simulator.getIntersection();
+                //simulator.getRoad();
+                //spawn.addToPath();
+                //System.out.println(spawn.get);
+            }
+        } else {
+            int index;
+            if (spawn.getDirection().getAxis() == Orientation.HORIZONTAL) {
+                index = intersectionCoordinates[1];
+            } else {
+                index = intersectionCoordinates[0];
+            }
+            simulator.createLinePath(spawn, index, spawn.getDirection());
         }
+
 
     }
 

@@ -56,8 +56,8 @@ public class Lane implements CarMovable, SimulationTimed {
     }
 
     public void startFirstCar() {
-        if (cars.element() != null) {
-            cars.element().accelerate();
+        if (!cars.isEmpty()) {
+            cars.element().start();
         }
     }
 
@@ -75,7 +75,7 @@ public class Lane implements CarMovable, SimulationTimed {
                     currentCar.stop();
                     carTooClose = true;
                 } else {
-                    currentCar.accelerate();
+                    currentCar.start();
                 }
             }
         }

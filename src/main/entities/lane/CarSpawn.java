@@ -78,7 +78,7 @@ public class CarSpawn extends Lane {
     public void incrementTime() {
         if (active) {
             //Checks that the last car added has moved enough.
-            if (getCars().getLast() != null) {
+            if (!getCars().isEmpty()) {
                 if (getCars().getLast().getPosition().getDifference(spawnPosition) <= 20) {
                     //Too close, don't spawn a car.
                     return;

@@ -29,7 +29,7 @@ public class Car implements SimulationTimed {
 
     }
 
-    public void accelerate() {
+    public void start() {
         speed = maxSpeed;
     }
 

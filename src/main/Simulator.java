@@ -4,6 +4,7 @@ import main.entities.MapGrid;
 import main.entities.Road;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarSpawn;
+import main.exceptions.PathNotFoundException;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.Orientation;
 
@@ -82,9 +83,16 @@ public class Simulator {
         return mapGrid.getIntersection(x, y);
     }
 
+    public int[] getIntersectionCoords(Intersection intersection) {
+       return mapGrid.getIntersectionCoords(intersection);
+    }
+
 
     public CarSpawn createSpawnPoint(Intersection intersection, CardinalDirection directionSpawnFrom, int spawnDelay) {
         lock();
+        if(intersection == null || directionSpawnFrom == null){
+            return null;
+        }
         CarSpawn spawner = mapGrid.createSpawnPoint(intersection,directionSpawnFrom,spawnDelay);
         unlock();
         return spawner;
@@ -136,6 +144,14 @@ public class Simulator {
 
     public void addSpawnPoint() {
 //TODO Add code here - select the road the intersection should be placed on
+    }
+
+    public boolean createLinePath(CarSpawn carSpawn, int indexNumber, CardinalDirection startFrom){
+       try{
+           return mapGrid.createLinePath(carSpawn,indexNumber,startFrom);
+       }catch (PathNotFoundException p){
+           return false;
+        }
     }
 
 

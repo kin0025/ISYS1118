@@ -1,6 +1,7 @@
 package main.entities;
 
 
+import main.entities.car.Car;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarDestroy;
 import main.entities.lane.Lane;
@@ -74,6 +75,24 @@ public class Road {
 
     }
 
+    public Lane getLane(CardinalDirection direction,TurnDirection turnDirection){
+        for(Lane lane : lanes){
+            if(lane.getDirection() == direction && lane.hasTurnDirection(turnDirection)){
+                return lane;
+            }
+        }
+        return null;
+    }
+
+    public CarDestroy getDestroyerLane(CardinalDirection direction){
+        for(Lane lane : lanes){
+            if(lane.getDirection() == direction && lane.getClass() == CarDestroy.class){
+                return (CarDestroy)lane;
+            }
+        }
+        return null;
+    }
+
     public void addDestroyerLane() {
         //FIXME
         lanes.add(new CarDestroy(null, null, 0, boundingBox));
@@ -110,7 +129,7 @@ public class Road {
      * Checks that cars are still inside the road and puts them back in if they aren't. Fixes direction of cars if they are moving in the wrong
      * direction.
      *
-     * @return
+     * @return whether cars are inside the road
      */
     public boolean checkCarsInsideRoad() {
         return false;

@@ -1,5 +1,6 @@
 package main.entities;
 
+import main.entities.car.Car;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarSpawn;
 import main.entities.lane.Lane;
@@ -177,7 +178,6 @@ public class MapGrid {
     }
 
 
-    @SuppressWarnings("Duplicates")
     public boolean createLinePath(CarSpawn carSpawn, int indexNumber, CardinalDirection goTo) throws PathNotFoundException {
         boolean pathEnded = false;
         boolean pathStarted = false;
@@ -189,10 +189,10 @@ public class MapGrid {
                 for (int i = 0; i < height - 1; i++) {
                     Intersection thisIntersection = grid[indexNumber][i];
                     Intersection nextIntersection = grid[indexNumber][i + 1];
+
                     if (!pathStarted && thisIntersection != null) {
                         pathStarted = true;
                     }
-
                     if (thisIntersection != null && nextIntersection != null) {
                         carSpawn.addToPath(thisIntersection);
                         carSpawn.addToPath(getRoad(thisIntersection, nextIntersection).getLane(goTo, TurnDirection.STRAIGHT));
@@ -212,10 +212,10 @@ public class MapGrid {
                 for (int i = width - 1; i > 0; i--) {
                     Intersection thisIntersection = grid[i][indexNumber];
                     Intersection nextIntersection = grid[i - 1][indexNumber];
+
                     if (!pathStarted && thisIntersection != null) {
                         pathStarted = true;
                     }
-
                     if (thisIntersection != null && nextIntersection != null) {
                         carSpawn.addToPath(thisIntersection);
                         carSpawn.addToPath(getRoad(thisIntersection, nextIntersection).getLane(goTo, TurnDirection.STRAIGHT));
@@ -235,10 +235,10 @@ public class MapGrid {
                 for (int i = height - 1; i > 0; i--) {
                     Intersection thisIntersection = grid[indexNumber][i];
                     Intersection nextIntersection = grid[indexNumber][i - 1];
+
                     if (!pathStarted && thisIntersection != null) {
                         pathStarted = true;
                     }
-
                     if (thisIntersection != null && nextIntersection != null) {
                         carSpawn.addToPath(thisIntersection);
                         carSpawn.addToPath(getRoad(thisIntersection, nextIntersection).getLane(goTo, TurnDirection.STRAIGHT));
@@ -258,10 +258,10 @@ public class MapGrid {
                 for (int i = 0; i < width - 1; i++) {
                     Intersection thisIntersection = grid[i][indexNumber];
                     Intersection nextIntersection = grid[i + 1][indexNumber];
+
                     if (!pathStarted && thisIntersection != null) {
                         pathStarted = true;
                     }
-
                     if (thisIntersection != null && nextIntersection != null) {
                         carSpawn.addToPath(thisIntersection);
                         carSpawn.addToPath(getRoad(thisIntersection, nextIntersection).getLane(goTo, TurnDirection.STRAIGHT));
@@ -281,18 +281,28 @@ public class MapGrid {
                 return false;
         }
         carSpawn.addToPath(lastIntersection);
-        Road lastRoad = getRoad(lastIntersection, goTo.reverse());
+        Road lastRoad = getRoad(lastIntersection, goTo);
         if (lastRoad == null) {
-            lastRoad = addRoad(lastIntersection, goTo.reverse());
-            lastRoad.addDestroyerLane(goTo.reverse());
+            lastRoad = addRoad(lastIntersection, goTo);
+            lastRoad.addDestroyerLane(goTo);
         } else if (lastRoad.getDestroyerLane(goTo) == null) {
-            lastRoad.addDestroyerLane(goTo.reverse());
+            lastRoad.addDestroyerLane(goTo);
         }
-        return carSpawn.finalisePath(getRoad(lastIntersection, goTo.reverse()).getDestroyerLane
-                (goTo.reverse()));
+        return carSpawn.finalisePath(getRoad(lastIntersection, goTo).getDestroyerLane
+                (goTo));
     }
 
-    private Intersection getLastIntersection(int index, Orientation orientation) {
+    private Intersection getEdgeIntersection(int index, CardinalDirection direction) {
+        switch (direction){
+            case NORTH:
+                break;
+            case EAST:
+                break;
+            case SOUTH:
+                break;
+            case WEST:
+                break;
+        }
         if (orientation == Orientation.HORIZONTAL) {
             for (int i = width; i > 0; --i) {
                 if (getIntersection(i, index) != null) {
@@ -364,6 +374,7 @@ public class MapGrid {
     }
 
     public Road addRoad(Intersection intersection1, CardinalDirection directionFromIntersection) {
+        if(getIntersectionCoords(intersection1))
         if (getRoad(intersection1, directionFromIntersection) == null) {
             double xPos = intersection1.getCentre().getX();
             double xWidth;
@@ -383,13 +394,13 @@ public class MapGrid {
             } else if (directionFromIntersection == CardinalDirection.EAST) {
                 xPos -= offset/2;
                 //yPos += 0;
-                xWidth = DimensionManager.widthOfRoadPixels;
-                yWidth = DimensionManager.lengthOfRoadPixels;
+                yWidth = DimensionManager.widthOfRoadPixels;
+                xWidth = DimensionManager.lengthOfRoadPixels;
             } else {
                 xPos += offset/2;
                 //yPos += 0;
-                xWidth = DimensionManager.widthOfRoadPixels;
-                yWidth = DimensionManager.lengthOfRoadPixels;
+                yWidth = DimensionManager.widthOfRoadPixels;
+                xWidth = DimensionManager.lengthOfRoadPixels;
             }
             Road newRoad = new Road(directionFromIntersection.getAxis(), new BoundingBox(new Position(xPos, yPos), xWidth, yWidth));
             roads.add(newRoad);

@@ -149,9 +149,13 @@ public class Simulator {
     }
 
     public boolean createLinePath(CarSpawn carSpawn, int indexNumber, CardinalDirection startFrom){
+        lock();
        try{
-           return mapGrid.createLinePath(carSpawn,indexNumber,startFrom);
+           boolean result = mapGrid.createLinePath(carSpawn,indexNumber,startFrom);
+           unlock();
+           return result;
        }catch (PathNotFoundException p){
+           unlock();
            return false;
         }
     }

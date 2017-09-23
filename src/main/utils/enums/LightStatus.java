@@ -7,5 +7,5 @@
 package main.utils.enums;
 
 public enum LightStatus {
-RED,AMBER,GREEN
+    RED, AMBER, GREEN
 }

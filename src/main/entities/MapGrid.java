@@ -1,6 +1,5 @@
 package main.entities;
 
-import main.entities.car.Car;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarSpawn;
 import main.entities.lane.Lane;
@@ -13,7 +12,6 @@ import main.utils.enums.Orientation;
 import main.utils.enums.TurnDirection;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 public class MapGrid {
     private final int width;

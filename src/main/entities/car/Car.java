@@ -6,6 +6,7 @@ import main.utils.DimensionManager;
 import main.utils.MovingBox;
 import main.utils.Position;
 import main.utils.enums.CardinalDirection;
+import main.utils.enums.CollisionStatus;
 
 /**
  * The type main.entities.car.Car.
@@ -13,7 +14,7 @@ import main.utils.enums.CardinalDirection;
 public class Car implements SimulationTimed {
     private static final double maxSpeed = DimensionManager.kmphToPixelTick(50);
     private double speed = maxSpeed;
-    private final MovingBox carBox;
+    private MovingBox carBox;
 
     //Always set to the direction of the parent lane.
     private CardinalDirection direction;
@@ -25,7 +26,8 @@ public class Car implements SimulationTimed {
         this.carPath = carPath;
         if (carPath != null && carPath.getSize() != 0) {
             this.direction = carPath.get(0).getDirection();
-            this.carBox = new MovingBox(carPosition,DimensionManager.lengthOfCarPixels,DimensionManager.widthOfCarPixels,carPath.get(0).getBoundingBox());
+            this.carBox = new MovingBox(carPosition, DimensionManager.lengthOfCarPixels, DimensionManager.widthOfCarPixels, carPath.get(0)
+                    .getBoundingBox());
         }
 
     }
@@ -39,25 +41,17 @@ public class Car implements SimulationTimed {
     }
 
     public void incrementTime() {
-        if (speed != 0) {
-            direction = carPath.get(carPathPosition).getDirection();
-            if (direction != null) {
-                //Create the direction that we want to go in, and then move there.
-                double[] moveBy = new double[2];
-                for (int i = 0; i < moveBy.length; i++) {
-                    moveBy[i] = direction.getDirectionVector()[i] * speed;
-                }
-                carBox.movePosition(moveBy);
-            }
-
-            BoundingBox currentObjectPosition = carPath.get(carPathPosition).getBoundingBox();
-            if (currentObjectPosition != null && currentObjectPosition.isInsideBoundingBox(carPosition)) {
-                moveMe = true;
-                carPathPosition++;
-            } else {
-                moveMe = false;
-            }
+        carBox.setAngle(carPath.getCarPosition(this).getDirection());
+        carBox.moveForward(speed);
+        /*BoundingBox currentObjectBox = carPath.get(carPathPosition).getBoundingBox();
+        if (currentObjectBox != null && carBox.getCollisionStatus() == CollisionStatus.INSIDE) {
+            moveMe = true;
+            carPathPosition++;
+        } else {
+            moveMe = false;
         }
+*/
+
         /*
         if (carPosition.getDifference(intersectionPath.element().getBoundingBox()) <= 0) {
             //TODO: Move to another lane logic here
@@ -66,18 +60,6 @@ public class Car implements SimulationTimed {
             this.direction = lanePath.element().getDirection();
         }
         */
-    }
-
-    public boolean needsToBeMoved() {
-        return moveMe;
-    }
-
-    public void turnLeft() {
-        direction = direction.turnLeft();
-    }
-
-    public void turnRight() {
-        direction = direction.turnRight();
     }
 
     public CardinalDirection getDirection() {
@@ -89,7 +71,7 @@ public class Car implements SimulationTimed {
     }
 
     public Position getPosition() {
-        return carPosition;
+        return carBox.getCentre();
     }
 
     public boolean isMoving() {

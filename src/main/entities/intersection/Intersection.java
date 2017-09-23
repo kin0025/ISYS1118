@@ -4,11 +4,13 @@
 
 package main.entities.intersection;
 
-import main.entities.car.Car;
 import main.entities.Road;
+import main.entities.car.Car;
 import main.entities.interfaces.CarMovable;
 import main.entities.interfaces.SimulationTimed;
-import main.utils.*;
+import main.utils.BoundingBox;
+import main.utils.DimensionManager;
+import main.utils.Position;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.LightStatus;
 import main.utils.enums.Orientation;
@@ -29,7 +31,7 @@ public class Intersection implements CarMovable, SimulationTimed {
         lights.put(Orientation.HORIZONTAL, new TrafficLight(lightTimeHorizontal, Orientation.HORIZONTAL));
 
         lights.get(startingLights).restartCycle();
-        this.boundingBox = new BoundingBox(centre,DimensionManager.widthOfIntersectionPixels, DimensionManager.widthOfIntersectionPixels);
+        this.boundingBox = new BoundingBox(centre, DimensionManager.widthOfIntersectionPixels, DimensionManager.widthOfIntersectionPixels);
     }
 
     public void incrementTime() {
@@ -103,7 +105,7 @@ public class Intersection implements CarMovable, SimulationTimed {
         return false;
     }
 
-    public void removeRoads(){
+    public void removeRoads() {
         roads = null;
         roads = new ArrayList<>();
     }

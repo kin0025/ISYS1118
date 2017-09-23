@@ -437,7 +437,7 @@ public class CommandLineController implements InputController {
             } else {
                 index = intersectionCoordinates[0];
             }
-            if(!simulator.createLinePath(spawn, index, spawn.getDirection())){
+            if (!simulator.createLinePath(spawn, index, spawn.getDirection())) {
                 System.out.println("Creating the spawn path failed.");
             }
         }

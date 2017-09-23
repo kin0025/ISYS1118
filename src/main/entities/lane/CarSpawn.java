@@ -76,7 +76,8 @@ public class CarSpawn extends Lane {
      * Must be called every tick.
      */
     public void incrementTime() {
-        tick++;super.incrementTime();
+        tick++;
+        super.incrementTime();
         if (active) {
             //Checks that the last car added has moved enough.
             if (!getCars().isEmpty()) {
@@ -86,7 +87,7 @@ public class CarSpawn extends Lane {
                 }
             }
             if (tick % spawnDelay == 0) {
-                 spawnCar();
+                spawnCar();
             }
         }
 

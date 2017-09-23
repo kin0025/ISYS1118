@@ -6,6 +6,7 @@
 
 package main.utils;
 
+import main.utils.enums.CardinalDirection;
 import main.utils.enums.CollisionStatus;
 
 public class MovingBox extends BoundingBox {
@@ -26,23 +27,34 @@ public class MovingBox extends BoundingBox {
         this.parentBox = parentBox;
     }
 
-    public void forceInsideParentBox(){
-if(getCollisionStatus() == CollisionStatus.ENCLOSED){
-    return;
-}else{
-    //TODO IMPLEMENT
-     //this.getCentre().setPosition(x,y);
-}
+    public void forceInsideParentBox() {
+        if (getCollisionStatus() == CollisionStatus.ENCLOSED) {
+            return;
+        } else {
+            //TODO IMPLEMENT
+            //this.getCentre().setPosition(x,y);
+        }
     }
 
-    public CollisionStatus getCollisionStatus(){
+    public CollisionStatus getCollisionStatus() {
         //TODO IMPLEMENT
         return CollisionStatus.OUTSIDE;
     }
 
-    public void setAngle(int angle){
+    public void setAngle(int angle) {
         this.angle = angle;
     }
 
+    public void setAngle(CardinalDirection direction) {
+        this.angle = direction.toDegrees();
+    }
 
+    public void moveForward(double amount) {
+        amount = Math.toRadians(amount);
+        xMin += amount * Math.cos(angle);
+        yMin += amount * Math.sin(angle);
+        xMax += amount * Math.cos(angle);
+        yMax += amount * Math.sin(angle);
+        getCentre().movePosition(amount * Math.cos(angle),amount * Math.sin(angle));
+    }
 }

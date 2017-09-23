@@ -10,10 +10,10 @@ import main.utils.enums.CollisionStatus;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class BoundingBox {
-    private double xMin;
-    private double yMin;
-    private double xMax;
-    private double yMax;
+    double xMin;
+    double yMin;
+    double xMax;
+    double yMax;
     private Position centre;
 
     public BoundingBox(double xMin, double yMin, double xMax, double yMax) throws NumberFormatException {
@@ -88,7 +88,7 @@ public class BoundingBox {
         return x > xMin && x < xMax && y > yMin && y < yMax;
     }
 
-    public CollisionStatus getBoundingCollision(BoundingBox boundingBox){
+    public CollisionStatus getBoundingCollision(BoundingBox boundingBox) {
         return null;
     }
 }

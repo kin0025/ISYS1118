@@ -1,11 +1,13 @@
 package main.gui;
 
-import main.entities.car.Car;
 import main.entities.MapGrid;
 import main.entities.Road;
+import main.entities.car.Car;
 import main.entities.intersection.Intersection;
 import main.entities.lane.Lane;
-import main.utils.*;
+import main.utils.BoundingBox;
+import main.utils.DimensionManager;
+import main.utils.Position;
 import main.utils.enums.LightStatus;
 import main.utils.enums.Orientation;
 

@@ -57,7 +57,7 @@ public class Lane implements CarMovable, SimulationTimed {
 
     public void startFirstCar() {
         if (!cars.isEmpty()) {
-            cars.element().start();
+            cars.peek().start();
         }
     }
 

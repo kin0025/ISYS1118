@@ -86,16 +86,16 @@ public class Simulator {
     }
 
     public int[] getIntersectionCoords(Intersection intersection) {
-       return mapGrid.getIntersectionCoords(intersection);
+        return mapGrid.getIntersectionCoords(intersection);
     }
 
 
     public CarSpawn createSpawnPoint(Intersection intersection, CardinalDirection directionSpawnFrom, int spawnDelay) {
         lock();
-        if(intersection == null || directionSpawnFrom == null){
+        if (intersection == null || directionSpawnFrom == null) {
             return null;
         }
-        CarSpawn carSpawn = mapGrid.createSpawnPoint(intersection,directionSpawnFrom,spawnDelay);
+        CarSpawn carSpawn = mapGrid.createSpawnPoint(intersection, directionSpawnFrom, spawnDelay);
         unlock();
         return carSpawn;
     }
@@ -148,15 +148,15 @@ public class Simulator {
 //TODO Add code here - select the road the intersection should be placed on
     }
 
-    public boolean createLinePath(CarSpawn carSpawn, int indexNumber, CardinalDirection startFrom){
+    public boolean createLinePath(CarSpawn carSpawn, int indexNumber, CardinalDirection startFrom) {
         lock();
-       try{
-           boolean result = mapGrid.createLinePath(carSpawn,indexNumber,startFrom);
-           unlock();
-           return result;
-       }catch (PathNotFoundException p){
-           unlock();
-           return false;
+        try {
+            boolean result = mapGrid.createLinePath(carSpawn, indexNumber, startFrom);
+            unlock();
+            return result;
+        } catch (PathNotFoundException p) {
+            unlock();
+            return false;
         }
     }
 

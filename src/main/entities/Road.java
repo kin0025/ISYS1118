@@ -74,19 +74,19 @@ public class Road {
 
     }
 
-    public Lane getLane(CardinalDirection direction,TurnDirection turnDirection){
-        for(Lane lane : lanes){
-            if(lane.getDirection() == direction && lane.hasTurnDirection(turnDirection)){
+    public Lane getLane(CardinalDirection direction, TurnDirection turnDirection) {
+        for (Lane lane : lanes) {
+            if (lane.getDirection() == direction && lane.hasTurnDirection(turnDirection)) {
                 return lane;
             }
         }
         return null;
     }
 
-    public CarDestroy getDestroyerLane(CardinalDirection direction){
-        for(Lane lane : lanes){
-            if(lane.getDirection() == direction && lane.getClass() == CarDestroy.class){
-                return (CarDestroy)lane;
+    public CarDestroy getDestroyerLane(CardinalDirection direction) {
+        for (Lane lane : lanes) {
+            if (lane.getDirection() == direction && lane.getClass() == CarDestroy.class) {
+                return (CarDestroy) lane;
             }
         }
         return null;
@@ -170,6 +170,7 @@ public class Road {
 
     /**
      * Returns the number of intersections added to the road
+     *
      * @return the number of intersections
      */
     public int numberOfIntersections() {

@@ -3,6 +3,7 @@ package main.entities.car;
 import main.entities.interfaces.SimulationTimed;
 import main.utils.BoundingBox;
 import main.utils.DimensionManager;
+import main.utils.MovingBox;
 import main.utils.Position;
 import main.utils.enums.CardinalDirection;
 
@@ -12,7 +13,7 @@ import main.utils.enums.CardinalDirection;
 public class Car implements SimulationTimed {
     private static final double maxSpeed = DimensionManager.kmphToPixelTick(50);
     private double speed = maxSpeed;
-    private final Position carPosition;
+    private final MovingBox carBox;
 
     //Always set to the direction of the parent lane.
     private CardinalDirection direction;
@@ -21,10 +22,10 @@ public class Car implements SimulationTimed {
     private boolean moveMe = false;
 
     public Car(Position carPosition, CarPath carPath) {
-        this.carPosition = carPosition;
         this.carPath = carPath;
         if (carPath != null && carPath.getSize() != 0) {
             this.direction = carPath.get(0).getDirection();
+            this.carBox = new MovingBox(carPosition,DimensionManager.lengthOfCarPixels,DimensionManager.widthOfCarPixels,carPath.get(0).getBoundingBox());
         }
 
     }
@@ -46,7 +47,7 @@ public class Car implements SimulationTimed {
                 for (int i = 0; i < moveBy.length; i++) {
                     moveBy[i] = direction.getDirectionVector()[i] * speed;
                 }
-                carPosition.movePosition(moveBy);
+                carBox.movePosition(moveBy);
             }
 
             BoundingBox currentObjectPosition = carPath.get(carPathPosition).getBoundingBox();

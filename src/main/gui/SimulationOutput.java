@@ -66,9 +66,7 @@ public class SimulationOutput extends JPanel {
             if (road != null) {
                 g2.setPaint(roadColour);
                 BoundingBox roadBox = road.getBoundingBox();
-                g2.fill(new Rectangle2D.Double(roadBox.getxMin(),
-                        roadBox.getyMin(),
-                        roadBox.getWidth(), roadBox.getHeight()));
+                g2.fill(new Rectangle2D.Double(roadBox.getxMin(), roadBox.getyMin(), roadBox.getWidth(), roadBox.getHeight()));
 
                 for (Lane lane : road.getLanes()) {
                     if (lane != null) {
@@ -77,8 +75,8 @@ public class SimulationOutput extends JPanel {
                                 .getWidth(), lane
                                 .getBoundingBox().getHeight()));
 
-                        for (Car laneCars : lane.getCars()) {
-                            Position carPos = laneCars.getPosition();
+                        for (Car laneCar : lane.getCars()) {
+                            Position carPos = laneCar.getPosition();
                             g2.setPaint(carColour);
                             g2.fill(new Rectangle2D.Double(carPos.getX(), carPos.getY(), DimensionManager.lengthOfCarPixels, DimensionManager
                                     .widthOfCarPixels));

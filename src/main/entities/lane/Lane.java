@@ -11,6 +11,7 @@ import main.utils.BoundingBox;
 import main.utils.DimensionManager;
 import main.utils.Position;
 import main.utils.enums.CardinalDirection;
+import main.utils.enums.CollisionStatus;
 import main.utils.enums.TurnDirection;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class Lane implements CarMovable, SimulationTimed {
     private final CardinalDirection direction;
     private final int lanesFromEdge;
     private final BoundingBox laneBox;
+    private boolean carsCanLeaveLane = true;
 
     public Lane(CardinalDirection direction, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox) {
         this.turnDirections = turnDirections;
@@ -33,8 +35,17 @@ public class Lane implements CarMovable, SimulationTimed {
     public void incrementTime() {
         checkCarCollisions();
         checkCarPositions();
-        for (Car car : cars) {
-            car.incrementTime();
+        if (!cars.isEmpty()) {
+            if (carsCanLeaveLane && cars.peek().getCollisionStatus() == CollisionStatus.ENCLOSED) {
+                cars.peek().stop();
+
+            } else {
+                cars.peek().start();
+            }
+
+            for (Car car : cars) {
+                car.incrementTime();
+            }
         }
     }
 
@@ -50,15 +61,11 @@ public class Lane implements CarMovable, SimulationTimed {
      * Stops the first car in the list
      */
     public void stopFirstCar() {
-        if (cars.peek() != null) {
-            cars.peek().stop();
-        }
+        carsCanLeaveLane = false;
     }
 
     public void startFirstCar() {
-        if (!cars.isEmpty()) {
-            cars.peek().start();
-        }
+        carsCanLeaveLane = true;
     }
 
     /**

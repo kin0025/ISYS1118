@@ -32,7 +32,6 @@ public class TrafficSimulator {
 
         Thread UI = new Thread(() -> {
             try {
-                System.out.println("We made it!");
                 boolean go = true;
                 while (go) {
                     go = inputController.mainMenu();

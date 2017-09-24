@@ -88,6 +88,10 @@ public class BoundingBox {
         return x > xMin && x < xMax && y > yMin && y < yMax;
     }
 
+    public boolean isInsideBoundingBox(double x, double y) {
+        return x > xMin && x < xMax && y > yMin && y < yMax;
+    }
+
     public CollisionStatus getBoundingCollision(BoundingBox boundingBox) {
         return null;
     }

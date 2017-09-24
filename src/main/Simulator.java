@@ -112,9 +112,9 @@ public class Simulator {
      * @param intersection2 a intersection that the road is created between
      * @return Whether the road can be added to the map - if a road already exists, or the intersections are not adjacent it will return false.
      */
-    public boolean addRoad(Intersection intersection1, Intersection intersection2) {
+    public boolean addRoad(Intersection intersection1, Intersection intersection2, Orientation orientation) {
         lock();
-        //TODO Add road between these two intersections if possible.
+        mapGrid.addRoad(intersection1, intersection2, orientation);
         unlock();
         return false;
     }
@@ -193,6 +193,8 @@ public class Simulator {
 
 
     public void changeTrafficLights() {
+        lock();
 
+        unlock();
     }
 }

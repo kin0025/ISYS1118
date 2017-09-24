@@ -21,7 +21,6 @@ public class MapGrid {
     private ArrayList<Road> roads = new ArrayList<>();
     private boolean maxIntersectionsDisabled = true;
 
-    //FIXME Not final at all.
     public MapGrid(int width, int height) {
         this.width = width;
         this.height = height;

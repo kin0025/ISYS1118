@@ -74,6 +74,14 @@ public class Car implements SimulationTimed {
         return carBox.getCentre();
     }
 
+    public MovingBox getCarBox() {
+        return carBox;
+    }
+
+    public CollisionStatus getCollisionStatus(){
+        return carBox.getCollisionStatus();
+    }
+
     public boolean isMoving() {
         return (speed != 0);
     }

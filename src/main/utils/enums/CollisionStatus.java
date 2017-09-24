@@ -7,5 +7,5 @@
 package main.utils.enums;
 
 public enum CollisionStatus {
-    OUTSIDE, TOUCHING, INSIDE, ENCLOSED
+    OUTSIDE, TOUCHING,  ENCLOSED
 }

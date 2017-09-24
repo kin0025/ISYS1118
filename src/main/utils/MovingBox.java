@@ -37,7 +37,11 @@ public class MovingBox extends BoundingBox {
     }
 
     public CollisionStatus getCollisionStatus() {
-        //TODO IMPLEMENT
+        if(parentBox.isInsideBoundingBox(xMax,yMax) && parentBox.isInsideBoundingBox(xMax,yMax) && parentBox.isInsideBoundingBox(this.getCentre())){
+            return CollisionStatus.ENCLOSED;
+        }else if(parentBox.isInsideBoundingBox(this.getCentre())){
+            return CollisionStatus.TOUCHING;
+        }
         return CollisionStatus.OUTSIDE;
     }
 

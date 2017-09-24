@@ -334,7 +334,7 @@ public class CommandLineController implements InputController {
         System.out.println("10. Fill grid with intersections and roads");
         System.out.println("11. Exit");
         printCharTimes('=', 150, true);
-        String[] options = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"};
+        String[] options = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11","12"};
         String choice = receiveStringInput("Enter an option:", options, false, false);
         switch (choice) {
             case "1":
@@ -369,6 +369,9 @@ public class CommandLineController implements InputController {
                 break;
             case "11":
                 return false;
+            case "12":
+                fillIntersections();
+
             default:
                 break;
         }
@@ -400,6 +403,22 @@ public class CommandLineController implements InputController {
 
         }
         createSpawnPath(spawn, simulator.getIntersectionCoords(intersection));
+    }
+
+    void createPresetSpawn(){
+        Intersection intersection = simulator.getIntersection(1,1);
+        CardinalDirection direction = CardinalDirection.NORTH;
+        CarSpawn spawn = simulator.createSpawnPoint(intersection,direction,10);
+
+        int index;
+        if (spawn.getDirection().getAxis() == Orientation.HORIZONTAL) {
+            index = simulator.getIntersectionCoords(intersection)[0];
+        } else {
+            index = simulator.getIntersectionCoords(intersection)[1];
+        }
+        if (!simulator.createLinePath(spawn, index, spawn.getDirection())) {
+            System.out.println("Creating the spawn path failed.");
+        }
     }
 
     @Override
@@ -476,7 +495,6 @@ public class CommandLineController implements InputController {
     private void fillIntersections() {
         for (int i = 1; i < simulator.getGridSize()[0] - 1; i++) {
             for (int j = 1; j < simulator.getGridSize()[1] - 1; j++) {
-                System.out.println("Adding intersection at " + i + "," + j);
                 simulator.addIntersection(i, j, DimensionManager.secondsToTicks(10), DimensionManager.secondsToTicks(10), Orientation.HORIZONTAL);
             }
         }

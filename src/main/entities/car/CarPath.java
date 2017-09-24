@@ -154,7 +154,7 @@ public class CarPath {
     }
 
     public CarMovable getCarPosition(Car car) {
-        if (pathComplete) {
+        if (pathComplete && !carPath.isEmpty() && carPosition.containsKey(car)) {
             return carPath.get(carPosition.get(car));
         }
         return null;

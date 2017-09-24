@@ -1,7 +1,6 @@
 package main.entities.car;
 
 import main.entities.interfaces.SimulationTimed;
-import main.utils.BoundingBox;
 import main.utils.DimensionManager;
 import main.utils.MovingBox;
 import main.utils.Position;
@@ -13,12 +12,11 @@ import main.utils.enums.CollisionStatus;
  */
 public class Car implements SimulationTimed {
     private static final double maxSpeed = DimensionManager.kmphToPixelTick(50);
+    private final CarPath carPath;
     private double speed = maxSpeed;
     private MovingBox carBox;
-
     //Always set to the direction of the parent lane.
     private CardinalDirection direction;
-    private final CarPath carPath;
     private int carPathPosition = 0;
     private boolean moveMe = false;
 
@@ -41,7 +39,11 @@ public class Car implements SimulationTimed {
     }
 
     public void incrementTime() {
-        carBox.setAngle(carPath.getCarPosition(this).getDirection());
+        try {
+            carBox.setAngle(carPath.getCarPosition(this).getDirection());
+        } catch (NullPointerException e) {
+return;
+        }
         carBox.moveForward(speed);
         /*BoundingBox currentObjectBox = carPath.get(carPathPosition).getBoundingBox();
         if (currentObjectBox != null && carBox.getCollisionStatus() == CollisionStatus.INSIDE) {
@@ -78,7 +80,7 @@ public class Car implements SimulationTimed {
         return carBox;
     }
 
-    public CollisionStatus getCollisionStatus(){
+    public CollisionStatus getCollisionStatus() {
         return carBox.getCollisionStatus();
     }
 

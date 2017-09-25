@@ -1,6 +1,5 @@
 package main.gui;
 
-import main.entities.lane.CarSpawn;
 
 public interface InputController {
 
@@ -11,8 +10,6 @@ public interface InputController {
     void addSpawnPoint();
 
     void addIntersection();
-
-    void createSpawnPath(CarSpawn spawn);
 
     void removeSpawnPoint();
 

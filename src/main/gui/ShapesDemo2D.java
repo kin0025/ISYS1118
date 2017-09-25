@@ -30,10 +30,11 @@
  */
 package main.gui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.*;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.geom.*;
 
 /*
  * This is like the FontDemo applet in volume 1, except that it
@@ -76,16 +77,14 @@ public class ShapesDemo2D extends JApplet {
         String name = font.getName();
         int style = font.getStyle();
 
-        while ( !fontFits ) {
-            if ( (fontMetrics.getHeight() <= maxCharHeight)
-                    && (fontMetrics.stringWidth(longString) <= xSpace) ) {
+        while (!fontFits) {
+            if ((fontMetrics.getHeight() <= maxCharHeight)
+                    && (fontMetrics.stringWidth(longString) <= xSpace)) {
                 fontFits = true;
-            }
-            else {
-                if ( size <= minFontSize ) {
+            } else {
+                if (size <= minFontSize) {
                     fontFits = true;
-                }
-                else {
+                } else {
                     g2.setFont(font = new Font(name,
                             style,
                             --size));
@@ -117,12 +116,12 @@ public class ShapesDemo2D extends JApplet {
 
         int x = 5;
         int y = 7;
-        int rectWidth = gridWidth - 2*x;
+        int rectWidth = gridWidth - 2 * x;
         int stringY = gridHeight - 3 - fontMetrics.getDescent();
         int rectHeight = stringY - fontMetrics.getMaxAscent() - y - 2;
 
         // draw Line2D.Double
-        g2.draw(new Line2D.Double(x, y+rectHeight-1, x + rectWidth, y));
+        g2.draw(new Line2D.Double(x, y + rectHeight - 1, x + rectWidth, y));
         g2.drawString("Line2D", x, stringY);
         x += gridWidth;
 
@@ -153,12 +152,12 @@ public class ShapesDemo2D extends JApplet {
         x += gridWidth;
 
         // draw GeneralPath (polygon)
-        int x1Points[] = {x, x+rectWidth, x, x+rectWidth};
-        int y1Points[] = {y, y+rectHeight, y+rectHeight, y};
+        int x1Points[] = {x, x + rectWidth, x, x + rectWidth};
+        int y1Points[] = {y, y + rectHeight, y + rectHeight, y};
         GeneralPath polygon = new GeneralPath(GeneralPath.WIND_EVEN_ODD,
                 x1Points.length);
         polygon.moveTo(x1Points[0], y1Points[0]);
-        for ( int index = 1; index < x1Points.length; index++ ) {
+        for (int index = 1; index < x1Points.length; index++) {
             polygon.lineTo(x1Points[index], y1Points[index]);
         }
         polygon.closePath();
@@ -173,12 +172,12 @@ public class ShapesDemo2D extends JApplet {
 
         // draw GeneralPath (polyline)
 
-        int x2Points[] = {x, x+rectWidth, x, x+rectWidth};
-        int y2Points[] = {y, y+rectHeight, y+rectHeight, y};
+        int x2Points[] = {x, x + rectWidth, x, x + rectWidth};
+        int y2Points[] = {y, y + rectHeight, y + rectHeight, y};
         GeneralPath polyline = new GeneralPath(GeneralPath.WIND_EVEN_ODD,
                 x2Points.length);
-        polyline.moveTo (x2Points[0], y2Points[0]);
-        for ( int index = 1; index < x2Points.length; index++ ) {
+        polyline.moveTo(x2Points[0], y2Points[0]);
+        for (int index = 1; index < x2Points.length; index++) {
             polyline.lineTo(x2Points[index], y2Points[index]);
         }
 
@@ -194,7 +193,7 @@ public class ShapesDemo2D extends JApplet {
         x += gridWidth;
 
         // fill RoundRectangle2D.Double
-        GradientPaint redtowhite = new GradientPaint(x,y,red,x+rectWidth, y,white);
+        GradientPaint redtowhite = new GradientPaint(x, y, red, x + rectWidth, y, white);
         g2.setPaint(redtowhite);
         g2.fill(new RoundRectangle2D.Double(x, y, rectWidth,
                 rectHeight, 10, 10));
@@ -211,22 +210,21 @@ public class ShapesDemo2D extends JApplet {
         x += gridWidth;
 
         // fill Ellipse2D.Double
-        redtowhite = new GradientPaint(x,y,red,x+rectWidth, y,white);
+        redtowhite = new GradientPaint(x, y, red, x + rectWidth, y, white);
         g2.setPaint(redtowhite);
-        g2.fill (new Ellipse2D.Double(x, y, rectWidth, rectHeight));
+        g2.fill(new Ellipse2D.Double(x, y, rectWidth, rectHeight));
         g2.setPaint(fg);
         g2.drawString("Filled Ellipse2D", x, stringY);
         x += gridWidth;
 
 
-
         // fill and stroke GeneralPath
-        int x3Points[] = {x, x+rectWidth, x, x+rectWidth};
-        int y3Points[] = {y, y+rectHeight, y+rectHeight, y};
+        int x3Points[] = {x, x + rectWidth, x, x + rectWidth};
+        int y3Points[] = {y, y + rectHeight, y + rectHeight, y};
         GeneralPath filledPolygon = new GeneralPath(GeneralPath.WIND_EVEN_ODD,
                 x3Points.length);
         filledPolygon.moveTo(x3Points[0], y3Points[0]);
-        for ( int index = 1; index < x3Points.length; index++ ) {
+        for (int index = 1; index < x3Points.length; index++) {
             filledPolygon.lineTo(x3Points[index], y3Points[index]);
         }
         filledPolygon.closePath();
@@ -240,13 +238,15 @@ public class ShapesDemo2D extends JApplet {
     public static void main(String s[]) {
         JFrame f = new JFrame("ShapesDemo2D");
         f.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {System.exit(0);}
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
         });
         JApplet applet = new ShapesDemo2D();
         f.getContentPane().add("Center", applet);
         applet.init();
         f.pack();
-        f.setSize(new Dimension(550,100));
+        f.setSize(new Dimension(550, 100));
         f.setVisible(true);
     }
 

@@ -13,17 +13,17 @@ public enum Orientation {
     HORIZONTAL, VERTICAL;
 
     public Orientation swapValue() {
-        if (this.equals(HORIZONTAL)){
+        if (this.equals(HORIZONTAL)) {
             return VERTICAL;
-        }else{
+        } else {
             return HORIZONTAL;
         }
     }
 
-    public static Orientation stringToOrientation(String input){
-        if(input.equalsIgnoreCase("horizontal")){
+    public static Orientation stringToOrientation(String input) {
+        if (input.equalsIgnoreCase("horizontal")) {
             return HORIZONTAL;
-        }else if(input.equalsIgnoreCase("vertical")){
+        } else if (input.equalsIgnoreCase("vertical")) {
             return VERTICAL;
         }
         return null;

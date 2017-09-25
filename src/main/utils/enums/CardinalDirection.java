@@ -12,6 +12,7 @@
 
 package main.utils.enums;
 
+@SuppressWarnings("ALL")
 public enum CardinalDirection {
     NORTH, EAST, SOUTH, WEST;
 

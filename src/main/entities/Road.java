@@ -74,9 +74,27 @@ public class Road {
 
     }
 
-    public void addDestroyerLane() {
+    public Lane getLane(CardinalDirection direction, TurnDirection turnDirection) {
+        for (Lane lane : lanes) {
+            if (lane.getDirection() == direction && lane.hasTurnDirection(turnDirection)) {
+                return lane;
+            }
+        }
+        return null;
+    }
+
+    public CarDestroy getDestroyerLane(CardinalDirection direction) {
+        for (Lane lane : lanes) {
+            if (lane.getDirection() == direction && lane.getClass() == CarDestroy.class) {
+                return (CarDestroy) lane;
+            }
+        }
+        return null;
+    }
+
+    public void addDestroyerLane(CardinalDirection direction) {
         //FIXME
-        lanes.add(new CarDestroy(null, null, 0, boundingBox));
+        lanes.add(new CarDestroy(direction, 0, boundingBox));
 
     }
 
@@ -110,7 +128,7 @@ public class Road {
      * Checks that cars are still inside the road and puts them back in if they aren't. Fixes direction of cars if they are moving in the wrong
      * direction.
      *
-     * @return
+     * @return whether cars are inside the road
      */
     public boolean checkCarsInsideRoad() {
         return false;
@@ -152,6 +170,7 @@ public class Road {
 
     /**
      * Returns the number of intersections added to the road
+     *
      * @return the number of intersections
      */
     public int numberOfIntersections() {

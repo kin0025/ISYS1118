@@ -22,7 +22,7 @@ public class CarDestroyTest {
     private CarDestroy carDestroy;
     @Before
     public void setUp() throws Exception {
-        carDestroy = new CarDestroy(CardinalDirection.NORTH, new ArrayList<>(),0,new BoundingBox(new Position(0,0),20,100));
+        carDestroy = new CarDestroy(CardinalDirection.NORTH,0,new BoundingBox(new Position(0,0),20,100));
     }
 
     @Test

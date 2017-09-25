@@ -28,7 +28,6 @@ public class GraphicsController implements InputController {
 
     }
 
-    @Override
     public void createSpawnPath(CarSpawn carSpawn) {
 
     }

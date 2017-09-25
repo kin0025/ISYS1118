@@ -11,17 +11,19 @@ import main.utils.BoundingBox;
 import main.utils.DimensionManager;
 import main.utils.Position;
 import main.utils.enums.CardinalDirection;
+import main.utils.enums.CollisionStatus;
 import main.utils.enums.TurnDirection;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Lane implements CarMovable, SimulationTimed {
-    private final ArrayList<TurnDirection> turnDirections;
+    final ArrayList<TurnDirection> turnDirections;
     private final LinkedList<Car> cars = new LinkedList<>();
     private final CardinalDirection direction;
     private final int lanesFromEdge;
     private final BoundingBox laneBox;
+    private boolean carsCanLeaveLane = true;
 
     public Lane(CardinalDirection direction, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox) {
         this.turnDirections = turnDirections;
@@ -33,8 +35,17 @@ public class Lane implements CarMovable, SimulationTimed {
     public void incrementTime() {
         checkCarCollisions();
         checkCarPositions();
-        for (Car car : cars) {
-            car.incrementTime();
+        if (!cars.isEmpty()) {
+            if (!carsCanLeaveLane && cars.peek().getForwardCollisionStatus() != CollisionStatus.ENCLOSED) {
+                cars.peek().stop();
+
+            } else {
+                cars.peek().start();
+            }
+
+            for (Car car : cars) {
+                car.incrementTime();
+            }
         }
     }
 
@@ -50,15 +61,11 @@ public class Lane implements CarMovable, SimulationTimed {
      * Stops the first car in the list
      */
     public void stopFirstCar() {
-        if (cars.element() != null) {
-            cars.element().stop();
-        }
+        carsCanLeaveLane = false;
     }
 
     public void startFirstCar() {
-        if (cars.element() != null) {
-            cars.element().accelerate();
-        }
+        carsCanLeaveLane = true;
     }
 
     /**
@@ -75,7 +82,7 @@ public class Lane implements CarMovable, SimulationTimed {
                     currentCar.stop();
                     carTooClose = true;
                 } else {
-                    currentCar.accelerate();
+                    currentCar.start();
                 }
             }
         }
@@ -86,14 +93,16 @@ public class Lane implements CarMovable, SimulationTimed {
      * Iterates through the linked list and finds any cars outside the box
      * * Returns True if none outside the lane.
      */
-    boolean checkCarPositions() {
-        boolean carOutsideBox = false;
+    void checkCarPositions() {
         for (Car car : cars) {
             if (!laneBox.isInsideBoundingBox(car.getPosition())) {
-                carOutsideBox = true;
+                CollisionStatus status = car.getForwardCollisionStatus();
+//                car.moveToNext();
+//                removeCar(car); CME
+                //FIXME What do we do here?
             }
         }
-        return !carOutsideBox;
+        return;
     }
 
     public CardinalDirection getDirection() {
@@ -116,8 +125,9 @@ public class Lane implements CarMovable, SimulationTimed {
 
     @Override
     public boolean moveCar(CarMovable moveTo) {
-        moveTo.addCar(cars.element());
-        return this.removeCar(cars.element());
+        cars.peek().moveToNext();
+        moveTo.addCar(cars.peek());
+        return this.removeCar(cars.peek());
     }
 
     @Override

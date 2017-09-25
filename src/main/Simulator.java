@@ -4,6 +4,7 @@ import main.entities.MapGrid;
 import main.entities.Road;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarSpawn;
+import main.exceptions.PathNotFoundException;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.Orientation;
 
@@ -39,11 +40,11 @@ public class Simulator {
         return makingChanges;
     }
 
-    public void lock() {
+    private void lock() {
         makingChanges = true;
     }
 
-    public void unlock() {
+    private void unlock() {
         makingChanges = false;
     }
 
@@ -64,7 +65,9 @@ public class Simulator {
     }
 
     public void createNewMap(int width, int height) {
+        lock();
         mapGrid = new MapGrid(width, height);
+        unlock();
     }
 
     public int[] getGridSize() {
@@ -82,12 +85,19 @@ public class Simulator {
         return mapGrid.getIntersection(x, y);
     }
 
+    public int[] getIntersectionCoords(Intersection intersection) {
+        return mapGrid.getIntersectionCoords(intersection);
+    }
+
 
     public CarSpawn createSpawnPoint(Intersection intersection, CardinalDirection directionSpawnFrom, int spawnDelay) {
         lock();
-        CarSpawn spawner = mapGrid.createSpawnPoint(intersection,directionSpawnFrom,spawnDelay);
+        if (intersection == null || directionSpawnFrom == null) {
+            return null;
+        }
+        CarSpawn carSpawn = mapGrid.createSpawnPoint(intersection, directionSpawnFrom, spawnDelay);
         unlock();
-        return spawner;
+        return carSpawn;
     }
 
     public void addDestroyPoint(int roadColumn, int roadRow) {
@@ -102,9 +112,9 @@ public class Simulator {
      * @param intersection2 a intersection that the road is created between
      * @return Whether the road can be added to the map - if a road already exists, or the intersections are not adjacent it will return false.
      */
-    public boolean addRoad(Intersection intersection1, Intersection intersection2) {
+    public boolean addRoad(Intersection intersection1, Intersection intersection2, Orientation orientation) {
         lock();
-        //TODO Add road between these two intersections if possible.
+        mapGrid.addRoad(intersection1, intersection2, orientation);
         unlock();
         return false;
     }
@@ -136,6 +146,18 @@ public class Simulator {
 
     public void addSpawnPoint() {
 //TODO Add code here - select the road the intersection should be placed on
+    }
+
+    public boolean createLinePath(CarSpawn carSpawn, int indexNumber, CardinalDirection startFrom) {
+        lock();
+        try {
+            boolean result = mapGrid.createLinePath(carSpawn, indexNumber, startFrom);
+            unlock();
+            return result;
+        } catch (PathNotFoundException p) {
+            unlock();
+            return false;
+        }
     }
 
 
@@ -171,6 +193,8 @@ public class Simulator {
 
 
     public void changeTrafficLights() {
+        lock();
 
+        unlock();
     }
 }

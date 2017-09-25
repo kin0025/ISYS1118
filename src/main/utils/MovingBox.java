@@ -11,7 +11,7 @@ import main.utils.enums.CollisionStatus;
 
 public class MovingBox extends BoundingBox {
     private BoundingBox parentBox;
-    private int angle;
+    private double angle;
 
     public MovingBox(double xMin, double yMin, double xMax, double yMax, BoundingBox parentBox) throws NumberFormatException {
         super(xMin, yMin, xMax, yMax);
@@ -70,15 +70,15 @@ public class MovingBox extends BoundingBox {
         corners[0].setX(getCentre().getX() - Math.cos(angle)*getWidth()/2);
         corners[0].setY(getCentre().getY() + Math.sin(angle)*getHeight()/2);
 
-        corners[1].setX(getCentre().getX() + Math.cos(angle)*getWidth()/2);
-        corners[1].setY(getCentre().getY() + Math.sin(angle)*getHeight()/2);
+        corners[1].setX(getCentre().getX() + Math.sin(angle)*getWidth()/2);
+        corners[1].setY(getCentre().getY() + Math.cos(angle)*getHeight()/2);
 
 
         corners[2].setX(getCentre().getX() + Math.cos(angle)*getWidth()/2);
         corners[2].setY(getCentre().getY() - Math.sin(angle)*getHeight()/2);
 
-        corners[3].setX(getCentre().getX() - Math.cos(angle)*getWidth()/2);
-        corners[3].setY(getCentre().getY() - Math.sin(angle)*getHeight()/2);
+        corners[3].setX(getCentre().getX() - Math.sin(angle)*getWidth()/2);
+        corners[3].setY(getCentre().getY() - Math.cos(angle)*getHeight()/2);
         return corners;
     }
 
@@ -123,18 +123,22 @@ public class MovingBox extends BoundingBox {
         return CollisionStatus.OUTSIDE;
     }
 
-    public void setAngle(int angle) {
-        this.angle = angle;
+    public void setAngle(int angleDegrees) {
+        this.angle = Math.toRadians(angle);
     }
 
     public void setAngle(CardinalDirection direction) {
-        this.angle = direction.toDegrees();
+        this.angle = Math.toRadians(direction.toDegrees());
+    }
+
+    public double getAngle(){
+        return Math.toDegrees(angle);
     }
 
     int time = 0;
     public void moveForward(double amount) {
         if(time%20 == 0) {
-            this.angle++;
+            this.angle += Math.toRadians(1);
         }
         time++;
         //double angleRad = Math.toRadians(angle);

@@ -168,7 +168,7 @@ public class SimulationOutput extends JPanel {
         if (car == null) {
             return;
         }
-        g.drawString("CarHere", (int) car.getCarBox().getxMin(), (int) car.getCarBox().getyMin());
+        g.drawString("" +car.getCarBox().getAngle(), (int) car.getCarBox().getxMin(), (int) car.getCarBox().getyMin());
         Position[] coordinates = car.getCarBox().getCorners();
         // fill and stroke GeneralPath
         GeneralPath carPolygon = new GeneralPath(GeneralPath.WIND_EVEN_ODD,

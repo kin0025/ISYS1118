@@ -17,7 +17,7 @@ public class Simulator {
     /**
      * Runs the simulation through one step
      */
-    public void runSimulation() {
+    public void incrementTime() {
         //This entire thing is temporary.
         if (!pause) {
             for (Intersection[] row : mapGrid.getGrid()) {

@@ -154,7 +154,7 @@ public class ShapesDemo2D extends JApplet {
         // draw GeneralPath (polygon)
         int x1Points[] = {x, x + rectWidth, x, x + rectWidth};
         int y1Points[] = {y, y + rectHeight, y + rectHeight, y};
-        GeneralPath polygon = new GeneralPath(GeneralPath.WIND_EVEN_ODD,
+        GeneralPath polygon = new GeneralPath(GeneralPath.WIND_NON_ZERO,
                 x1Points.length);
         polygon.moveTo(x1Points[0], y1Points[0]);
         for (int index = 1; index < x1Points.length; index++) {

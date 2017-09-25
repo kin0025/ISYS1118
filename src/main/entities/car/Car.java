@@ -44,23 +44,6 @@ public class Car implements SimulationTimed {
             return;
         }
         carBox.moveForward(speed);
-        /*BoundingBox currentObjectBox = carPath.get(carPathPosition).getBoundingBox();
-        if (currentObjectBox != null && carBox.getCollisionStatus() == CollisionStatus.INSIDE) {
-            moveMe = true;
-            carPathPosition++;
-        } else {
-            moveMe = false;
-        }
-*/
-
-        /*
-        if (carPosition.getDifference(intersectionPath.element().getBoundingBox()) <= 0) {
-            //TODO: Move to another lane logic here
-            lanePath.remove().getCars().remove(this);
-            lanePath.element().getCars().add(this);
-            this.direction = lanePath.element().getDirection();
-        }
-        */
     }
 
     public boolean moveToNext() {

@@ -12,8 +12,8 @@ public class DimensionManager {
     public static final int widthOfRoadPixels = 40;
     public static final int lengthOfLanePixels = lengthOfRoadPixels;
     public static final int widthOfLanePixels = widthOfRoadPixels / numberOfLanesPerRoad;
-    public static final int lengthOfCarPixels = 8;
-    public static final int widthOfCarPixels = 5;
+    public static final int widthOfCarPixels = widthOfLanePixels -1;
+    public static final int lengthOfCarPixels =  widthOfCarPixels * 2;
     public static final int sizeOfLightPixels = 10;
 
     //Other constants

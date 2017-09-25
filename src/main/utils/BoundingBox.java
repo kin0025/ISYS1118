@@ -10,20 +10,16 @@ import main.utils.enums.CollisionStatus;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class BoundingBox {
-    double xMin;
-    double yMin;
-    double xMax;
-    double yMax;
+    private double width;
+    private double height;
     private Position centre;
 
     public BoundingBox(double xMin, double yMin, double xMax, double yMax) throws NumberFormatException {
         if (xMin >= xMax || yMin >= yMax) {
             throw new NumberFormatException("Max must be greater than minimum");
         }
-        this.xMin = xMin;
-        this.yMin = yMin;
-        this.xMax = xMax;
-        this.yMax = yMax;
+        width = xMax - xMin;
+        height = yMax - yMin;
         double xCenter = xMin + ((xMax - xMin) / 2);
         double yCenter = yMin + ((yMax - yMin) / 2);
         centre = new Position(xCenter, yCenter);
@@ -32,50 +28,43 @@ public class BoundingBox {
 
     public BoundingBox(Position centre, double xWidth, double yWidth) {
         this.centre = centre;
-        xMin = centre.getX() - (xWidth / 2);
-        yMin = centre.getY() - (yWidth / 2);
-        xMax = centre.getX() + (xWidth / 2);
-        yMax = centre.getY() + (yWidth / 2);
+        width = xWidth;
+        height = yWidth;
     }
 
     public double getxMin() {
-        return xMin;
+        return centre.getX() - width / 2;
     }
 
-    public void setxMin(double xMin) {
-        this.xMin = xMin;
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
     }
 
     public double getyMin() {
-        return yMin;
+        return centre.getY() - height/2;
     }
 
-    public void setyMin(double yMin) {
-        this.yMin = yMin;
-    }
 
     public double getxMax() {
-        return xMax;
+        return centre.getX() + width/2;
     }
 
-    public void setxMax(double xMax) {
-        this.xMax = xMax;
-    }
 
     public double getyMax() {
-        return yMax;
+        return centre.getY() + height/2;
     }
 
-    public void setyMax(double yMax) {
-        this.yMax = yMax;
-    }
 
     public double getWidth() {
-        return xMax - xMin;
+        return width;
     }
 
     public double getHeight() {
-        return yMax - yMin;
+        return height;
     }
 
     public Position getCentre() {
@@ -85,14 +74,10 @@ public class BoundingBox {
     public boolean isInsideBoundingBox(Position position) {
         double y = position.getY();
         double x = position.getX();
-        return x > xMin && x < xMax && y > yMin && y < yMax;
+        return isInsideBoundingBox(x, y);
     }
 
     public boolean isInsideBoundingBox(double x, double y) {
-        return x > xMin && x < xMax && y > yMin && y < yMax;
-    }
-
-    public CollisionStatus getBoundingCollision(BoundingBox boundingBox) {
-        return null;
+        return x > getxMin() && x < getxMax() && y > getyMin() && y < getyMax();
     }
 }

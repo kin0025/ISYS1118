@@ -10,6 +10,7 @@ import main.entities.car.Car;
 import main.entities.car.CarPath;
 import main.entities.interfaces.CarMovable;
 import main.utils.BoundingBox;
+import main.utils.DimensionManager;
 import main.utils.Position;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.TurnDirection;
@@ -42,20 +43,20 @@ public class CarSpawn extends Lane {
 
         double xPos = 0;
         double yPos = 0;
-        if (directionOfLane == CardinalDirection.NORTH) {
-            xPos = (laneBox.getxMin() + laneBox.getxMax()) / 2;
-            yPos = laneBox.getyMin();
-        }
         if (directionOfLane == CardinalDirection.SOUTH) {
             xPos = (laneBox.getxMin() + laneBox.getxMax()) / 2;
-            yPos = laneBox.getyMax();
+            yPos = laneBox.getyMin() + DimensionManager.lengthOfCarPixels;
         }
-        if (directionOfLane == CardinalDirection.EAST) {
-            xPos = laneBox.getxMin();
-            yPos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
+        if (directionOfLane == CardinalDirection.NORTH) {
+            xPos = (laneBox.getxMin() + laneBox.getxMax()) / 2;
+            yPos = laneBox.getyMax() -  DimensionManager.lengthOfCarPixels;
         }
         if (directionOfLane == CardinalDirection.WEST) {
-            xPos = laneBox.getxMax();
+            xPos = laneBox.getxMin() +  DimensionManager.lengthOfCarPixels;
+            yPos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
+        }
+        if (directionOfLane == CardinalDirection.EAST) {
+            xPos = laneBox.getxMax() -  DimensionManager.lengthOfCarPixels;
             yPos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
         }
         spawnPosition = new Position(xPos, yPos);

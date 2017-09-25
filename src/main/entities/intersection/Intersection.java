@@ -101,9 +101,6 @@ public class Intersection implements CarMovable, SimulationTimed {
 
     }
 
-    public boolean addCar(Car car) {
-        return false;
-    }
 
     public void removeRoads() {
         roads = null;
@@ -112,13 +109,25 @@ public class Intersection implements CarMovable, SimulationTimed {
 
 
     @Override
-    public boolean removeCar(Car car) {
-        return false;
+    public boolean addCar(Car car) {
+        return cars.add(car);
     }
 
     @Override
     public boolean moveCar(CarMovable moveTo) {
-        return false;
+        cars.peek().moveToNext();
+        moveTo.addCar(cars.peek());
+        return this.removeCar(cars.peek());
+    }
+
+    @Override
+    public boolean removeCar(Car car) {
+        if (cars.element() == car) {
+            cars.remove();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

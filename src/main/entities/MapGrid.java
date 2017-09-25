@@ -406,6 +406,9 @@ public class MapGrid {
         return null;
     }
 
+    public void setLightTiming(Intersection intersection, double newTimeSeconds, Orientation orientation){
+        intersection.setLightTiming(orientation,DimensionManager.secondsToTicks(newTimeSeconds));
+    }
 
     /**
      * Needs to empty any roads in intersections if there are any - call removeAllRoads on intersections?

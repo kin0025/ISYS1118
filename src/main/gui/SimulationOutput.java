@@ -76,14 +76,6 @@ public class SimulationOutput extends JPanel {
                         g2.draw(new Rectangle2D.Double(lane.getBoundingBox().getxMin(), lane.getBoundingBox().getyMin(), lane.getBoundingBox()
                                 .getWidth(), lane
                                 .getBoundingBox().getHeight()));
-
-                        for (Car laneCar : lane.getCars()) {
-                            Position carPos = laneCar.getPosition();
-                            g2.setPaint(carColour);
-                            g2.fill(new Rectangle2D.Double(carPos.getX(), carPos.getY(), DimensionManager.lengthOfCarPixels, DimensionManager
-                                    .widthOfCarPixels));
-                            //Display the cars from here
-                        }
                     }
                 }
 
@@ -99,6 +91,13 @@ public class SimulationOutput extends JPanel {
                     g2.fill(new Rectangle2D.Double(intersectionBox.getxMin(), intersectionBox.getyMin(), intersectionBox.getWidth(),
                             intersectionBox.getHeight()));
 
+                    for (Car car : intersection.getCars()) {
+                        g2.setPaint(carColour);
+                        g2.fill(new Rectangle2D.Double(car.getCarBox().getxMin(), car.getCarBox().getyMin(), car.getCarBox().getWidth(), car
+                                .getCarBox().getHeight()));
+                        //TODO Display cars here
+
+                    }
                     Orientation[] orientations = {Orientation.HORIZONTAL, Orientation.VERTICAL};
                     for (Orientation orientation : orientations) {
                         LightStatus lightStatus = intersection.getLightStatus(orientation);
@@ -141,17 +140,23 @@ public class SimulationOutput extends JPanel {
                         g2.draw(new Ellipse2D.Double(xPos1, yPos1, DimensionManager.sizeOfLightPixels, DimensionManager.sizeOfLightPixels));
                         g2.draw(new Ellipse2D.Double(xPos2, yPos2, DimensionManager.sizeOfLightPixels, DimensionManager.sizeOfLightPixels));
                     }
-                    for (Car intersectionCar : intersection.getCars()) {
-                        Position carPos = intersectionCar.getPosition();
-                        g2.setPaint(carColour);
-                        g2.fill(new Rectangle2D.Double(carPos.getX(), carPos.getY(), DimensionManager.lengthOfCarPixels, DimensionManager
-                                .widthOfCarPixels));
-                        //TODO Display cars here
 
-                    }
                 }
 
 
+            }
+        }//End intersection loop
+
+        for (Road road : grid.getRoads()) {
+            for (Lane lane : road.getLanes()) {
+                for (Car laneCar : lane.getCars()) {
+                    g2.drawString("CarHere", (int) laneCar.getCarBox().getxMin(), (int) laneCar.getCarBox().getyMin());
+                    g2.setPaint(carColour);
+                    g2.fill(new Rectangle2D.Double(laneCar.getCarBox().getxMin(), laneCar.getCarBox().getyMin(), laneCar.getCarBox().getWidth(),
+                            laneCar.getCarBox().getHeight()));
+
+                    //Display the cars from here
+                }
             }
         }
 

@@ -1,4 +1,4 @@
-package main.entities;
+package main.entities.car;
 
 import main.entities.car.Car;
 import main.entities.car.CarPath;

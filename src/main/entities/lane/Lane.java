@@ -36,7 +36,7 @@ public class Lane implements CarMovable, SimulationTimed {
         checkCarCollisions();
         checkCarPositions();
         if (!cars.isEmpty()) {
-            if (carsCanLeaveLane && cars.peek().getCollisionStatus() == CollisionStatus.ENCLOSED) {
+            if (!carsCanLeaveLane && cars.peek().getForwardCollisionStatus() != CollisionStatus.ENCLOSED) {
                 cars.peek().stop();
 
             } else {
@@ -93,14 +93,16 @@ public class Lane implements CarMovable, SimulationTimed {
      * Iterates through the linked list and finds any cars outside the box
      * * Returns True if none outside the lane.
      */
-    boolean checkCarPositions() {
-        boolean carOutsideBox = false;
+    void checkCarPositions() {
         for (Car car : cars) {
             if (!laneBox.isInsideBoundingBox(car.getPosition())) {
-                carOutsideBox = true;
+                CollisionStatus status = car.getForwardCollisionStatus();
+//                car.moveToNext();
+//                removeCar(car); CME
+                //FIXME What do we do here?
             }
         }
-        return !carOutsideBox;
+        return;
     }
 
     public CardinalDirection getDirection() {
@@ -123,8 +125,9 @@ public class Lane implements CarMovable, SimulationTimed {
 
     @Override
     public boolean moveCar(CarMovable moveTo) {
-        moveTo.addCar(cars.element());
-        return this.removeCar(cars.element());
+        cars.peek().moveToNext();
+        moveTo.addCar(cars.peek());
+        return this.removeCar(cars.peek());
     }
 
     @Override

@@ -10,8 +10,67 @@ import org.junit.Test;
 import org.junit.Before;
 
 public class IntersectionTest {
-	
-	private Intersection intersection;
+    @Test
+    public void incrementTime() throws Exception {
+    }
+
+    @Test
+    public void getBoundingBox() throws Exception {
+    }
+
+    @Test
+    public void getDirection() throws Exception {
+    }
+
+    @Test
+    public void getRoads() throws Exception {
+    }
+
+    @Test
+    public void getCars() throws Exception {
+    }
+
+    @Test
+    public void getLightStatus() throws Exception {
+    }
+
+    @Test
+    public void getRoadDirection1() throws Exception {
+    }
+
+    @Test
+    public void addRoad1() throws Exception {
+    }
+
+    @Test
+    public void setLightTiming() throws Exception {
+    }
+
+    @Test
+    public void addCar1() throws Exception {
+    }
+
+    @Test
+    public void removeRoads() throws Exception {
+    }
+
+    @Test
+    public void removeCar1() throws Exception {
+    }
+
+    @Test
+    public void moveCar() throws Exception {
+    }
+
+    @Test
+    public void isInsideBoundingBox() throws Exception {
+    }
+
+    @Test
+    public void getCentre() throws Exception {
+    }
+
+    private Intersection intersection;
     
 	@Before
     public void createIntersection() throws Exception{

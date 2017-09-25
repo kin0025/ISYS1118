@@ -17,12 +17,11 @@ public class Car implements SimulationTimed {
     private MovingBox carBox;
     //Always set to the direction of the parent lane.
     private CardinalDirection direction;
-    private int carPathPosition = 0;
-    private boolean moveMe = false;
 
     public Car(Position carPosition, CarPath carPath) {
         this.carPath = carPath;
         if (carPath != null && carPath.getSize() != 0) {
+            this.carPath.addCar(this);
             this.direction = carPath.get(0).getDirection();
             this.carBox = new MovingBox(carPosition, DimensionManager.lengthOfCarPixels, DimensionManager.widthOfCarPixels, carPath.get(0)
                     .getBoundingBox());
@@ -42,7 +41,7 @@ public class Car implements SimulationTimed {
         try {
             carBox.setAngle(carPath.getCarPosition(this).getDirection());
         } catch (NullPointerException e) {
-return;
+            return;
         }
         carBox.moveForward(speed);
         /*BoundingBox currentObjectBox = carPath.get(carPathPosition).getBoundingBox();
@@ -64,6 +63,10 @@ return;
         */
     }
 
+    public boolean moveToNext() {
+        return carPath.moveCarToNext(this);
+    }
+
     public CardinalDirection getDirection() {
         return direction;
     }
@@ -82,6 +85,10 @@ return;
 
     public CollisionStatus getCollisionStatus() {
         return carBox.getCollisionStatus();
+    }
+
+    public CollisionStatus getForwardCollisionStatus() {
+        return carBox.getCollisionStatus(this.direction);
     }
 
     public boolean isMoving() {

@@ -371,7 +371,7 @@ public class CommandLineController implements InputController {
                 return false;
             case "12":
                 fillIntersections();
-
+                createPresetSpawn();
             default:
                 break;
         }

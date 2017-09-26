@@ -28,6 +28,21 @@ public class MapGrid {
         //A list of all the roads in the grid - used to create roads and display them.
     }
 
+    public void incrementTime(){
+        for (Intersection[] row : getGrid()) {
+            for (Intersection intersection : row) {
+                if (intersection != null) {
+                    intersection.incrementTime();
+                }
+            }
+
+        }
+        for (Road roads : getRoads()) {
+            roads.incrementTime();
+
+        }
+    }
+
     /**
      * Gets the grid of intersections
      *
@@ -147,6 +162,15 @@ public class MapGrid {
 
     public boolean addLane(Lane lane, Intersection intersection1, Intersection intersection2) {
         Road road = getRoad(intersection1, intersection2);
+        if (road.getOrientation() == lane.getDirection().getAxis()) {
+            road.addLane(lane);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addLane(Lane lane, Intersection intersection1, CardinalDirection direction) {
+        Road road = getRoad(intersection1, direction);
         if (road.getOrientation() == lane.getDirection().getAxis()) {
             road.addLane(lane);
             return true;
@@ -290,10 +314,10 @@ public class MapGrid {
         if (lastRoad == null) {
             lastRoad = addRoad(lastIntersection, goTo);
             lastRoad.addDestroyerLane(goTo);
-        } else if (lastRoad.getDestroyerLane(goTo) == null) {
+        } else if (lastRoad.getDestructorLane(goTo) == null) {
             lastRoad.addDestroyerLane(goTo);
         }
-        return carSpawn.finalisePath(getRoad(lastIntersection, goTo).getDestroyerLane
+        return carSpawn.finalisePath(getRoad(lastIntersection, goTo).getDestructorLane
                 (goTo));
     }
 
@@ -406,8 +430,8 @@ public class MapGrid {
         return null;
     }
 
-    public void setLightTiming(Intersection intersection, double newTimeSeconds, Orientation orientation){
-        intersection.setLightTiming(orientation,DimensionManager.secondsToTicks(newTimeSeconds));
+    public void setLightTiming(Intersection intersection, double newTimeSeconds, Orientation orientation) {
+        intersection.setLightTiming(orientation, DimensionManager.secondsToTicks(newTimeSeconds));
     }
 
     /**
@@ -485,4 +509,47 @@ public class MapGrid {
     }
 
 
+    public void generateStandardGrid() {
+        for (int i = 1; i < width - 1; i++) {
+            for (int j = 1; j < height - 1; j++) {
+                addIntersection(i, j, DimensionManager.secondsToTicks(10), DimensionManager.secondsToTicks(10), Orientation.HORIZONTAL);
+            }
+        }
+        fillRoads();
+
+        Intersection intersection = getIntersection(1, 1);
+        CardinalDirection direction = CardinalDirection.NORTH;
+        CarSpawn spawn = createSpawnPoint(intersection, direction, 10);
+
+        int index;
+        if (spawn.getDirection().getAxis() == Orientation.HORIZONTAL) {
+            index = getIntersectionCoords(intersection)[0];
+        } else {
+            index = getIntersectionCoords(intersection)[1];
+        }
+        try {
+            createLinePath(spawn, index, spawn.getDirection());
+
+        } catch (PathNotFoundException e) {
+            System.out.println("Creating the spawn path failed.");
+
+        }
+
+
+        direction = CardinalDirection.WEST;
+        spawn = createSpawnPoint(intersection, direction, 10);
+
+        if (spawn.getDirection().getAxis() == Orientation.HORIZONTAL) {
+            index = getIntersectionCoords(intersection)[0];
+        } else {
+            index = getIntersectionCoords(intersection)[1];
+        }
+        try {
+            createLinePath(spawn, index, spawn.getDirection());
+
+        } catch (PathNotFoundException e) {
+            System.out.println("Creating the spawn path failed.");
+
+        }
+    }
 }

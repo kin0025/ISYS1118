@@ -1,8 +1,10 @@
 package main.entities;
 
 
+import main.entities.car.Car;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarDestroy;
+import main.entities.lane.CarSpawn;
 import main.entities.lane.Lane;
 import main.utils.BoundingBox;
 import main.utils.DimensionManager;
@@ -83,10 +85,19 @@ public class Road {
         return null;
     }
 
-    public CarDestroy getDestroyerLane(CardinalDirection direction) {
+    public CarDestroy getDestructorLane(CardinalDirection direction) {
         for (Lane lane : lanes) {
             if (lane.getDirection() == direction && lane.getClass() == CarDestroy.class) {
                 return (CarDestroy) lane;
+            }
+        }
+        return null;
+    }
+
+    public CarSpawn getSpawnLane(CardinalDirection direction) {
+        for (Lane lane : lanes) {
+            if (lane.getDirection() == direction && lane.getClass() == CarSpawn.class) {
+                return (CarSpawn) lane;
             }
         }
         return null;

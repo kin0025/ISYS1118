@@ -25,6 +25,8 @@ public class Car implements SimulationTimed {
             this.direction = carPath.get(0).getDirection();
             this.carBox = new MovingBox(carPosition, DimensionManager.lengthOfCarPixels, DimensionManager.widthOfCarPixels, carPath.get(0)
                     .getBoundingBox());
+        }else{
+            this.carBox = new MovingBox(carPosition, DimensionManager.lengthOfCarPixels, DimensionManager.widthOfCarPixels, null);
         }
 
     }

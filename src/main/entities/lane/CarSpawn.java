@@ -69,6 +69,10 @@ public class CarSpawn extends Lane {
      * @return if the car couldn't spawn due to been blocked returns false.
      */
     boolean spawnCar() {
+        //Check cars aren't going to be too close together.
+        if (!getCars().isEmpty() && getCars().getLast().getPosition().getDifference(spawnPosition) <= 20) {
+            return false;
+        }
         return active && addCar(new Car(new Position(spawnPosition.getX(), spawnPosition.getY()), carPath));
     }
 
@@ -80,13 +84,6 @@ public class CarSpawn extends Lane {
         tick++;
         super.incrementTime();
         if (active) {
-            //Checks that the last car added has moved enough.
-            if (!getCars().isEmpty()) {
-                if (getCars().getLast().getPosition().getDifference(spawnPosition) <= 20) {
-                    //Too close, don't spawn a car.
-                    return;
-                }
-            }
             if (tick % spawnDelay == 0) {
                 spawnCar();
             }

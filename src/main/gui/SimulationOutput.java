@@ -174,7 +174,9 @@ public class SimulationOutput extends JPanel {
         GeneralPath carPolygon = new GeneralPath(GeneralPath.WIND_EVEN_ODD,
                 coordinates.length);
         carPolygon.moveTo(coordinates[0].getX(), coordinates[0].getY());
+        g.drawString("" + 0, (int) coordinates[0].getX(), (int) coordinates[0].getY());
         for (int index = 1; index < coordinates.length; index++) {
+            g.drawString("" + index, (int) coordinates[index].getX(), (int) coordinates[index].getY());
             carPolygon.lineTo(coordinates[index].getX(), coordinates[index].getY());
         }
         carPolygon.closePath();

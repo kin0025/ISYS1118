@@ -74,9 +74,9 @@ public class Lane implements CarMovable, SimulationTimed {
      */
     boolean checkCarCollisions() {
         boolean carTooClose = false;
-        for (int i = 0; i < cars.size() - 1; i++) {
+        for (int i = cars.size() - 1; i > 0; i--) {
             Car currentCar = cars.get(i);
-            Car nextCar = cars.get(i + 1);
+            Car nextCar = cars.get(i - 1);
             if (nextCar != null) {
                 if (currentCar.getPosition().getDifference(nextCar.getPosition()) < DimensionManager.minimumFollowingDistancePixels) {
                     currentCar.stop();

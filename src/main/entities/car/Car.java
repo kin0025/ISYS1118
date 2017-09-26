@@ -39,7 +39,7 @@ public class Car implements SimulationTimed {
 
     public void incrementTime() {
         try {
-            //carBox.setAngle(carPath.getCarPosition(this).getDirection());
+            carBox.setAngle(carPath.getCarPosition(this).getDirection());
         } catch (NullPointerException e) {
             return;
         }

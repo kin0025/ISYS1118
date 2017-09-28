@@ -28,7 +28,7 @@ public class MapGrid {
         //A list of all the roads in the grid - used to create roads and display them.
     }
 
-    public void incrementTime(){
+    public void incrementTime() {
         for (Intersection[] row : getGrid()) {
             for (Intersection intersection : row) {
                 if (intersection != null) {
@@ -39,7 +39,6 @@ public class MapGrid {
         }
         for (Road roads : getRoads()) {
             roads.incrementTime();
-
         }
     }
 
@@ -398,26 +397,32 @@ public class MapGrid {
             double yPos = intersection1.getCentre().getY();
             double yWidth;
             int offset = DimensionManager.lengthOfRoadPixels + DimensionManager.widthOfIntersectionPixels;
-            if (directionFromIntersection == CardinalDirection.NORTH) {
-                //xPos += 0;
-                yPos -= offset / 2;
-                xWidth = DimensionManager.widthOfRoadPixels;
-                yWidth = DimensionManager.lengthOfRoadPixels;
-            } else if (directionFromIntersection == CardinalDirection.SOUTH) {
-                //xPos += 0;
-                yPos += offset / 2;
-                xWidth = DimensionManager.widthOfRoadPixels;
-                yWidth = DimensionManager.lengthOfRoadPixels;
-            } else if (directionFromIntersection == CardinalDirection.EAST) {
-                xPos -= offset / 2;
-                //yPos += 0;
-                yWidth = DimensionManager.widthOfRoadPixels;
-                xWidth = DimensionManager.lengthOfRoadPixels;
-            } else {
-                xPos += offset / 2;
-                //yPos += 0;
-                yWidth = DimensionManager.widthOfRoadPixels;
-                xWidth = DimensionManager.lengthOfRoadPixels;
+            switch (directionFromIntersection) {
+                case NORTH:
+                    //xPos += 0;
+                    yPos -= offset / 2;
+                    xWidth = DimensionManager.widthOfRoadPixels;
+                    yWidth = DimensionManager.lengthOfRoadPixels;
+                    break;
+                case SOUTH://xPos += 0;
+                    yPos += offset / 2;
+                    xWidth = DimensionManager.widthOfRoadPixels;
+                    yWidth = DimensionManager.lengthOfRoadPixels;
+                    break;
+                case EAST:
+                    xPos += offset / 2;
+                    //yPos += 0;
+                    yWidth = DimensionManager.widthOfRoadPixels;
+                    xWidth = DimensionManager.lengthOfRoadPixels;
+                    break;
+                case WEST:
+                    xPos -= offset / 2;
+                    //yPos += 0;
+                    yWidth = DimensionManager.widthOfRoadPixels;
+                    xWidth = DimensionManager.lengthOfRoadPixels;
+                    break;
+                    default:
+                        return null;
             }
             Road newRoad = new Road(directionFromIntersection.getAxis(), new BoundingBox(new Position(xPos, yPos), xWidth, yWidth));
             roads.add(newRoad);

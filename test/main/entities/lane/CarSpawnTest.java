@@ -6,7 +6,8 @@ package main.entities.lane;
 
 import main.entities.MapGrid;
 import main.entities.intersection.Intersection;
-import main.utils.*;
+import main.utils.BoundingBox;
+import main.utils.Position;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.Orientation;
 import main.utils.enums.TurnDirection;
@@ -21,25 +22,15 @@ import static org.junit.Assert.assertEquals;
 public class CarSpawnTest {
     private CarSpawn carSpawn;
     private MapGrid mapGrid;
-    private CarDestroy endLane;
 
     @Before
     public void setUp() throws Exception {
         //TODO Implement once other stuff is in:
-        mapGrid = new MapGrid(1, 5);
-        ArrayList<Intersection> intersections = new ArrayList<>();
+        mapGrid = new MapGrid(5, 5);
 
-        for (int i = 0; i < 5; i++) {
-            mapGrid.addIntersection(0, i, 10, 10, Orientation.HORIZONTAL);
-            intersections.add(mapGrid.getIntersection(0, i));
-        }
-        mapGrid.fillRoads();
+        mapGrid.generateStandardGrid();
+        carSpawn = mapGrid.getRoad(mapGrid.getIntersection(1,1),CardinalDirection.NORTH).getSpawnLane(CardinalDirection.SOUTH);
 
-        ArrayList<TurnDirection> turnDir = new ArrayList<>();
-        turnDir.add(TurnDirection.STRAIGHT);
-        turnDir.add(TurnDirection.LEFT);
-
-        carSpawn = new CarSpawn(CardinalDirection.NORTH, turnDir, 0, new BoundingBox(new Position(0, 40), 5, 100), 10);
     }
 
     @After
@@ -50,7 +41,7 @@ public class CarSpawnTest {
     @Test
     public void checkPathing() throws Exception {
         for (int i = 1; i < 11; i += 2) {
-           // assertEquals("Incorrect Spawn path generated", mapGrid.getIntersection(0, i / 2), carSpawn.getCarPath().get(i));
+            // assertEquals("Incorrect Spawn path generated", mapGrid.getIntersection(0, i / 2), carSpawn.getCarPath().get(i));
         }
     }
 
@@ -64,22 +55,33 @@ public class CarSpawnTest {
 
     @Test
     public void spawnCarTooQuickly() throws Exception {
-        assertEquals("Initial conditions incorrect", 0, carSpawn.getCars().size());
         carSpawn.spawnCar();
         carSpawn.spawnCar();
-        assertEquals("Car spawned on top of other car", 0, carSpawn.getCars().size());
+        assertEquals("Car spawned on top of other car", 1, carSpawn.getCars().size());
     }
 
     @Test
-    public void checkSpawnTiming() {
+    public void checkInitialNoSpawn(){
         carSpawn.incrementTime();
-        assertEquals("Initial Spawn incorrect", 1, carSpawn.getCars().size());
+        assertEquals("Initial Spawn incorrect", 0, carSpawn.getCars().size());
+
+    }
+
+    @Test
+    public void checkSpawnTimingCorrect() {
+        for (int i = 0; i < 10; i++) {
+            carSpawn.incrementTime();
+        }
+
+        assertEquals("Car not spawned at correct timing", 1, carSpawn.getCars().size());
+    }
+
+    @Test
+    public void checkSpawnTimingJustBefore() {
         for (int i = 0; i < 9; i++) {
             carSpawn.incrementTime();
         }
-        assertEquals("Car spawned at incorrect timing", 1, carSpawn.getCars().size());
-        carSpawn.incrementTime();
-        assertEquals("Car not spawned at correct timing", 2, carSpawn.getCars().size());
+        assertEquals("Car spawned at incorrect timing", 0, carSpawn.getCars().size());
     }
 
 

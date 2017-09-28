@@ -17,21 +17,10 @@ public class Simulator {
     /**
      * Runs the simulation through one step
      */
-    public void runSimulation() {
+    public void incrementTime() {
         //This entire thing is temporary.
         if (!pause) {
-            for (Intersection[] row : mapGrid.getGrid()) {
-                for (Intersection intersection : row) {
-                    if (intersection != null) {
-                        intersection.incrementTime();
-                    }
-                }
-
-            }
-            for (Road roads : mapGrid.getRoads()) {
-                roads.incrementTime();
-
-            }
+            mapGrid.incrementTime();
         }
 
     }
@@ -195,6 +184,12 @@ public class Simulator {
     public void changeTrafficLights() {
         lock();
 
+        unlock();
+    }
+
+    public void generateStandardGrid(){
+        lock();
+        mapGrid.generateStandardGrid();
         unlock();
     }
 }

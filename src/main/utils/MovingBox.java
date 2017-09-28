@@ -10,8 +10,9 @@ import main.utils.enums.CardinalDirection;
 import main.utils.enums.CollisionStatus;
 
 public class MovingBox extends BoundingBox {
+    int time = 0;
     private BoundingBox parentBox;
-    private int angle;
+    private double angle;
 
     public MovingBox(double xMin, double yMin, double xMax, double yMax, BoundingBox parentBox) throws NumberFormatException {
         super(xMin, yMin, xMax, yMax);
@@ -31,45 +32,78 @@ public class MovingBox extends BoundingBox {
         if (getCollisionStatus() == CollisionStatus.ENCLOSED) {
             return;
         } else {
-            //TODO IMPLEMENT
-            //this.getCentre().setPosition(x,y);
+            this.getCentre().setPosition(parentBox.getCentre().getX(), parentBox.getCentre().getY());
         }
     }
 
     @Override
     public double getxMin() {
-        //TODO IMPLEMENT
-        return super.getxMin();
+        double min = this.getCorners()[0].getX();
+        for (Position position : this.getCorners()) {
+            if (position.getX() < min) {
+                min = position.getX();
+            }
+        }
+        return min;
     }
 
     @Override
-    public double getyMin()    //TODO IMPLEMENT
-    {
-        return super.getyMin();
+    public double getyMin() {
+        double min = this.getCorners()[0].getY();
+        for (Position position : this.getCorners()) {
+            if (position.getY() < min) {
+                min = position.getY();
+            }
+        }
+        return min;
     }
 
     @Override
-    public double getxMax() {    //TODO IMPLEMENT
-
-        return super.getxMax();
+    public double getxMax() {
+        double max = this.getCorners()[0].getX();
+        for (Position position : this.getCorners()) {
+            if (position.getX() > max) {
+                max = position.getX();
+            }
+        }
+        return max;
     }
 
     @Override
-    public double getyMax()    //TODO IMPLEMENT
-    {
-        //TODO IMPLEMENT
-
-        return super.getyMax();
+    public double getyMax() {
+        double max = this.getCorners()[0].getY();
+        for (Position position : this.getCorners()) {
+            if (position.getY() > max) {
+                max = position.getY();
+            }
+        }
+        return max;
     }
 
-    public double[][] getCorners(){
+    public Position[] getCorners() {
+        Position[] corners = new Position[4];
         //Returns 4 corners of the thing
-        return null;
+        for (int i = 0; i < corners.length; i++) {
+            corners[i] = new Position();
+        }
+        corners[0].setX(getCentre().getX() + Math.sin(angle + Math.toRadians(-45)) * getWidth() / 2);
+        corners[0].setY(getCentre().getY() + Math.cos(angle + Math.toRadians(-45)) * getHeight() / 2);
+
+        corners[1].setX(getCentre().getX() + Math.cos(angle + Math.toRadians(45)) * getWidth() / 2);
+        corners[1].setY(getCentre().getY() + Math.sin(angle + Math.toRadians(45)) * getHeight() / 2);
+
+
+        corners[2].setX(getCentre().getX() + Math.sin(angle + Math.toRadians(45)) * getWidth() / 2);
+        corners[2].setY(getCentre().getY() - Math.cos(angle + Math.toRadians(45)) * getHeight() / 2);
+
+        corners[3].setX(getCentre().getX() + Math.cos(angle + Math.toRadians(-45)) * getWidth() / 2);
+        corners[3].setY(getCentre().getY() - Math.sin(angle + Math.toRadians(-45)) * getHeight() / 2);
+        return corners;
     }
 
     public CollisionStatus getCollisionStatus() {
-        if (parentBox.isInsideBoundingBox(xMax, yMax) && parentBox.isInsideBoundingBox(xMin, yMin) && parentBox.isInsideBoundingBox(this.getCentre
-                ())) {
+        if (parentBox.isInsideBoundingBox(getxMax(), getyMax()) && parentBox.isInsideBoundingBox(getxMin(), getyMin()) && parentBox
+                .isInsideBoundingBox(this.getCentre())) {
             return CollisionStatus.ENCLOSED;
         } else if (parentBox.isInsideBoundingBox(this.getCentre())) {
             return CollisionStatus.TOUCHING;
@@ -80,22 +114,22 @@ public class MovingBox extends BoundingBox {
     public CollisionStatus getCollisionStatus(CardinalDirection side) {
         switch (side) {
             case NORTH:
-                if (parentBox.isInsideBoundingBox(parentBox.getCentre().getX(), yMin) && parentBox.isInsideBoundingBox(this.getCentre())) {
+                if (parentBox.isInsideBoundingBox(parentBox.getCentre().getX(), getyMin()) && parentBox.isInsideBoundingBox(this.getCentre())) {
                     return CollisionStatus.ENCLOSED;
                 }
                 break;
             case EAST:
-                if (parentBox.isInsideBoundingBox(xMax, parentBox.getCentre().getY()) && parentBox.isInsideBoundingBox(this.getCentre())) {
+                if (parentBox.isInsideBoundingBox(getxMax(), parentBox.getCentre().getY()) && parentBox.isInsideBoundingBox(this.getCentre())) {
                     return CollisionStatus.ENCLOSED;
                 }
                 break;
             case SOUTH:
-                if (parentBox.isInsideBoundingBox(parentBox.getCentre().getX(), yMax) && parentBox.isInsideBoundingBox(this.getCentre())) {
+                if (parentBox.isInsideBoundingBox(parentBox.getCentre().getX(), getyMax()) && parentBox.isInsideBoundingBox(this.getCentre())) {
                     return CollisionStatus.ENCLOSED;
                 }
                 break;
             case WEST:
-                if (parentBox.isInsideBoundingBox(xMin, parentBox.getCentre().getY()) && parentBox.isInsideBoundingBox(this.getCentre())) {
+                if (parentBox.isInsideBoundingBox(getxMin(), parentBox.getCentre().getY()) && parentBox.isInsideBoundingBox(this.getCentre())) {
                     return CollisionStatus.ENCLOSED;
                 }
                 break;
@@ -107,20 +141,19 @@ public class MovingBox extends BoundingBox {
         return CollisionStatus.OUTSIDE;
     }
 
-    public void setAngle(int angle) {
-        this.angle = angle;
+    public void setAngle(int angleDegrees) {
+        this.angle = Math.toRadians(angle);
+    }
+
+    public double getAngle() {
+        return Math.toDegrees(angle);
     }
 
     public void setAngle(CardinalDirection direction) {
-        this.angle = direction.toDegrees();
+        this.angle = Math.toRadians(direction.toDegrees());
     }
 
     public void moveForward(double amount) {
-        double angleRad = Math.toRadians(angle);
-        yMin -= amount * Math.cos(angleRad);
-        xMin -= amount * Math.sin(angleRad);
-        yMax -= amount * Math.cos(angleRad);
-        xMax -= amount * Math.sin(angleRad);
-        getCentre().movePosition(-amount * Math.sin(angleRad), -amount * Math.cos(angleRad));
+        getCentre().movePosition(-amount * Math.sin(angle), -amount * Math.cos(angle));
     }
 }

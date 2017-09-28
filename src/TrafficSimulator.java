@@ -51,8 +51,9 @@ public class TrafficSimulator {
             @Override
             public void run() {
                 if (!simulator.isLocked()) {
-                    simulator.runSimulation();
                     output.repaint();
+                    simulator.incrementTime();
+
                 }
 
             }

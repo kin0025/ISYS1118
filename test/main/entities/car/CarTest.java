@@ -1,10 +1,16 @@
 package main.entities.car;
 
-import main.entities.car.Car;
-import main.entities.car.CarPath;
-import main.utils.*;
+import com.sun.org.apache.xpath.internal.operations.Or;
+import main.entities.MapGrid;
+import main.entities.Road;
+import main.entities.intersection.Intersection;
+import main.entities.lane.CarDestroy;
+import main.entities.lane.CarSpawn;
+import main.utils.BoundingBox;
+import main.utils.DimensionManager;
+import main.utils.Position;
 import main.utils.enums.CardinalDirection;
-import org.junit.After;
+import main.utils.enums.Orientation;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,21 +18,15 @@ import static org.junit.Assert.assertEquals;
 
 public class CarTest {
     private Car car;
-    private Position carPosition;
-    private CarPath carPath;
 
     @Before
     public void setUp() throws Exception {
-        carPosition = new Position(1, 1);
-
-        car = new Car(carPosition, carPath);
-    }
-
-    @After
-    public void tearDown() {
-        CardinalDirection carDirection = null;
-        car = null;
-        carPosition = null;
+        MapGrid mapGrid = new MapGrid(5,5);
+        mapGrid.generateStandardGrid();
+        do {
+            mapGrid.incrementTime();
+            car = mapGrid.getRoad(mapGrid.getIntersection(1, 1), CardinalDirection.NORTH).getSpawnLane(CardinalDirection.SOUTH).getCars().peek();
+        }while (car == null);
     }
 
     @Test
@@ -48,9 +48,11 @@ public class CarTest {
     @Test
     public void checkMovement() {
         car.start();
+        double x = car.getPosition().getX();
+        double y = car.getPosition().getY();
         car.incrementTime();
-        assertEquals("Car not moving correctly", 1 + DimensionManager.kmphToPixelTick(50), car.getPosition().getY(), 0.05);
-        assertEquals("Car not moving correctly", 1, car.getPosition().getX(), 0.05);
+        assertEquals("Car not moving correctly", y + car.getSpeed(), car.getPosition().getY(), 0.05);
+        assertEquals("Car not moving correctly", x, car.getPosition().getX(), 0.05);
     }
 
     @Test

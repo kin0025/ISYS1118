@@ -81,23 +81,83 @@ public class MovingBox extends BoundingBox {
     }
 
     public Position[] getCorners() {
+
         Position[] corners = new Position[4];
         //Returns 4 corners of the thing
         for (int i = 0; i < corners.length; i++) {
             corners[i] = new Position();
         }
-        corners[0].setX(getCentre().getX() + Math.sin(angle + Math.toRadians(-45)) * getWidth() / 2);
-        corners[0].setY(getCentre().getY() + Math.cos(angle + Math.toRadians(-45)) * getHeight() / 2);
 
-        corners[1].setX(getCentre().getX() + Math.cos(angle + Math.toRadians(45)) * getWidth() / 2);
-        corners[1].setY(getCentre().getY() + Math.sin(angle + Math.toRadians(45)) * getHeight() / 2);
+        switch ((int) Math.toDegrees(angle)) {
+            case 0:
+                corners[0].setX(getCentre().getX() + getWidth() / 2);
+                corners[0].setY(getCentre().getY() + getHeight() / 2);
 
+                corners[1].setX(getCentre().getX() - getWidth() / 2);
+                corners[1].setY(getCentre().getY() + getHeight() / 2);
 
-        corners[2].setX(getCentre().getX() + Math.sin(angle + Math.toRadians(45)) * getWidth() / 2);
-        corners[2].setY(getCentre().getY() - Math.cos(angle + Math.toRadians(45)) * getHeight() / 2);
+                corners[2].setX(getCentre().getX() + getWidth() / 2);
+                corners[2].setY(getCentre().getY() - getHeight() / 2);
 
-        corners[3].setX(getCentre().getX() + Math.cos(angle + Math.toRadians(-45)) * getWidth() / 2);
-        corners[3].setY(getCentre().getY() - Math.sin(angle + Math.toRadians(-45)) * getHeight() / 2);
+                corners[3].setX(getCentre().getX() - getWidth() / 2);
+                corners[3].setY(getCentre().getY() - getHeight() / 2);
+                break;
+            case 90:
+                corners[0].setX(getCentre().getX() + getHeight() / 2);
+                corners[0].setY(getCentre().getY() - getWidth() / 2);
+
+                corners[1].setX(getCentre().getX() + getHeight() / 2);
+                corners[1].setY(getCentre().getY() + getWidth() / 2);
+
+                corners[2].setX(getCentre().getX() - getHeight() / 2);
+                corners[2].setY(getCentre().getY() + getWidth() / 2);
+
+                corners[3].setX(getCentre().getX() - getHeight() / 2);
+                corners[3].setY(getCentre().getY() - getWidth() / 2);
+                break;
+            case 180:
+                corners[0].setX(getCentre().getX() + getWidth() / 2);
+                corners[0].setY(getCentre().getY() + getHeight() / 2);
+
+                corners[1].setX(getCentre().getX() - getWidth() / 2);
+                corners[1].setY(getCentre().getY() + getHeight() / 2);
+
+                corners[2].setX(getCentre().getX() - getWidth() / 2);
+                corners[2].setY(getCentre().getY() - getHeight() / 2);
+
+                corners[3].setX(getCentre().getX() + getWidth() / 2);
+                corners[3].setY(getCentre().getY() - getHeight() / 2);
+
+                break;
+            case 270:
+                corners[0].setX(getCentre().getX() + getHeight() / 2);
+                corners[0].setY(getCentre().getY() - getWidth() / 2);
+
+                corners[1].setX(getCentre().getX() + getHeight() / 2);
+                corners[1].setY(getCentre().getY() + getWidth() / 2);
+
+                corners[2].setX(getCentre().getX() - getHeight() / 2);
+                corners[2].setY(getCentre().getY() + getWidth() / 2);
+
+                corners[3].setX(getCentre().getX() - getHeight() / 2);
+                corners[3].setY(getCentre().getY() - getWidth() / 2);
+                break;
+            default:
+
+        }
+        //        double angleToCorner = Math.atan(getHeight() / getWidth());
+        //      corners[2].setX(getCentre().getX() + Math.sin(angle - angleToCorner) * getWidth() / 2);
+//        corners[2].setY(getCentre().getY() - Math.cos(angle - angleToCorner) * getHeight() / 2);
+//
+//        corners[1].setX(getCentre().getX() + Math.sin(angle + angleToCorner) * getWidth() / 2);
+//        corners[1].setY(getCentre().getY() + Math.cos(angle + angleToCorner) * getHeight() / 2);
+//
+//        corners[0].setX(getCentre().getX() + Math.sin(angle + angleToCorner) * getWidth() / 2);
+//        corners[0].setY(getCentre().getY() - Math.cos(angle + angleToCorner) * getHeight() / 2);
+//
+//
+//        corners[3].setX(getCentre().getX() + Math.sin(angle - angleToCorner) * getWidth() / 2);
+//        corners[3].setY(getCentre().getY() + Math.cos(angle - angleToCorner) * getHeight() / 2);
         return corners;
     }
 
@@ -154,6 +214,7 @@ public class MovingBox extends BoundingBox {
     }
 
     public void moveForward(double amount) {
-        getCentre().movePosition(-amount * Math.sin(angle), -amount * Math.cos(angle));
+        getCentre().movePosition(amount * Math.sin(angle), -amount * Math.cos(angle));
+        //angle += Math.toRadians(1);
     }
 }

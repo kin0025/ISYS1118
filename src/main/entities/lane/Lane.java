@@ -90,19 +90,25 @@ public class Lane implements CarMovable, SimulationTimed {
     }
 
     /**
-     * Iterates through the linked list and finds any cars outside the box
-     * * Returns True if none outside the lane.
+     * Iterates through the linked list and finds any cars outside the box - moves them to the next lane if they are outside the lane
      */
     void checkCarPositions() {
+        Car move = null;
         for (Car car : cars) {
             if (!laneBox.isInsideBoundingBox(car.getPosition())) {
                 CollisionStatus status = car.getForwardCollisionStatus();
-//                car.moveToNext();
-//                removeCar(car); CME
-                //FIXME What do we do here?
+                if (status != CollisionStatus.ENCLOSED) {
+                    if (move == null) {
+                        move = car;
+                    } else {
+                        throw new RuntimeException("Tried to remove multiple cars in one operation - cars must be in same location");
+                    }
+                }
             }
         }
-        return;
+        if (move != null) {
+            move.moveToNext(this);
+        }
     }
 
     public CardinalDirection getDirection() {
@@ -124,10 +130,12 @@ public class Lane implements CarMovable, SimulationTimed {
     }
 
     @Override
-    public boolean moveCar(CarMovable moveTo) {
-        cars.peek().moveToNext();
-        moveTo.addCar(cars.peek());
-        return this.removeCar(cars.peek());
+    public boolean moveCar(CarMovable moveTo, Car car) {
+        if (cars.peek() == car) {
+            moveTo.addCar(cars.peek());
+            return this.removeCar(cars.peek());
+        }
+        return false;
     }
 
     @Override

@@ -12,6 +12,7 @@ import main.utils.BoundingBox;
 import main.utils.DimensionManager;
 import main.utils.Position;
 import main.utils.enums.CardinalDirection;
+import main.utils.enums.CollisionStatus;
 import main.utils.enums.LightStatus;
 import main.utils.enums.Orientation;
 
@@ -55,6 +56,50 @@ public class Intersection implements CarMovable, SimulationTimed {
 
                 }
             }
+        }
+        checkCarCollisions();
+        checkCarPositions();
+        for(Car car : cars){
+            car.incrementTime();
+        }
+    }
+
+    /**
+     * Iterates through the linked list and stops any cars that are getting too close to each other.
+     * Returns True if no collisions occurred
+     */
+    boolean checkCarCollisions() {
+        boolean carTooClose = false;
+        for (int i = cars.size() - 1; i > 0; i--) {
+            Car currentCar = cars.get(i);
+            Car nextCar = cars.get(i - 1);
+            if (nextCar != null) {
+                if (currentCar.getPosition().getDifference(nextCar.getPosition()) < DimensionManager.minimumFollowingDistancePixels) {
+                    currentCar.stop();
+                    carTooClose = true;
+                } else {
+                    currentCar.start();
+                }
+            }
+        }
+        return !carTooClose;
+    }
+
+    /**
+     * Iterates through the linked list and finds any cars outside the box - moves them to the next lane if they are outside the lane
+     */
+    void checkCarPositions() {
+        ArrayList<Car> move = new ArrayList<>();
+        for (Car car : cars) {
+            if (!boundingBox.isInsideBoundingBox(car.getPosition())) {
+                CollisionStatus status = car.getForwardCollisionStatus();
+                if (status != CollisionStatus.ENCLOSED) {
+                    move.add(car);
+                }
+            }
+        }
+        for (Car car : move) {
+            car.moveToNext(this);
         }
     }
 
@@ -114,10 +159,13 @@ public class Intersection implements CarMovable, SimulationTimed {
     }
 
     @Override
-    public boolean moveCar(CarMovable moveTo) {
-        cars.peek().moveToNext();
-        moveTo.addCar(cars.peek());
-        return this.removeCar(cars.peek());
+    public boolean moveCar(CarMovable moveTo, Car car) {
+        if(cars.peek() == car) {
+            cars.peek().moveToNext(this);
+            moveTo.addCar(cars.peek());
+            return this.removeCar(cars.peek());
+        }
+        return false;
     }
 
     @Override

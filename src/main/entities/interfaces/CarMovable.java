@@ -33,7 +33,7 @@ public interface CarMovable {
      * @param moveTo The object a car is been moved to.
      * @return whether the move operations succeeded - i.e if addCar failed on the move to lane.
      */
-    boolean moveCar(CarMovable moveTo);
+    boolean moveCar(CarMovable moveTo, Car car);
 
     BoundingBox getBoundingBox();
 

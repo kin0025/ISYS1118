@@ -169,6 +169,7 @@ public class SimulationOutput extends JPanel {
             return;
         }
         g.drawString("" +car.getCarBox().getAngle(), (int) car.getCarBox().getxMin(), (int) car.getCarBox().getyMin());
+        g.setPaint(carColour);
         Position[] coordinates = car.getCarBox().getCorners();
         // fill and stroke GeneralPath
         GeneralPath carPolygon = new GeneralPath(GeneralPath.WIND_EVEN_ODD,
@@ -180,8 +181,8 @@ public class SimulationOutput extends JPanel {
             carPolygon.lineTo(coordinates[index].getX(), coordinates[index].getY());
         }
         carPolygon.closePath();
-        g.setPaint(carColour);
         g.fill(carPolygon);
+       // g.fill(new Ellipse2D.Double(car.getPosition().getX(), car.getPosition().getY(), DimensionManager.widthOfCarPixels, DimensionManager.widthOfCarPixels));
 
     }
 

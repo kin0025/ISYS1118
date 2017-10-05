@@ -524,7 +524,7 @@ public class MapGrid {
 
         Intersection intersection = getIntersection(1, 1);
         CardinalDirection direction = CardinalDirection.NORTH;
-        CarSpawn spawn = createSpawnPoint(intersection, direction, 10);
+        CarSpawn spawn = createSpawnPoint(intersection, direction, DimensionManager.secondsToTicks(5));
 
         int index;
         if (spawn.getDirection().getAxis() == Orientation.HORIZONTAL) {
@@ -542,7 +542,7 @@ public class MapGrid {
 
 
         direction = CardinalDirection.WEST;
-        spawn = createSpawnPoint(intersection, direction, 10);
+        spawn = createSpawnPoint(intersection, direction, DimensionManager.secondsToTicks(5));
 
         if (spawn.getDirection().getAxis() == Orientation.HORIZONTAL) {
             index = getIntersectionCoords(intersection)[0];

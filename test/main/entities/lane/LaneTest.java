@@ -65,7 +65,7 @@ public class LaneTest {
 
     @Test
     public void moveCar() {
-        lane.moveCar(nextLane);
+        lane.moveCar(nextLane,currentCar);
         assertEquals("Cars in lane1 incorrect after move", false, lane.getCars().contains(currentCar));
         assertEquals("Cars in lane1 incorrect after move", true, lane.getCars().contains(nextCar));
 
@@ -75,9 +75,9 @@ public class LaneTest {
 
     @Test
     public void moveMultipleCarMultipleTimes() {
-        lane.moveCar(nextLane);
+        lane.moveCar(nextLane,currentCar);
         //And now they should both be moved to the same lane
-        lane.moveCar(nextLane);
+        lane.moveCar(nextLane,nextCar);
         assertEquals("Cars in lane1 incorrect after move", false, lane.getCars().contains(currentCar));
         assertEquals("Cars in lane1 incorrect after move", false, lane.getCars().contains(nextCar));
         assertEquals("Cars in lane2 incorrect after move", true, nextLane.getCars().contains(currentCar));

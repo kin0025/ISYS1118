@@ -12,12 +12,12 @@ public class DimensionManager {
     public static final int widthOfRoadPixels = 40;
     public static final int lengthOfLanePixels = lengthOfRoadPixels;
     public static final int widthOfLanePixels = widthOfRoadPixels / numberOfLanesPerRoad;
-    public static final int widthOfCarPixels = 10 * (widthOfLanePixels - 1);
+    public static final int widthOfCarPixels = (widthOfLanePixels - 1);
     public static final int lengthOfCarPixels = (widthOfCarPixels * 2);
     public static final int sizeOfLightPixels = 10;
 
     //Other constants
-    public static final int minimumFollowingDistancePixels = 10;
+    public static final int minimumFollowingDistancePixels = 20;
     public static final int amberLightTimeOn = secondsToTicks(2);
 
 

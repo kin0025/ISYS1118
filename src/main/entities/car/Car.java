@@ -1,5 +1,6 @@
 package main.entities.car;
 
+import main.entities.interfaces.CarMovable;
 import main.entities.interfaces.SimulationTimed;
 import main.utils.DimensionManager;
 import main.utils.MovingBox;
@@ -23,10 +24,10 @@ public class Car implements SimulationTimed {
         if (carPath != null && carPath.getSize() != 0) {
             this.carPath.addCar(this);
             this.direction = carPath.get(0).getDirection();
-            this.carBox = new MovingBox(carPosition, DimensionManager.lengthOfCarPixels, DimensionManager.widthOfCarPixels, carPath.get(0)
+            this.carBox = new MovingBox(carPosition, DimensionManager.widthOfCarPixels, DimensionManager.lengthOfCarPixels, carPath.get(0)
                     .getBoundingBox());
-        }else{
-            this.carBox = new MovingBox(carPosition, DimensionManager.lengthOfCarPixels, DimensionManager.widthOfCarPixels, null);
+        } else {
+            this.carBox = new MovingBox(carPosition, DimensionManager.widthOfCarPixels, DimensionManager.lengthOfCarPixels, null);
         }
 
     }
@@ -48,8 +49,10 @@ public class Car implements SimulationTimed {
         carBox.moveForward(speed);
     }
 
-    public boolean moveToNext() {
-        return carPath.moveCarToNext(this);
+    public boolean moveToNext(CarMovable moveFrom) {
+        boolean result = carPath.moveCarToNext(this);
+        moveFrom.moveCar(carPath.getCarPosition(this), this);
+        return result;
     }
 
     public CardinalDirection getDirection() {

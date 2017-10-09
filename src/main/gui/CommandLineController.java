@@ -453,7 +453,21 @@ public class CommandLineController implements InputController {
 
     @Override
     public void changeTrafficLights() {
+    	 int[] coordinates = receiveCoordinateInput("Please enter the co-ordinates of the intersection where the traffic lights you wish to change are", simulator.getGridSize());
+    	 
+    	 int horizontalTime = DimensionManager.secondsToTicks(readDouble("Please enter the length of the horizontal light in seconds", 5, 1, 100));
+         int verticalTime = DimensionManager.secondsToTicks(readDouble("Please enter the length of the vertical light in seconds", 5, 1, 100));
 
+         Orientation orientation;
+         
+         do {
+             orientation = Orientation.stringToOrientation(receiveStringInput("Enter the orientation of the starting lights", new
+                     String[]{"Horizontal", "Vertical"}, true, false));
+         } while (orientation == null);
+
+         
+
+         simulator.addIntersection(coordinates[0], coordinates[1], verticalTime, horizontalTime, orientation);
     }
 
     @Override

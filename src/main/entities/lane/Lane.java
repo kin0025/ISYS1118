@@ -17,6 +17,8 @@ import main.utils.enums.TurnDirection;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import static main.utils.DimensionManager.*;
+
 public class Lane implements CarMovable, SimulationTimed {
     final ArrayList<TurnDirection> turnDirections;
     private final LinkedList<Car> cars = new LinkedList<>();
@@ -33,8 +35,6 @@ public class Lane implements CarMovable, SimulationTimed {
     }
 
     public void incrementTime() {
-        checkCarCollisions();
-        checkCarPositions();
         if (!cars.isEmpty()) {
             if (!carsCanLeaveLane && cars.peek().getForwardCollisionStatus() != CollisionStatus.ENCLOSED) {
                 cars.peek().stop();
@@ -47,6 +47,9 @@ public class Lane implements CarMovable, SimulationTimed {
                 car.incrementTime();
             }
         }
+        checkCarCollisions();
+        checkCarPositions();
+
     }
 
     public BoundingBox getBoundingBox() {
@@ -78,11 +81,11 @@ public class Lane implements CarMovable, SimulationTimed {
             Car currentCar = cars.get(i);
             Car nextCar = cars.get(i - 1);
             if (nextCar != null) {
-                if (currentCar.getPosition().getDifference(nextCar.getPosition()) < DimensionManager.minimumFollowingDistancePixels) {
+                if (currentCar.getPosition().getDifference(nextCar.getPosition()) < minimumFollowingDistancePixels) {
                     currentCar.stop();
                     carTooClose = true;
-                } else {
-                    currentCar.start();
+                }else{
+                    System.out.println("Move");
                 }
             }
         }
@@ -119,6 +122,9 @@ public class Lane implements CarMovable, SimulationTimed {
         return lanesFromEdge;
     }
 
+    public int getNumberOfFreeSpaces(){
+        return (lengthOfLanePixels / minimumFollowingDistancePixels) - cars.size();
+    }
 
     public boolean hasTurnDirection(TurnDirection turnDirection) {
         return turnDirections.contains(turnDirection);

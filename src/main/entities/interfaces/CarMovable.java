@@ -4,6 +4,7 @@
 
 package main.entities.interfaces;
 
+import com.sun.xml.internal.ws.handler.HandlerProcessor;
 import main.entities.car.Car;
 import main.utils.BoundingBox;
 import main.utils.Position;
@@ -42,4 +43,6 @@ public interface CarMovable {
     Position getCentre();
 
     CardinalDirection getDirection();
+
+
 }

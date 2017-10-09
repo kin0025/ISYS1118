@@ -169,7 +169,7 @@ public class CarPath {
     }
 
     public boolean moveCarToNext(Car car) {
-        if (pathComplete && carPosition.containsKey(car)) {
+        if (pathComplete && carPosition.containsKey(car) %% getCarPosition(car).) {
             if (carPosition.get(car) + 1 >= carPath.size()) {
                 carPath.get(carPosition.get(car)).removeCar(car);
                 carPosition.remove(car);

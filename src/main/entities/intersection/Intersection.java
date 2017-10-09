@@ -60,6 +60,7 @@ public class Intersection implements CarMovable, SimulationTimed {
         checkCarCollisions();
         checkCarPositions();
         for(Car car : cars){
+            car.start();
             car.incrementTime();
         }
     }

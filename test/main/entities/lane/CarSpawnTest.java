@@ -7,6 +7,7 @@ package main.entities.lane;
 import main.entities.MapGrid;
 import main.entities.intersection.Intersection;
 import main.utils.BoundingBox;
+import main.utils.DimensionManager;
 import main.utils.Position;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.Orientation;
@@ -69,7 +70,7 @@ public class CarSpawnTest {
 
     @Test
     public void checkSpawnTimingCorrect() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < DimensionManager.secondsToTicks(5); i++) {
             carSpawn.incrementTime();
         }
 

@@ -53,11 +53,11 @@ public class CarSpawn extends Lane {
             yPos = laneBox.getyMax() -  DimensionManager.lengthOfCarPixels;
         }
         if (directionOfLane == CardinalDirection.WEST) {
-            xPos = laneBox.getxMin() +  DimensionManager.lengthOfCarPixels;
+            xPos = laneBox.getxMax() -  DimensionManager.lengthOfCarPixels;
             yPos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
         }
         if (directionOfLane == CardinalDirection.EAST) {
-            xPos = laneBox.getxMax() -  DimensionManager.lengthOfCarPixels;
+            xPos = laneBox.getxMin() +  DimensionManager.lengthOfCarPixels;
             yPos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
         }
         spawnPosition = new Position(xPos, yPos);

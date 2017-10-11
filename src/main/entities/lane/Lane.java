@@ -25,7 +25,7 @@ public class Lane implements CarMovable, SimulationTimed {
     private final CardinalDirection direction;
     private final int lanesFromEdge;
     private final BoundingBox laneBox;
-    private boolean carsCanLeaveLane = true;
+    private boolean carsCanLeaveLane = false;
     final Position entryPosition;
 
     public Lane(CardinalDirection direction, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox) {
@@ -38,18 +38,18 @@ public class Lane implements CarMovable, SimulationTimed {
         double yPos = 0;
         if (direction == CardinalDirection.SOUTH) {
             xPos = (laneBox.getxMin() + laneBox.getxMax()) / 2;
-            yPos = laneBox.getyMin() + DimensionManager.lengthOfCarPixels;
+            yPos = laneBox.getyMin();
         }
         if (direction == CardinalDirection.NORTH) {
             xPos = (laneBox.getxMin() + laneBox.getxMax()) / 2;
-            yPos = laneBox.getyMax() - DimensionManager.lengthOfCarPixels;
+            yPos = laneBox.getyMax();
         }
         if (direction == CardinalDirection.WEST) {
-            xPos = laneBox.getxMax() - DimensionManager.lengthOfCarPixels;
+            xPos = laneBox.getxMax();
             yPos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
         }
         if (direction == CardinalDirection.EAST) {
-            xPos = laneBox.getxMin() + DimensionManager.lengthOfCarPixels;
+            xPos = laneBox.getxMin();
             yPos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
         }
         this.entryPosition = new Position(xPos, yPos);

@@ -78,19 +78,25 @@ public class Intersection implements CarMovable, SimulationTimed {
             //Increment the time of the lights
             LightStatus original = light.getStatus();
             light.incrementTime();
-            //Detect the transition from amber to red, and swap the lights then.
-            if (original == LightStatus.AMBER && light.getStatus() == LightStatus.RED) {
-                lights.get(light.getOrientation().swapValue()).restartCycle();
+            if (light.getStatus() != LightStatus.GREEN) {
                 for (Road road : roads) {
-                    //Find if the road's orientation matches that of the light that just changed to red.
-                    if (road.getOrientation() == light.getOrientation().swapValue()) {
-                        //If it isn't in the same direction, start the cars.
-                        road.startCars(this);
-                    } else {
+                    //Find if the road's orientation matches that of the light that just changed to amber.
+                   if(road.getOrientation() == light.getOrientation()){
                         //If it doesn't, stop cars.
                         road.stopCars(this);
                     }
 
+                }
+            }
+            //Detect the transition from amber to red, and swap the lights then.
+            if (original == LightStatus.AMBER && light.getStatus() == LightStatus.RED) {
+                lights.get(light.getOrientation().swapValue()).restartCycle();
+
+                for (Road road : roads) {
+                    if (road.getOrientation() == light.getOrientation().swapValue()) {
+                        //If it isn't in the same direction, start the cars.
+                        road.startCars(this);
+                    }
                 }
             }
         }

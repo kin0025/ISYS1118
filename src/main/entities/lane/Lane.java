@@ -8,6 +8,7 @@ import main.entities.car.Car;
 import main.entities.interfaces.CarMovable;
 import main.entities.interfaces.SimulationTimed;
 import main.utils.BoundingBox;
+import main.utils.DimensionManager;
 import main.utils.Position;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.CollisionStatus;
@@ -20,28 +21,47 @@ import static main.utils.DimensionManager.*;
 
 public class Lane implements CarMovable, SimulationTimed {
     final ArrayList<TurnDirection> turnDirections;
-    private final LinkedList<Car> cars = new LinkedList<>();
+    final LinkedList<Car> cars = new LinkedList<>();
     private final CardinalDirection direction;
     private final int lanesFromEdge;
     private final BoundingBox laneBox;
     private boolean carsCanLeaveLane = true;
+    final Position entryPosition;
 
     public Lane(CardinalDirection direction, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox) {
         this.turnDirections = turnDirections;
         this.direction = direction;
         this.lanesFromEdge = lanesFromEdge;
         this.laneBox = laneBox;
+
+        double xPos = 0;
+        double yPos = 0;
+        if (direction == CardinalDirection.SOUTH) {
+            xPos = (laneBox.getxMin() + laneBox.getxMax()) / 2;
+            yPos = laneBox.getyMin() + DimensionManager.lengthOfCarPixels;
+        }
+        if (direction == CardinalDirection.NORTH) {
+            xPos = (laneBox.getxMin() + laneBox.getxMax()) / 2;
+            yPos = laneBox.getyMax() - DimensionManager.lengthOfCarPixels;
+        }
+        if (direction == CardinalDirection.WEST) {
+            xPos = laneBox.getxMax() - DimensionManager.lengthOfCarPixels;
+            yPos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
+        }
+        if (direction == CardinalDirection.EAST) {
+            xPos = laneBox.getxMin() + DimensionManager.lengthOfCarPixels;
+            yPos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
+        }
+        this.entryPosition = new Position(xPos, yPos);
     }
 
     public void incrementTime() {
-        if (!cars.isEmpty()) {
-            if(!cars.peek().isInsideParent()){
-                cars.peek().moveToNext(this);
+            if (!cars.isEmpty()) {
+                for (Car car : cars) {
+                    car.incrementTime();
+                    car.start();
+                }
             }
-            for (Car car : cars) {
-                car.incrementTime();
-            }
-        }
         checkCarCollisions();
         checkCarPositions();
 
@@ -79,7 +99,11 @@ public class Lane implements CarMovable, SimulationTimed {
                 if (currentCar.getPosition().getDifference(nextCar.getPosition()) < minimumFollowingDistancePixels) {
                     currentCar.stop();
                     carTooClose = true;
+                } else {
+                    currentCar.start();
                 }
+            } else {
+                currentCar.start();
             }
         }
         return !carTooClose;
@@ -93,13 +117,13 @@ public class Lane implements CarMovable, SimulationTimed {
         for (Car car : cars) {
             if (!laneBox.isInsideBoundingBox(car.getPosition())) {
                 if (!car.isInsideParent()) {
-                    if(carsCanLeaveLane) {
+                    if (carsCanLeaveLane) {
                         if (move == null) {
                             move = car;
                         } else {
                             throw new RuntimeException("Tried to remove multiple cars in one operation - cars must be in same location");
                         }
-                    }else{
+                    } else {
                         car.stop();
                     }
                 }
@@ -118,7 +142,7 @@ public class Lane implements CarMovable, SimulationTimed {
         return lanesFromEdge;
     }
 
-    public int getNumberOfFreeSpaces(){
+    public int getNumberOfFreeSpaces() {
         return (lengthOfLanePixels / minimumFollowingDistancePixels) - cars.size();
     }
 
@@ -128,13 +152,16 @@ public class Lane implements CarMovable, SimulationTimed {
 
     @Override
     public boolean addCar(Car car) {
-        return cars.add(car);
+        if (cars.add(car)) {
+            car.getCarBox().setCentre(entryPosition.clone());
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean moveCar(CarMovable moveTo, Car car) {
-        if (cars.peek() == car) {
-            moveTo.addCar(cars.peek());
+        if (cars.peek() == car && moveTo.addCar(car)) {
             return this.removeCar(cars.peek());
         }
         return false;

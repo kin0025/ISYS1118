@@ -6,6 +6,7 @@ import main.entities.intersection.Intersection;
 import main.entities.lane.CarDestroy;
 import main.entities.lane.CarSpawn;
 import main.entities.lane.Lane;
+import main.utils.enums.TurnDirection;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -45,7 +46,7 @@ public class CarPath {
      * @return whether the object could be added
      */
     public boolean addPartToPath(CarMovable addedObject) {
-        if (!pathComplete && !carPath.isEmpty() && carPath.get(carPath.size() - 1) != addedObject) {
+        if (!pathComplete && !carPath.isEmpty() && carPath.get(carPath.size() - 1) != addedObject && addedObject != null) {
             //Now check we can actually path to the object from the last lane position.
 
             carPath.add(addedObject);
@@ -86,6 +87,7 @@ public class CarPath {
 
     /**
      * Gets the item at a position in the car path
+     *
      * @param position the position in the car path
      * @return the item in the position
      */
@@ -98,6 +100,7 @@ public class CarPath {
 
     /**
      * Gets the position of a car in the path
+     *
      * @param car the car to get the position of
      * @return the position of the car
      */
@@ -109,7 +112,21 @@ public class CarPath {
     }
 
     /**
+     * Gets the position of a car in the path
+     *
+     * @param car the car to get the position of
+     * @return the position of the car
+     */
+    public CarMovable getNextCarPosition(Car car) {
+        if (pathComplete && !carPath.isEmpty() && carPosition.containsKey(car)) {
+            return carPath.get(carPosition.get(car)+1);
+        }
+        return null;
+    }
+
+    /**
      * Adds a car to the position of the first object
+     *
      * @param car the car to be added
      * @return whether the car was added correctly
      */
@@ -121,8 +138,11 @@ public class CarPath {
         return false;
     }
 
+
+
     /**
      * Moves a car to the next position in the path, or deletes it if it has reached the end of the path
+     *
      * @param car the car to be moved
      * @return whether it was moved/esists to be moved
      */
@@ -143,13 +163,14 @@ public class CarPath {
 
     /**
      * Gets the next lane a car will enter, excluding the one it is in now
+     *
      * @param car the car
      * @return the next lane it will enter
      */
     public Lane getNextLane(Car car) {
-        if (pathComplete && carPosition.containsKey(car)) {
+        if (pathComplete && carPosition.containsKey(car) && carPosition.get(car) < carPath.size()) {
             for (int i = carPosition.get(car) + 1; i < carPath.size(); i++) {
-                if (carPath.get(i).getClass().isAssignableFrom(Lane.class)) {
+                if (carPath.get(i) instanceof Lane) {
                     return (Lane) carPath.get(i);
                 }
             }
@@ -158,12 +179,45 @@ public class CarPath {
     }
 
     /**
+     * Gets the current lane a car is in
+     *
+     * @param car the car
+     * @return the lane the car is in or null
+     */
+    public Lane getCurrentLane(Car car) {
+        if (pathComplete && carPosition.containsKey(car)) {
+            if (carPath.get(carPosition.get(car)) instanceof Lane) {
+                return (Lane) carPath.get(carPosition.get(car));
+
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets the current Intersection a car is in
+     *
+     * @param car the car
+     * @return the intersection the car is in or null
+     */
+    public Intersection getCurrentIntersection(Car car) {
+        if (pathComplete && carPosition.containsKey(car)) {
+            if (carPath.get(carPosition.get(car)) instanceof Intersection) {
+                return (Intersection) carPath.get(carPosition.get(car));
+
+            }
+        }
+        return null;
+    }
+
+    /**
      * Gets the next intersection the car will go through
+     *
      * @param car the car to check for traveling through
      * @return the next intersection
      */
     public Intersection getNextIntersection(Car car) {
-        if (pathComplete && carPosition.containsKey(car)) {
+        if (pathComplete && carPosition.containsKey(car) && carPosition.get(car) < carPath.size()) {
             for (int i = carPosition.get(car) + 1; i < carPath.size(); i++) {
                 if (carPath.get(i).getClass() == Intersection.class) {
                     return (Intersection) carPath.get(i);
@@ -174,7 +228,29 @@ public class CarPath {
     }
 
     /**
+     * Gets the current turn direction
+     *
+     * @param car the car to check for turning
+     * @return the turn direction
+     */
+    public TurnDirection getCurrentTurn(Car car) {
+        if (pathComplete && carPosition.containsKey(car)) {
+
+            Lane lane1 = getCurrentLane(car);
+            Lane lane2 = getNextLane(car);
+            if(lane1 == null){
+                lane1 = (Lane)carPath.get(carPosition.get(car) - 1);
+            }
+            if(lane1 != null && lane2 != null){
+                return lane1.getDirection().getTurnDirection(lane2.getDirection());
+            }
+        }
+        return null;
+    }
+
+    /**
      * Gets the number of items/nodes in the path
+     *
      * @return the number of items/nodes in the path
      */
     public int getSize() {

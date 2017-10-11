@@ -541,20 +541,20 @@ public class MapGrid {
         }
 
 
-        direction = CardinalDirection.WEST;
-        spawn = createSpawnPoint(intersection, direction, DimensionManager.secondsToTicks(5));
-
-        if (spawn.getDirection().getAxis() == Orientation.HORIZONTAL) {
-            index = getIntersectionCoords(intersection)[0];
-        } else {
-            index = getIntersectionCoords(intersection)[1];
-        }
-        try {
-            createLinePath(spawn, index, spawn.getDirection());
-
-        } catch (PathNotFoundException e) {
-            System.out.println("Creating the spawn path failed.");
-
-        }
+//        direction = CardinalDirection.WEST;
+//        spawn = createSpawnPoint(intersection, direction, DimensionManager.secondsToTicks(5));
+//
+//        if (spawn.getDirection().getAxis() == Orientation.HORIZONTAL) {
+//            index = getIntersectionCoords(intersection)[0];
+//        } else {
+//            index = getIntersectionCoords(intersection)[1];
+//        }
+//        try {
+//            createLinePath(spawn, index, spawn.getDirection());
+//
+//        } catch (PathNotFoundException e) {
+//            System.out.println("Creating the spawn path failed.");
+//
+//        }
     }
 }

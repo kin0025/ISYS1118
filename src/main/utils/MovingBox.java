@@ -6,6 +6,7 @@
 
 package main.utils;
 
+import javafx.geometry.Pos;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.CollisionStatus;
 
@@ -221,5 +222,9 @@ public class MovingBox extends BoundingBox {
     public void moveForward(double amount) {
         getCentre().movePosition(amount * Math.sin(angle), -amount * Math.cos(angle));
         //angle += Math.toRadians(1);
+    }
+
+    public void setCentre(Position position){
+        this.centre = position;
     }
 }

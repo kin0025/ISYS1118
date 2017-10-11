@@ -21,7 +21,18 @@ public class CarDestroy extends Lane {
     }
 
     @Override
-    public boolean addCar(Car car) {
-        return false;
+    void checkCarPositions() {
+        Car remove = null;
+        for (Car car : cars) {
+            car.setParent(getBoundingBox());
+            if (!car.isInsideParent()) {
+                remove = car;
+                break;
+            }
+        }
+        if (remove != null) {
+            cars.remove(remove);
+        }
     }
+
 }

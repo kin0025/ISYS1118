@@ -11,25 +11,58 @@ import main.entities.interfaces.SimulationTimed;
 import main.utils.BoundingBox;
 import main.utils.DimensionManager;
 import main.utils.Position;
-import main.utils.enums.CardinalDirection;
-import main.utils.enums.CollisionStatus;
-import main.utils.enums.LightStatus;
-import main.utils.enums.Orientation;
+import main.utils.enums.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
+
+import static main.utils.DimensionManager.lengthOfLanePixels;
+import static main.utils.DimensionManager.minimumFollowingDistancePixels;
 
 public class Intersection implements CarMovable, SimulationTimed {
     private final HashMap<Road, CardinalDirection> roadDirections = new HashMap<>();
     private ArrayList<Road> roads = new ArrayList<>();
     private final BoundingBox boundingBox;
     private final HashMap<Orientation, TrafficLight> lights = new HashMap<>(2);
-    private final LinkedList<Car> carNorth = new LinkedList<>();
-    private final LinkedList<Car> carSouth = new LinkedList<>();
-    private final LinkedList<Car> carEast = new LinkedList<>();
-    private final LinkedList<Car> carWest = new LinkedList<>();
-    private final LinkedList<Car> cars = new LinkedList<>();
+    private final HashMap<CarDirection, Car> cars = new HashMap<>();
+
+    class CarDirection {
+        TurnDirection turnDirection;
+        CardinalDirection directionFrom;
+
+        public CarDirection(TurnDirection turnDirection, CardinalDirection directionFrom) {
+            switch (turnDirection) {
+                case LEFT:
+                case STRAIGHT:
+                    this.turnDirection = TurnDirection.STRAIGHT;
+                    break;
+                case RIGHT:
+                case REVERSE:
+                    this.turnDirection = TurnDirection.RIGHT;
+                    break;
+            }
+            this.directionFrom = directionFrom;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof CarDirection) {
+                CarDirection carDirection = (CarDirection) obj;
+                if (this.directionFrom == carDirection.directionFrom && this.turnDirection == carDirection.turnDirection) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            //Enums are basically hash codes anyway, so combine to two
+            return turnDirection.ordinal() + (directionFrom.ordinal() * 10);
+        }
+    }
 
     public Intersection(Position centre, int lightTimeVertical, int lightTimeHorizontal, Orientation startingLights) {
         lights.put(Orientation.VERTICAL, new TrafficLight(lightTimeVertical, Orientation.VERTICAL));
@@ -61,31 +94,35 @@ public class Intersection implements CarMovable, SimulationTimed {
                 }
             }
         }
-        checkCarCollisions();
-        checkCarPositions();
-        for(Car car : cars){
+
+        for (Car car : cars.values()) {
             car.start();
             car.incrementTime();
         }
+        checkCarPositions();
     }
 
     /**
-     * Iterates through the linked list and stops any cars that are getting too close to each other.
-     * Returns True if no collisions occurred
+     * Finds out if a direction has free spaces or not from a direction
+     *
+     * @param entryDirection
+     * @param turnDirection
+     * @return
      */
-    private void checkCarCollisions() {
-        boolean carTooClose = false;
-        for (int i = cars.size() - 1; i > 0; i--) {
-            Car currentCar = cars.get(i);
-            Car nextCar = cars.get(i - 1);
-            if (nextCar != null) {
-                if (currentCar.getPosition().getDifference(nextCar.getPosition()) < DimensionManager.minimumFollowingDistancePixels) {
-                    currentCar.stop();
-                } else {
-                    currentCar.start();
-                }
-            }
-        }
+    public boolean hasFreeSpaces(CardinalDirection entryDirection, TurnDirection turnDirection) {
+        CarDirection direction = new CarDirection(turnDirection, entryDirection);
+        return hasFreeSpaces(direction);
+    }
+
+    /**
+     * Finds out if a direction has free spaces or not from a direction
+     *
+     * @param carDirection
+     * @return
+     */
+    public boolean hasFreeSpaces(CarDirection carDirection) {
+        CarDirection direction = new CarDirection(carDirection.turnDirection, carDirection.directionFrom);
+        return !cars.containsKey(direction);
     }
 
     /**
@@ -93,11 +130,9 @@ public class Intersection implements CarMovable, SimulationTimed {
      */
     void checkCarPositions() {
         ArrayList<Car> move = new ArrayList<>();
-        for (Car car : cars) {
-            if (!boundingBox.isInsideBoundingBox(car.getPosition())) {
-                if (!car.isInsideParent()) {
-                    move.add(car);
-                }
+        for (Car car : cars.values()) {
+            if (!car.isInsideParent() && car.getNextLane().getNumberOfFreeSpaces() >= 1) {
+                move.add(car);
             }
         }
         for (Car car : move) {
@@ -119,8 +154,12 @@ public class Intersection implements CarMovable, SimulationTimed {
         return roads;
     }
 
-    public LinkedList<Car> getCars() {
-        return cars;
+    public Car getCar(CardinalDirection direction, TurnDirection turnDirection) {
+        return cars.get(new CarDirection(turnDirection, direction));
+    }
+
+    public Collection<Car> getCars() {
+        return cars.values();
     }
 
     public LightStatus getLightStatus(Orientation orientation) {
@@ -157,23 +196,40 @@ public class Intersection implements CarMovable, SimulationTimed {
 
     @Override
     public boolean addCar(Car car) {
-        return cars.add(car);
+        if (!cars.containsValue(car)) {
+            CarDirection carDirection = new CarDirection(car.getCurrentTurnDirection(), car.getDirection());
+            if (hasFreeSpaces(carDirection)) {
+                cars.put(carDirection, car);
+                car.setParent(boundingBox);
+                int counter = 0;
+                while (!car.isInsideParent()) {
+                    counter++;
+                    if (counter > 100) {
+                        car.getCarBox().setCentre(boundingBox.getCentre().clone());
+                    }
+                    car.incrementTime();
+                }
+
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean moveCar(CarMovable moveTo, Car car) {
-        if(cars.peek() == car) {
-//            cars.peek().moveToNext(this);
-            moveTo.addCar(cars.peek());
-            return this.removeCar(cars.peek());
+        if (cars.containsValue(car)) {
+            moveTo.addCar(car);
+            return this.removeCar(car);
         }
         return false;
     }
 
     @Override
     public boolean removeCar(Car car) {
-        if (cars.element() == car) {
-            cars.remove();
+        if (cars.containsValue(car)) {
+            CarDirection carDirection = new CarDirection(car.getCurrentTurnDirection(), car.getDirection());
+            cars.remove(carDirection);
             return true;
         } else {
             return false;

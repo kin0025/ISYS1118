@@ -22,7 +22,6 @@ import java.util.ArrayList;
  * Spawns cars.
  */
 public class CarSpawn extends Lane {
-    private final Position spawnPosition;
     //Ticks between each car spawn
     private final int spawnDelay;
     //Generate this in the constructor
@@ -41,26 +40,6 @@ public class CarSpawn extends Lane {
         super(directionOfLane, turnDirections, lanesFromEdge, laneBox);
         this.spawnDelay = spawnDelay;
         this.active = false;
-
-        double xPos = 0;
-        double yPos = 0;
-        if (directionOfLane == CardinalDirection.SOUTH) {
-            xPos = (laneBox.getxMin() + laneBox.getxMax()) / 2;
-            yPos = laneBox.getyMin() + DimensionManager.lengthOfCarPixels;
-        }
-        if (directionOfLane == CardinalDirection.NORTH) {
-            xPos = (laneBox.getxMin() + laneBox.getxMax()) / 2;
-            yPos = laneBox.getyMax() -  DimensionManager.lengthOfCarPixels;
-        }
-        if (directionOfLane == CardinalDirection.WEST) {
-            xPos = laneBox.getxMax() -  DimensionManager.lengthOfCarPixels;
-            yPos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
-        }
-        if (directionOfLane == CardinalDirection.EAST) {
-            xPos = laneBox.getxMin() +  DimensionManager.lengthOfCarPixels;
-            yPos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
-        }
-        spawnPosition = new Position(xPos, yPos);
     }
 
 
@@ -71,10 +50,10 @@ public class CarSpawn extends Lane {
      */
     boolean spawnCar() {
         //Check cars aren't going to be too close together.
-        if (!getCars().isEmpty() && getCars().getLast().getPosition().getDifference(spawnPosition) <= 20) {
+        if (!getCars().isEmpty() && getCars().getLast().getPosition().getDifference(entryPosition) <= 20) {
             return false;
         }
-        return active && addCar(new Car(new Position(spawnPosition.getX(), spawnPosition.getY()), carPath));
+        return active && addCar(new Car(new Position(entryPosition.getX(), entryPosition.getY()), carPath));
     }
 
     /**

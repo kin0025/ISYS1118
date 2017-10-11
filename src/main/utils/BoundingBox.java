@@ -12,7 +12,7 @@ import main.utils.enums.CollisionStatus;
 public class BoundingBox {
     private double width;
     private double height;
-    private Position centre;
+    Position centre;
 
     public BoundingBox(double xMin, double yMin, double xMax, double yMax) throws NumberFormatException {
         if (xMin >= xMax || yMin >= yMax) {

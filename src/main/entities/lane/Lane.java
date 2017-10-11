@@ -8,7 +8,6 @@ import main.entities.car.Car;
 import main.entities.interfaces.CarMovable;
 import main.entities.interfaces.SimulationTimed;
 import main.utils.BoundingBox;
-import main.utils.DimensionManager;
 import main.utils.Position;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.CollisionStatus;
@@ -36,13 +35,9 @@ public class Lane implements CarMovable, SimulationTimed {
 
     public void incrementTime() {
         if (!cars.isEmpty()) {
-            if (!carsCanLeaveLane && cars.peek().getForwardCollisionStatus() != CollisionStatus.ENCLOSED) {
-                cars.peek().stop();
-
-            } else {
-                cars.peek().start();
+            if(!cars.peek().isInsideParent()){
+                cars.peek().moveToNext(this);
             }
-
             for (Car car : cars) {
                 car.incrementTime();
             }
@@ -84,8 +79,6 @@ public class Lane implements CarMovable, SimulationTimed {
                 if (currentCar.getPosition().getDifference(nextCar.getPosition()) < minimumFollowingDistancePixels) {
                     currentCar.stop();
                     carTooClose = true;
-                }else{
-                    System.out.println("Move");
                 }
             }
         }
@@ -99,12 +92,15 @@ public class Lane implements CarMovable, SimulationTimed {
         Car move = null;
         for (Car car : cars) {
             if (!laneBox.isInsideBoundingBox(car.getPosition())) {
-                CollisionStatus status = car.getForwardCollisionStatus();
-                if (status != CollisionStatus.ENCLOSED) {
-                    if (move == null) {
-                        move = car;
-                    } else {
-                        throw new RuntimeException("Tried to remove multiple cars in one operation - cars must be in same location");
+                if (!car.isInsideParent()) {
+                    if(carsCanLeaveLane) {
+                        if (move == null) {
+                            move = car;
+                        } else {
+                            throw new RuntimeException("Tried to remove multiple cars in one operation - cars must be in same location");
+                        }
+                    }else{
+                        car.stop();
                     }
                 }
             }

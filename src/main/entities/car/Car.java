@@ -52,6 +52,7 @@ public class Car implements SimulationTimed {
     public boolean moveToNext(CarMovable moveFrom) {
         boolean result = carPath.moveCarToNext(this);
         moveFrom.moveCar(carPath.getCarPosition(this), this);
+        System.out.println("car was moved to next lane");
         return result;
     }
 
@@ -75,8 +76,8 @@ public class Car implements SimulationTimed {
         return carBox.getCollisionStatus();
     }
 
-    public CollisionStatus getForwardCollisionStatus() {
-        return carBox.getCollisionStatus(this.direction);
+    public boolean isInsideParent() {
+        return carBox.isInsideParent();
     }
 
     public boolean isMoving() {

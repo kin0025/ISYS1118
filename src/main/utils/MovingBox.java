@@ -143,21 +143,22 @@ public class MovingBox extends BoundingBox {
                 corners[3].setY(getCentre().getY() - getWidth() / 2);
                 break;
             default:
+                double angleToCorner = Math.atan(getHeight() / getWidth());
+                double radius = Math.sqrt((getHeight() * getHeight()) + (getWidth() * getWidth())) / 2;
+                corners[2].setX(getCentre().getX() + Math.sin(angle - angleToCorner) * radius);
+                corners[2].setY(getCentre().getY() - Math.cos(angle - angleToCorner) * radius);
+
+                corners[1].setX(getCentre().getX() + Math.sin(angle + angleToCorner) * radius);
+                corners[1].setY(getCentre().getY() + Math.cos(angle + angleToCorner) * radius);
+
+                corners[0].setX(getCentre().getX() + Math.sin(angle + angleToCorner) * radius);
+                corners[0].setY(getCentre().getY() - Math.cos(angle + angleToCorner) * radius);
+
+
+                corners[3].setX(getCentre().getX() + Math.sin(angle - angleToCorner) * radius);
+                corners[3].setY(getCentre().getY() + Math.cos(angle - angleToCorner) * radius);
 
         }
-        //        double angleToCorner = Math.atan(getHeight() / getWidth());
-        //      corners[2].setX(getCentre().getX() + Math.sin(angle - angleToCorner) * getWidth() / 2);
-//        corners[2].setY(getCentre().getY() - Math.cos(angle - angleToCorner) * getHeight() / 2);
-//
-//        corners[1].setX(getCentre().getX() + Math.sin(angle + angleToCorner) * getWidth() / 2);
-//        corners[1].setY(getCentre().getY() + Math.cos(angle + angleToCorner) * getHeight() / 2);
-//
-//        corners[0].setX(getCentre().getX() + Math.sin(angle + angleToCorner) * getWidth() / 2);
-//        corners[0].setY(getCentre().getY() - Math.cos(angle + angleToCorner) * getHeight() / 2);
-//
-//
-//        corners[3].setX(getCentre().getX() + Math.sin(angle - angleToCorner) * getWidth() / 2);
-//        corners[3].setY(getCentre().getY() + Math.cos(angle - angleToCorner) * getHeight() / 2);
         return corners;
     }
 
@@ -199,6 +200,10 @@ public class MovingBox extends BoundingBox {
             return CollisionStatus.TOUCHING;
         }
         return CollisionStatus.OUTSIDE;
+    }
+
+    public boolean isInsideParent(){
+        return parentBox.isInsideBoundingBox(this.getCentre());
     }
 
     public void setAngle(int angleDegrees) {

@@ -25,6 +25,10 @@ public class Intersection implements CarMovable, SimulationTimed {
     private ArrayList<Road> roads = new ArrayList<>();
     private final BoundingBox boundingBox;
     private final HashMap<Orientation, TrafficLight> lights = new HashMap<>(2);
+    private final LinkedList<Car> carNorth = new LinkedList<>();
+    private final LinkedList<Car> carSouth = new LinkedList<>();
+    private final LinkedList<Car> carEast = new LinkedList<>();
+    private final LinkedList<Car> carWest = new LinkedList<>();
     private final LinkedList<Car> cars = new LinkedList<>();
 
     public Intersection(Position centre, int lightTimeVertical, int lightTimeHorizontal, Orientation startingLights) {
@@ -69,7 +73,7 @@ public class Intersection implements CarMovable, SimulationTimed {
      * Iterates through the linked list and stops any cars that are getting too close to each other.
      * Returns True if no collisions occurred
      */
-    boolean checkCarCollisions() {
+    private void checkCarCollisions() {
         boolean carTooClose = false;
         for (int i = cars.size() - 1; i > 0; i--) {
             Car currentCar = cars.get(i);
@@ -77,13 +81,11 @@ public class Intersection implements CarMovable, SimulationTimed {
             if (nextCar != null) {
                 if (currentCar.getPosition().getDifference(nextCar.getPosition()) < DimensionManager.minimumFollowingDistancePixels) {
                     currentCar.stop();
-                    carTooClose = true;
                 } else {
                     currentCar.start();
                 }
             }
         }
-        return !carTooClose;
     }
 
     /**
@@ -93,8 +95,7 @@ public class Intersection implements CarMovable, SimulationTimed {
         ArrayList<Car> move = new ArrayList<>();
         for (Car car : cars) {
             if (!boundingBox.isInsideBoundingBox(car.getPosition())) {
-                CollisionStatus status = car.getForwardCollisionStatus();
-                if (status != CollisionStatus.ENCLOSED) {
+                if (!car.isInsideParent()) {
                     move.add(car);
                 }
             }
@@ -162,7 +163,7 @@ public class Intersection implements CarMovable, SimulationTimed {
     @Override
     public boolean moveCar(CarMovable moveTo, Car car) {
         if(cars.peek() == car) {
-            cars.peek().moveToNext(this);
+//            cars.peek().moveToNext(this);
             moveTo.addCar(cars.peek());
             return this.removeCar(cars.peek());
         }

@@ -56,12 +56,12 @@ public class Lane implements CarMovable, SimulationTimed {
     }
 
     public void incrementTime() {
-            if (!cars.isEmpty()) {
-                for (Car car : cars) {
-                    car.incrementTime();
-                    car.start();
-                }
+        if (!cars.isEmpty()) {
+            for (Car car : cars) {
+                car.incrementTime();
+                car.start();
             }
+        }
         checkCarCollisions();
         checkCarPositions();
 
@@ -117,7 +117,7 @@ public class Lane implements CarMovable, SimulationTimed {
         for (Car car : cars) {
             if (!laneBox.isInsideBoundingBox(car.getPosition())) {
                 if (!car.isInsideParent()) {
-                    if (carsCanLeaveLane) {
+                    if (carsCanLeaveLane && car.getNextIntersection().hasFreeSpaces(car)) {
                         if (move == null) {
                             move = car;
                         } else {

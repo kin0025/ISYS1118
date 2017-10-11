@@ -80,9 +80,9 @@ public class Intersection implements CarMovable, SimulationTimed {
             light.incrementTime();
             if (light.getStatus() != LightStatus.GREEN) {
                 for (Road road : roads) {
-                    //Find if the road's orientation matches that of the light that just changed to amber.
+                    //Find if the road's orientation matches that of the light that is not green.
                    if(road.getOrientation() == light.getOrientation()){
-                        //If it doesn't, stop cars.
+                        //If it matches, stop cars.
                         road.stopCars(this);
                     }
 
@@ -132,6 +132,19 @@ public class Intersection implements CarMovable, SimulationTimed {
     }
 
     /**
+     * Finds out if a direction has free spaces or not from a direction
+     *
+     * @param carDirection
+     * @return
+     */
+    public boolean hasFreeSpaces(Car car) {
+        CarDirection carDirection = new CarDirection(car.getCurrentTurnDirection(), car.getDirection());
+
+        CarDirection direction = new CarDirection(carDirection.turnDirection, carDirection.directionFrom);
+        return !cars.containsKey(direction);
+    }
+
+    /**
      * Iterates through the linked list and finds any cars outside the box - moves them to the next lane if they are outside the lane
      */
     void checkCarPositions() {
@@ -139,6 +152,8 @@ public class Intersection implements CarMovable, SimulationTimed {
         for (Car car : cars.values()) {
             if (!car.isInsideParent() && car.getNextLane().getNumberOfFreeSpaces() >= 1) {
                 move.add(car);
+            }else{
+                car.stop();
             }
         }
         for (Car car : move) {

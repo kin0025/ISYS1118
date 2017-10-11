@@ -1,5 +1,7 @@
 package main.utils;
 
+import javafx.geometry.Pos;
+
 /**
  * The type main.utils.Position.
  */
@@ -174,6 +176,11 @@ public class Position {
             default:
                 throw new RuntimeException("Wrong dimension");
         }
+    }
+
+    @Override
+    public Position clone() {
+        return new Position(x,y);
     }
 
     public enum DIMENSION {X, Y}

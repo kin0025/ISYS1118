@@ -42,4 +42,6 @@ public interface CarMovable {
     Position getCentre();
 
     CardinalDirection getDirection();
+
+
 }

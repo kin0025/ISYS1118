@@ -13,6 +13,9 @@ import main.utils.enums.TurnDirection;
 import org.junit.Before;
 import org.junit.Test;
 
+import static main.utils.DimensionManager.lengthOfCarPixels;
+import static main.utils.DimensionManager.lengthOfLanePixels;
+import static main.utils.DimensionManager.minimumFollowingDistancePixels;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -138,6 +141,21 @@ public class LaneTest {
         assertEquals("Lane has wrong turn directions", true, nextLane.hasTurnDirection(TurnDirection.LEFT));
         assertEquals("Lane has wrong turn directions", false, nextLane.hasTurnDirection(TurnDirection.REVERSE));
     }
+
+    @Test
+    public void checkFreeSpacesFull() {
+        Car car1 = new Car(new Position(0, 0), null);
+        Car car2 = new Car(new Position(0, 0), null);
+        lane.addCar(car1);
+        lane.addCar(car2);
+        assertEquals((DimensionManager.lengthOfLanePixels /  (DimensionManager.minimumFollowingDistancePixels))-4, lane.getNumberOfFreeSpaces());
+    }
+
+    @Test
+    public void checkFreeSpaces() {
+        Car car1 = new Car(new Position(0, 0), null);
+        lane.addCar(car1);
+        assertEquals(lengthOfLanePixels /  (minimumFollowingDistancePixels) - 3, lane.getNumberOfFreeSpaces());    }
 
     @Test
     public void checkCollisionsOccur() {

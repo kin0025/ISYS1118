@@ -2,11 +2,15 @@ package main.entities.car;
 
 import main.entities.interfaces.CarMovable;
 import main.entities.interfaces.SimulationTimed;
+import main.entities.intersection.Intersection;
+import main.entities.lane.Lane;
+import main.utils.BoundingBox;
 import main.utils.DimensionManager;
 import main.utils.MovingBox;
 import main.utils.Position;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.CollisionStatus;
+import main.utils.enums.TurnDirection;
 
 /**
  * The type main.entities.car.Car.
@@ -44,14 +48,16 @@ public class Car implements SimulationTimed {
         try {
             carBox.setAngle(carPath.getCarPosition(this).getDirection());
         } catch (NullPointerException e) {
-            return;
+//In an intersection, don't bother changing direction
         }
         carBox.moveForward(speed);
     }
 
     public boolean moveToNext(CarMovable moveFrom) {
+        if (!moveFrom.moveCar(carPath.getNextCarPosition(this), this)) {
+            return false;
+        }
         boolean result = carPath.moveCarToNext(this);
-        moveFrom.moveCar(carPath.getCarPosition(this), this);
         return result;
     }
 
@@ -75,12 +81,32 @@ public class Car implements SimulationTimed {
         return carBox.getCollisionStatus();
     }
 
-    public CollisionStatus getForwardCollisionStatus() {
-        return carBox.getCollisionStatus(this.direction);
+    public void setParent(BoundingBox box) {
+        carBox.setParentBox(box);
+    }
+
+    public boolean isInsideParent() {
+        return carBox.isInsideParent();
     }
 
     public boolean isMoving() {
         return (speed != 0);
+    }
+
+    public TurnDirection getCurrentTurnDirection() {
+        return carPath.getCurrentTurn(this);
+    }
+
+    public Intersection getNextIntersection() {
+        return carPath.getNextIntersection(this);
+    }
+
+    public Lane getNextLane() {
+        return carPath.getNextLane(this);
+    }
+
+    public CarMovable getNextPosition() {
+        return carPath.getNextCarPosition(this);
     }
 
 }

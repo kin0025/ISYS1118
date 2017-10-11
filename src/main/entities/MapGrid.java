@@ -181,9 +181,9 @@ public class MapGrid {
     public CarSpawn createSpawnPoint(Intersection intersection, CardinalDirection direction, int spawnDelay) {
         int axis;
         if (direction.getAxis() == Orientation.HORIZONTAL) {
-            axis = 0;
-        } else {
             axis = 1;
+        } else {
+            axis = 0;
         }
         if (getEdgeIntersection(getIntersectionCoords(intersection)[axis], direction) != intersection) {
             return null;
@@ -295,7 +295,7 @@ public class MapGrid {
                         carSpawn.addToPath(getRoad(thisIntersection, nextIntersection).getLane(goTo, TurnDirection.STRAIGHT));
                     } else if (pathEnded && nextIntersection != null) {
                         pathWorked = false;
-                    } else {
+                    } else if(pathStarted){
                         pathEnded = true;
                     }
                     if (!pathWorked) {

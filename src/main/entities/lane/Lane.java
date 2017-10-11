@@ -17,36 +17,54 @@ import main.utils.enums.TurnDirection;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import static main.utils.DimensionManager.*;
+
 public class Lane implements CarMovable, SimulationTimed {
     final ArrayList<TurnDirection> turnDirections;
-    private final LinkedList<Car> cars = new LinkedList<>();
+    final LinkedList<Car> cars = new LinkedList<>();
     private final CardinalDirection direction;
     private final int lanesFromEdge;
     private final BoundingBox laneBox;
-    private boolean carsCanLeaveLane = true;
+    private boolean carsCanLeaveLane = false;
+    final Position entryPosition;
 
     public Lane(CardinalDirection direction, ArrayList<TurnDirection> turnDirections, int lanesFromEdge, BoundingBox laneBox) {
         this.turnDirections = turnDirections;
         this.direction = direction;
         this.lanesFromEdge = lanesFromEdge;
         this.laneBox = laneBox;
+
+        double xPos = 0;
+        double yPos = 0;
+        if (direction == CardinalDirection.SOUTH) {
+            xPos = (laneBox.getxMin() + laneBox.getxMax()) / 2;
+            yPos = laneBox.getyMin();
+        }
+        if (direction == CardinalDirection.NORTH) {
+            xPos = (laneBox.getxMin() + laneBox.getxMax()) / 2;
+            yPos = laneBox.getyMax();
+        }
+        if (direction == CardinalDirection.WEST) {
+            xPos = laneBox.getxMax();
+            yPos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
+        }
+        if (direction == CardinalDirection.EAST) {
+            xPos = laneBox.getxMin();
+            yPos = (laneBox.getyMin() + laneBox.getyMax()) / 2;
+        }
+        this.entryPosition = new Position(xPos, yPos);
     }
 
     public void incrementTime() {
-        checkCarCollisions();
-        checkCarPositions();
         if (!cars.isEmpty()) {
-            if (!carsCanLeaveLane && cars.peek().getForwardCollisionStatus() != CollisionStatus.ENCLOSED) {
-                cars.peek().stop();
-
-            } else {
-                cars.peek().start();
-            }
-
             for (Car car : cars) {
                 car.incrementTime();
+                car.start();
             }
         }
+        checkCarCollisions();
+        checkCarPositions();
+
     }
 
     public BoundingBox getBoundingBox() {
@@ -78,12 +96,14 @@ public class Lane implements CarMovable, SimulationTimed {
             Car currentCar = cars.get(i);
             Car nextCar = cars.get(i - 1);
             if (nextCar != null) {
-                if (currentCar.getPosition().getDifference(nextCar.getPosition()) < DimensionManager.minimumFollowingDistancePixels) {
+                if (currentCar.getPosition().getDifference(nextCar.getPosition()) < minimumFollowingDistancePixels) {
                     currentCar.stop();
                     carTooClose = true;
                 } else {
                     currentCar.start();
                 }
+            } else {
+                currentCar.start();
             }
         }
         return !carTooClose;
@@ -96,12 +116,15 @@ public class Lane implements CarMovable, SimulationTimed {
         Car move = null;
         for (Car car : cars) {
             if (!laneBox.isInsideBoundingBox(car.getPosition())) {
-                CollisionStatus status = car.getForwardCollisionStatus();
-                if (status != CollisionStatus.ENCLOSED) {
-                    if (move == null) {
-                        move = car;
+                if (!car.isInsideParent()) {
+                    if (carsCanLeaveLane && car.getNextIntersection().hasFreeSpaces(car)) {
+                        if (move == null) {
+                            move = car;
+                        } else {
+                            throw new RuntimeException("Tried to remove multiple cars in one operation - cars must be in same location");
+                        }
                     } else {
-                        throw new RuntimeException("Tried to remove multiple cars in one operation - cars must be in same location");
+                        car.stop();
                     }
                 }
             }
@@ -119,6 +142,9 @@ public class Lane implements CarMovable, SimulationTimed {
         return lanesFromEdge;
     }
 
+    public int getNumberOfFreeSpaces() {
+        return (lengthOfLanePixels / minimumFollowingDistancePixels) - cars.size();
+    }
 
     public boolean hasTurnDirection(TurnDirection turnDirection) {
         return turnDirections.contains(turnDirection);
@@ -126,13 +152,16 @@ public class Lane implements CarMovable, SimulationTimed {
 
     @Override
     public boolean addCar(Car car) {
-        return cars.add(car);
+        if (cars.add(car)) {
+            car.getCarBox().setCentre(entryPosition.clone());
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean moveCar(CarMovable moveTo, Car car) {
-        if (cars.peek() == car) {
-            moveTo.addCar(cars.peek());
+        if (cars.peek() == car && moveTo.addCar(car)) {
             return this.removeCar(cars.peek());
         }
         return false;

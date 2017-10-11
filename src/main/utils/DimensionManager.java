@@ -17,7 +17,7 @@ public class DimensionManager {
     public static final int sizeOfLightPixels = 10;
 
     //Other constants
-    public static final int minimumFollowingDistancePixels = 20;
+    public static final int minimumFollowingDistancePixels = lengthOfCarPixels + 3;
     public static final int amberLightTimeOn = secondsToTicks(2);
 
 

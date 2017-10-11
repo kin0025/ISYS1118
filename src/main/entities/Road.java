@@ -56,7 +56,7 @@ public class Road {
                 xMax = boundingBox.getxMax();
                 xMin = boundingBox.getxMin();
 
-                if (i < lanes.size() / 2) {
+                if (i < DimensionManager.numberOfLanesPerRoad / 2) {
                     laneDirection = CardinalDirection.EAST;
                 } else {
                     laneDirection = CardinalDirection.WEST;

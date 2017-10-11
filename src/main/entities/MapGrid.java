@@ -181,9 +181,9 @@ public class MapGrid {
     public CarSpawn createSpawnPoint(Intersection intersection, CardinalDirection direction, int spawnDelay) {
         int axis;
         if (direction.getAxis() == Orientation.HORIZONTAL) {
-            axis = 0;
-        } else {
             axis = 1;
+        } else {
+            axis = 0;
         }
         if (getEdgeIntersection(getIntersectionCoords(intersection)[axis], direction) != intersection) {
             return null;
@@ -295,7 +295,7 @@ public class MapGrid {
                         carSpawn.addToPath(getRoad(thisIntersection, nextIntersection).getLane(goTo, TurnDirection.STRAIGHT));
                     } else if (pathEnded && nextIntersection != null) {
                         pathWorked = false;
-                    } else {
+                    } else if(pathStarted){
                         pathEnded = true;
                     }
                     if (!pathWorked) {
@@ -541,20 +541,20 @@ public class MapGrid {
         }
 
 
-//        direction = CardinalDirection.WEST;
-//        spawn = createSpawnPoint(intersection, direction, DimensionManager.secondsToTicks(5));
-//
-//        if (spawn.getDirection().getAxis() == Orientation.HORIZONTAL) {
-//            index = getIntersectionCoords(intersection)[0];
-//        } else {
-//            index = getIntersectionCoords(intersection)[1];
-//        }
-//        try {
-//            createLinePath(spawn, index, spawn.getDirection());
-//
-//        } catch (PathNotFoundException e) {
-//            System.out.println("Creating the spawn path failed.");
-//
-//        }
+        direction = CardinalDirection.WEST;
+        spawn = createSpawnPoint(intersection, direction, DimensionManager.secondsToTicks(5));
+
+        if (spawn.getDirection().getAxis() == Orientation.HORIZONTAL) {
+            index = getIntersectionCoords(intersection)[0];
+        } else {
+            index = getIntersectionCoords(intersection)[1];
+        }
+        try {
+            createLinePath(spawn, index, spawn.getDirection());
+
+        } catch (PathNotFoundException e) {
+            System.out.println("Creating the spawn path failed.");
+
+        }
     }
 }

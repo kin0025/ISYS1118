@@ -181,13 +181,18 @@ public class Simulator {
     }
 
 
-    public void changeTrafficLights() {
+    public boolean changeTrafficLights(int[] intersectionCoords, int newTimeSecondsVer, int newTimeSecondsHor, Orientation startOrientation) {
         lock();
-
+        if (getIntersection(intersectionCoords) == null) {
+            return false;
+        }
+        mapGrid.setLightTiming(getIntersection(intersectionCoords),newTimeSecondsHor,Orientation.HORIZONTAL);
+        mapGrid.setLightTiming(getIntersection(intersectionCoords),newTimeSecondsHor,Orientation.VERTICAL);
         unlock();
+        return true;
     }
 
-    public void generateStandardGrid(){
+    public void generateStandardGrid() {
         lock();
         mapGrid.generateStandardGrid();
         unlock();

@@ -467,7 +467,7 @@ public class CommandLineController implements InputController {
 
          
 
-         simulator.addIntersection(coordinates[0], coordinates[1], verticalTime, horizontalTime, orientation);
+         simulator.changeTrafficLights(coordinates, verticalTime, horizontalTime, orientation);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package main.utils;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,14 +18,6 @@ public class PositionTest {
     @Before
     public void setUp()  {
         position = new Position(1,1);
-    }
-
-    /**
-     * Tear down.
-     *
-     */
-    @After
-    public void tearDown()  {
     }
 
 

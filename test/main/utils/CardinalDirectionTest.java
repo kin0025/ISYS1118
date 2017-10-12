@@ -2,22 +2,12 @@ package main.utils;
 
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.TurnDirection;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class CardinalDirectionTest {
-
-    @Before
-    public void setUp()  {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
 
     @Test

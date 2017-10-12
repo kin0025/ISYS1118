@@ -1,7 +1,7 @@
 package main;
 
 import main.entities.MapGrid;
-import main.entities.Road;
+import main.entities.RoadSegment;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarSpawn;
 import main.exceptions.PathNotFoundException;
@@ -25,8 +25,8 @@ public class Simulator {
 
     }
 
-    public boolean isLocked() {
-        return makingChanges;
+    public boolean isUnlocked() {
+        return !makingChanges;
     }
 
     private void lock() {
@@ -103,9 +103,9 @@ public class Simulator {
      */
     public boolean addRoad(Intersection intersection1, Intersection intersection2, Orientation orientation) {
         lock();
-        mapGrid.addRoad(intersection1, intersection2, orientation);
+        RoadSegment segment = mapGrid.addRoad(intersection1, intersection2, orientation);
         unlock();
-        return false;
+        return segment != null;
     }
 
     /**
@@ -113,11 +113,10 @@ public class Simulator {
      *
      * @param intersectionFrom the first intersection, order doesn't matter
      * @param intersectionTo   the second intersection, order doesn't matter
-     * @return the Road between the two, or Null if there is no road/intersections aren't adjacent.
+     * @return the RoadSegment between the two, or Null if there is no road/intersections aren't adjacent.
      */
-    public Road getRoad(Intersection intersectionFrom, Intersection intersectionTo) {
-        //TODO Test this
-        return null;
+    public RoadSegment getRoad(Intersection intersectionFrom, Intersection intersectionTo) {
+        return mapGrid.getRoad(intersectionFrom, intersectionTo);
     }
 
     /**
@@ -128,9 +127,8 @@ public class Simulator {
      * @return the road on the edge of the grid, or Null if there is not road attached to the intersection from
      * that direction/ the intersection is on the end of the grid
      */
-    public Road getRoad(Intersection intersectionFrom, CardinalDirection sideFrom) {
-        //TODO Test this
-        return null;
+    public RoadSegment getRoad(Intersection intersectionFrom, CardinalDirection sideFrom) {
+        return mapGrid.getRoad(intersectionFrom, sideFrom);
     }
 
     public void addSpawnPoint() {
@@ -139,14 +137,10 @@ public class Simulator {
 
     public boolean createLinePath(CarSpawn carSpawn, int indexNumber, CardinalDirection startFrom) {
         lock();
-        try {
-            boolean result = mapGrid.createLinePath(carSpawn, indexNumber, startFrom);
-            unlock();
-            return result;
-        } catch (PathNotFoundException p) {
-            unlock();
-            return false;
-        }
+        boolean result = mapGrid.createLinePath(carSpawn, indexNumber, startFrom);
+        unlock();
+        return result;
+
     }
 
 
@@ -160,8 +154,8 @@ public class Simulator {
      * @param startingLight       the orientation (horizontal or vertical) of the lights.
      * @return whether the intersection was added successfully - if there was already an intersection in the location it will fail to add.
      */
-    public boolean addIntersection(int x, int y, int lightTimeVertical, int lightTimeHorizontal, Orientation startingLight) {
-        return mapGrid.addIntersection(x, y, lightTimeVertical, lightTimeHorizontal, startingLight);
+    public void addIntersection(int x, int y, int lightTimeVertical, int lightTimeHorizontal, Orientation startingLight) {
+        mapGrid.addIntersection(x, y, lightTimeVertical, lightTimeHorizontal, startingLight);
     }
 
     public void removeSpawnPoint() {
@@ -181,13 +175,17 @@ public class Simulator {
     }
 
 
-    public void changeTrafficLights() {
+    public void changeTrafficLights(int[] intersectionCoords, int newTimeSecondsVer, int newTimeSecondsHor, Orientation startOrientation) {
         lock();
-
+        if (getIntersection(intersectionCoords) == null) {
+            return;
+        }
+        mapGrid.setLightTiming(getIntersection(intersectionCoords), newTimeSecondsHor, Orientation.HORIZONTAL);
+        mapGrid.setLightTiming(getIntersection(intersectionCoords), newTimeSecondsHor, Orientation.VERTICAL);
         unlock();
     }
 
-    public void generateStandardGrid(){
+    public void generateStandardGrid() {
         lock();
         mapGrid.generateStandardGrid();
         unlock();

@@ -109,15 +109,14 @@ public class CommandLineController implements InputController {
      *
      * @param flavourText     The text to be printed asking for input
      * @param options         the valid values for input
-     * @param printOptionText whether the options are displayed to the user
      * @param outputLength    the length of the output string - only the first n characters are matched
      * @return the output string
      */
-    private String receiveFixedString(String flavourText, String[] options, boolean printOptionText, int outputLength) {
+    private String receiveFixedString(String flavourText, String[] options, int outputLength) {
         String inputString;
         do {
             //Receive input
-            inputString = receiveStringInput(flavourText, options, printOptionText, false);
+            inputString = receiveStringInput(flavourText, options, true);
         } while (inputString.length() == 0);
         //Ensure input is the same.
 
@@ -137,7 +136,7 @@ public class CommandLineController implements InputController {
         }
         if (!isCorrect) {
             System.out.println("Input was not an option. Please try again.");
-            return receiveFixedString(flavourText, options, true, outputLength);
+            return receiveFixedString(flavourText, options, outputLength);
             //If they didn't get it right the first time, supply options.
         }
         return (inputString);
@@ -149,7 +148,7 @@ public class CommandLineController implements InputController {
      * length
      * of returned string
      **/
-    private String receiveStringInput(String flavourText, String[] options, boolean printOptionText, boolean caseSensitive) {
+    private String receiveStringInput(String flavourText, String[] options, boolean printOptionText) {
         //Print the flavour text.
         System.out.print(flavourText);
 
@@ -157,7 +156,7 @@ public class CommandLineController implements InputController {
         if (printOptionText) {
             System.out.println(stringArrayToString(options));
         } else System.out.println(); //Otherwise end the line.
-        return receiveStringInput(options, caseSensitive);
+        return receiveStringInput(options, false);
     }
 
 
@@ -325,17 +324,17 @@ public class CommandLineController implements InputController {
         System.out.println(" 1. Start Simulation");
         System.out.println(" 2. Stop Simulation");
         System.out.println(" 3. Add Intersection");
-        System.out.println(" 4. Add Road");
+        System.out.println(" 4. Add RoadSegment");
         System.out.println(" 5. Add Spawn Point");
         System.out.println(" 6. Change light timings");
         System.out.println(" 7. Remove Intersection");
-        System.out.println(" 8. Remove Road");
+        System.out.println(" 8. Remove RoadSegment");
         System.out.println(" 9. Remove spawn point");
         System.out.println("10. Fill grid with intersections and roads");
         System.out.println("11. Exit");
         printCharTimes('=', 150, true);
         String[] options = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
-        String choice = receiveStringInput("Enter an option:", options, false, false);
+        String choice = receiveStringInput("Enter an option:", options, false);
         switch (choice) {
             case "1":
                 simulator.start();
@@ -384,20 +383,20 @@ public class CommandLineController implements InputController {
         Intersection intersection = simulator.getIntersection(receiveCoordinateInput("Please enter the co-ordinates of the intersection you want " +
                 "cars to spawn from in the form x,y", simulator.getGridSize()));
         CardinalDirection direction = (CardinalDirection.stringToDirection(receiveStringInput("Please enter the side you want cars to spawn from", new
-                String[]{"north", "south", "east", "west"}, true, false)));
+                String[]{"north", "south", "east", "west"}, true)));
         int spawnDelay = DimensionManager.secondsToTicks(readDouble("Enter the delay between cars spawning, in seconds", 1, 0.1, 10));
         CarSpawn spawn = simulator.createSpawnPoint(intersection, direction, spawnDelay);
 
         //If it was invalid keep prompting them till they get it right or quit
         while (spawn == null) {
-            char go = receiveFixedString("Input was incorrect, do you want to continue? ", new String[]{"y", "n"}, true, 1).charAt(0);
+            char go = receiveFixedString("Input was incorrect, do you want to continue? ", new String[]{"y", "n"}, 1).charAt(0);
             if (go == 'n') {
                 return;
             }
             intersection = simulator.getIntersection(receiveCoordinateInput("Please enter the co-ordinates of the intersection you " +
                     "want cars to spawn from in the form x,y", simulator.getGridSize()));
             direction = CardinalDirection.stringToDirection(receiveStringInput("Please enter the side you want cars to spawn from",
-                    new String[]{"north", "south", "east", "west"}, true, false));
+                    new String[]{"north", "south", "east", "west"}, true));
             spawn = simulator.createSpawnPoint(intersection, direction, spawnDelay);
 
         }
@@ -413,7 +412,7 @@ public class CommandLineController implements InputController {
         Orientation orientation;
         do {
             orientation = Orientation.stringToOrientation(receiveStringInput("Enter the orientation of the starting lights", new
-                    String[]{"Horizontal", "Vertical"}, true, false));
+                    String[]{"Horizontal", "Vertical"}, true));
         } while (orientation == null);
 
         int[] coordinates = receiveCoordinateInput("Please enter the co-ordinates that you want to add the intersection to", simulator.getGridSize());
@@ -422,7 +421,7 @@ public class CommandLineController implements InputController {
     }
 
     public void createSpawnPath(CarSpawn spawn, int[] intersectionCoordinates) {
-        String type = receiveStringInput("Do you want to create a path, or a line?", new String[]{"Path", "Line"}, true, false);
+        String type = receiveStringInput("Do you want to create a path, or a line?", new String[]{"Path", "Line"}, true);
         if (type.equalsIgnoreCase("path")) {
             boolean keepGoing = true;
             while (keepGoing) {
@@ -453,7 +452,21 @@ public class CommandLineController implements InputController {
 
     @Override
     public void changeTrafficLights() {
+    	 int[] coordinates = receiveCoordinateInput("Please enter the co-ordinates of the intersection where the traffic lights you wish to change are", simulator.getGridSize());
+    	 
+    	 int horizontalTime = DimensionManager.secondsToTicks(readDouble("Please enter the length of the horizontal light in seconds", 5, 1, 100));
+         int verticalTime = DimensionManager.secondsToTicks(readDouble("Please enter the length of the vertical light in seconds", 5, 1, 100));
 
+         Orientation orientation;
+         
+         do {
+             orientation = Orientation.stringToOrientation(receiveStringInput("Enter the orientation of the starting lights", new
+                     String[]{"Horizontal", "Vertical"}, true));
+         } while (orientation == null);
+
+         
+
+         simulator.changeTrafficLights(coordinates, verticalTime, horizontalTime, orientation);
     }
 
     @Override

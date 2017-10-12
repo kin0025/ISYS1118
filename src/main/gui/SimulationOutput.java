@@ -1,7 +1,7 @@
 package main.gui;
 
 import main.entities.MapGrid;
-import main.entities.Road;
+import main.entities.RoadSegment;
 import main.entities.car.Car;
 import main.entities.intersection.Intersection;
 import main.entities.lane.Lane;
@@ -20,14 +20,14 @@ import java.awt.geom.Rectangle2D;
 public class SimulationOutput extends JPanel {
 
     private final MapGrid grid;
-    private JFrame frame = new JFrame("Simulator Output");
-    private boolean displayGrid;
+    private final JFrame frame = new JFrame("Simulator Output");
+    private final boolean displayGrid;
 
-    Color bgColour = Color.getHSBColor(0.33334f, 1f, 0.27f);
-    Color carColour = Color.red;
-    Color laneColour = Color.white;
-    Color roadColour = Color.black;
-    Color intersectionColour = Color.orange;
+    private final Color bgColour = Color.getHSBColor(0.33334f, 1f, 0.27f);
+    private final Color carColour = Color.red;
+    private final Color laneColour = Color.white;
+    private final Color roadColour = Color.black;
+    private final Color intersectionColour = Color.orange;
 
     public SimulationOutput(MapGrid grid, boolean displayGrid) {
         this.displayGrid = displayGrid;
@@ -66,8 +66,8 @@ public class SimulationOutput extends JPanel {
         g2.drawRect(0, 0, d.width - 1, d.height - 1);
 
         //Display all the roads
-        for (Road road : grid.getRoads()) {
-            drawRoad(g2, road);
+        for (RoadSegment roadSegment : grid.getRoadSegments()) {
+            drawRoad(g2, roadSegment);
         }
 
         //Display all the objects in intersections in the grid
@@ -76,8 +76,8 @@ public class SimulationOutput extends JPanel {
                 drawIntersection(g2, intersection);
             }
         }
-        for (Road road : grid.getRoads()) {
-            for (Lane lane : road.getLanes()) {
+        for (RoadSegment roadSegment : grid.getRoadSegments()) {
+            for (Lane lane : roadSegment.getLanes()) {
                 for (Car laneCar : lane.getCars()) {
                     drawCar(g2, laneCar);
                     //Display the cars from here
@@ -88,13 +88,13 @@ public class SimulationOutput extends JPanel {
 
     }
 
-    public void drawRoad(Graphics2D g2, Road road) {
-        if (road != null) {
+    public void drawRoad(Graphics2D g2, RoadSegment roadSegment) {
+        if (roadSegment != null) {
             g2.setPaint(roadColour);
-            BoundingBox roadBox = road.getBoundingBox();
+            BoundingBox roadBox = roadSegment.getBoundingBox();
             g2.fill(new Rectangle2D.Double(roadBox.getxMin(), roadBox.getyMin(), roadBox.getWidth(), roadBox.getHeight()));
 
-            for (Lane lane : road.getLanes()) {
+            for (Lane lane : roadSegment.getLanes()) {
                 if (lane != null) {
                     g2.setPaint(laneColour);
                     g2.draw(new Rectangle2D.Double(lane.getBoundingBox().getxMin(), lane.getBoundingBox().getyMin(), lane.getBoundingBox()

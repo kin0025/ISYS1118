@@ -19,7 +19,7 @@ public class Car implements SimulationTimed {
     private static final double maxSpeed = DimensionManager.kmphToPixelTick(50);
     private final CarPath carPath;
     private double speed = maxSpeed;
-    private MovingBox carBox;
+    private final MovingBox carBox;
     //Always set to the direction of the parent lane.
     private CardinalDirection direction;
 
@@ -57,8 +57,7 @@ public class Car implements SimulationTimed {
         if (!moveFrom.moveCar(carPath.getNextCarPosition(this), this)) {
             return false;
         }
-        boolean result = carPath.moveCarToNext(this);
-        return result;
+        return carPath.moveCarToNext(this);
     }
 
     public CardinalDirection getDirection() {

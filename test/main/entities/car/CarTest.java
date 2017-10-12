@@ -1,16 +1,8 @@
 package main.entities.car;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
 import main.entities.MapGrid;
-import main.entities.Road;
-import main.entities.intersection.Intersection;
-import main.entities.lane.CarDestroy;
-import main.entities.lane.CarSpawn;
-import main.utils.BoundingBox;
 import main.utils.DimensionManager;
-import main.utils.Position;
 import main.utils.enums.CardinalDirection;
-import main.utils.enums.Orientation;
 import org.junit.Before;
 import org.junit.Test;
 

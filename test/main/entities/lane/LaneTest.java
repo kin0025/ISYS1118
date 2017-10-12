@@ -13,11 +13,9 @@ import main.utils.enums.TurnDirection;
 import org.junit.Before;
 import org.junit.Test;
 
-import static main.utils.DimensionManager.lengthOfCarPixels;
 import static main.utils.DimensionManager.lengthOfLanePixels;
 import static main.utils.DimensionManager.minimumFollowingDistancePixels;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 public class LaneTest {
     private Lane lane;
@@ -115,19 +113,6 @@ public class LaneTest {
     public void getDirection() throws Exception {
         assertEquals("Wrong lane direction", CardinalDirection.SOUTH, lane.getDirection());
     }
-
-    @Test
-    public void carsGoBackwards() throws Exception {
-        lane.getDirection();
-        fail("Not yet implemented");
-    }
-
-    @Test
-    public void carsGoForwards() throws Exception {
-        lane.getDirection();
-        fail("Not yet implemented");
-    }
-
 
     @Test
     public void hasTurnDirection() throws Exception {

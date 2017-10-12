@@ -25,7 +25,6 @@ class TrafficLight {
     public void restartCycle() {
         if (time >= (greenLightTiming + amberLightTimeOn)) {
             time = 0;
-        } else {
         }
     }
 

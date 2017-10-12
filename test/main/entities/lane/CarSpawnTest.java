@@ -5,18 +5,10 @@
 package main.entities.lane;
 
 import main.entities.MapGrid;
-import main.entities.intersection.Intersection;
-import main.utils.BoundingBox;
 import main.utils.DimensionManager;
-import main.utils.Position;
 import main.utils.enums.CardinalDirection;
-import main.utils.enums.Orientation;
-import main.utils.enums.TurnDirection;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
@@ -32,10 +24,6 @@ public class CarSpawnTest {
         mapGrid.generateStandardGrid();
         carSpawn = mapGrid.getRoad(mapGrid.getIntersection(1,1),CardinalDirection.NORTH).getSpawnLane(CardinalDirection.SOUTH);
 
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
 

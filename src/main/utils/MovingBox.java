@@ -6,7 +6,6 @@
 
 package main.utils;
 
-import javafx.geometry.Pos;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.CollisionStatus;
 
@@ -30,9 +29,7 @@ public class MovingBox extends BoundingBox {
     }
 
     public void forceInsideParentBox() {
-        if (getCollisionStatus() == CollisionStatus.ENCLOSED) {
-            return;
-        } else {
+        if (getCollisionStatus() != CollisionStatus.ENCLOSED) {
             this.getCentre().setPosition(parentBox.getCentre().getX(), parentBox.getCentre().getY());
         }
     }

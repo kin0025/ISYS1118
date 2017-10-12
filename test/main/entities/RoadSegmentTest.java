@@ -10,19 +10,19 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class RoadTest {
-    private Road road;
+public class RoadSegmentTest {
+    private RoadSegment roadSegment;
 
     @Before
     public void setUp() throws Exception {
-        road = new Road(Orientation.HORIZONTAL, new BoundingBox(new Position(0, 0), 20, 100));
+        roadSegment = new RoadSegment(Orientation.HORIZONTAL, new BoundingBox(new Position(0, 0), 20, 100));
     }
 
     @Test
     public void addIntersection() throws Exception {
         Intersection intersection = new Intersection(new Position(0, 0), 10, 10, Orientation.HORIZONTAL);
-        road.addIntersection(intersection, CardinalDirection.NORTH);
-        assertEquals("Intersection not added correctly", CardinalDirection.SOUTH, road.getIntersectionDirection(intersection));
+        roadSegment.addIntersection(intersection, CardinalDirection.NORTH);
+        assertEquals("Intersection not added correctly", CardinalDirection.SOUTH, roadSegment.getIntersectionDirection(intersection));
     }
 
 

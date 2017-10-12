@@ -4,7 +4,7 @@ import main.Simulator;
 import main.entities.lane.CarSpawn;
 
 public class GraphicsController implements InputController {
-    private Simulator simulator;
+    private final Simulator simulator;
 
     private SimulationOutput output;
 

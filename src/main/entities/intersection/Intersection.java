@@ -4,7 +4,7 @@
 
 package main.entities.intersection;
 
-import main.entities.Road;
+import main.entities.RoadSegment;
 import main.entities.car.Car;
 import main.entities.interfaces.CarMovable;
 import main.entities.interfaces.SimulationTimed;
@@ -16,14 +16,10 @@ import main.utils.enums.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
-
-import static main.utils.DimensionManager.lengthOfLanePixels;
-import static main.utils.DimensionManager.minimumFollowingDistancePixels;
 
 public class Intersection implements CarMovable, SimulationTimed {
-    private final HashMap<Road, CardinalDirection> roadDirections = new HashMap<>();
-    private ArrayList<Road> roads = new ArrayList<>();
+    private final HashMap<RoadSegment, CardinalDirection> roadDirections = new HashMap<>();
+    private ArrayList<RoadSegment> roadSegments = new ArrayList<>();
     private final BoundingBox boundingBox;
     private final HashMap<Orientation, TrafficLight> lights = new HashMap<>(2);
     private final HashMap<CarDirection, Car> cars = new HashMap<>();
@@ -79,11 +75,11 @@ public class Intersection implements CarMovable, SimulationTimed {
             LightStatus original = light.getStatus();
             light.incrementTime();
             if (light.getStatus() != LightStatus.GREEN) {
-                for (Road road : roads) {
-                    //Find if the road's orientation matches that of the light that is not green.
-                   if(road.getOrientation() == light.getOrientation()){
+                for (RoadSegment roadSegment : roadSegments) {
+                    //Find if the roadSegment's orientation matches that of the light that is not green.
+                    if (roadSegment.getOrientation() == light.getOrientation()) {
                         //If it matches, stop cars.
-                        road.stopCars(this);
+                        roadSegment.stopCars(this);
                     }
 
                 }
@@ -92,10 +88,10 @@ public class Intersection implements CarMovable, SimulationTimed {
             if (original == LightStatus.AMBER && light.getStatus() == LightStatus.RED) {
                 lights.get(light.getOrientation().swapValue()).restartCycle();
 
-                for (Road road : roads) {
-                    if (road.getOrientation() == light.getOrientation().swapValue()) {
+                for (RoadSegment roadSegment : roadSegments) {
+                    if (roadSegment.getOrientation() == light.getOrientation().swapValue()) {
                         //If it isn't in the same direction, start the cars.
-                        road.startCars(this);
+                        roadSegment.startCars(this);
                     }
                 }
             }
@@ -172,8 +168,8 @@ public class Intersection implements CarMovable, SimulationTimed {
         return null;
     }
 
-    public ArrayList<Road> getRoads() {
-        return roads;
+    public ArrayList<RoadSegment> getRoadSegments() {
+        return roadSegments;
     }
 
     public Car getCar(CardinalDirection direction, TurnDirection turnDirection) {
@@ -189,19 +185,19 @@ public class Intersection implements CarMovable, SimulationTimed {
     }
 
     /**
-     * Gets the direction of an road relative to the intersection, if it is attached to one.
+     * Gets the direction of an roadSegment relative to the intersection, if it is attached to one.
      *
-     * @param road The road you want the direction of
-     * @return a direction, or null. E.g if a road is leaving the east end of an intersection, a direction of the
+     * @param roadSegment The roadSegment you want the direction of
+     * @return a direction, or null. E.g if a roadSegment is leaving the east end of an intersection, a direction of the
      * value east will be returned.
      */
-    public CardinalDirection getRoadDirection(Road road) {
-        return roadDirections.get(road);
+    public CardinalDirection getRoadDirection(RoadSegment roadSegment) {
+        return roadDirections.get(roadSegment);
     }
 
-    public void addRoad(Road road, CardinalDirection direction) {
-        roads.add(road);
-        roadDirections.put(road, direction);
+    public void addRoad(RoadSegment roadSegment, CardinalDirection direction) {
+        roadSegments.add(roadSegment);
+        roadDirections.put(roadSegment, direction);
     }
 
     public void setLightTiming(Orientation orientation, int newGreenTime) {
@@ -210,8 +206,8 @@ public class Intersection implements CarMovable, SimulationTimed {
 
 
     public void removeRoads() {
-        roads = null;
-        roads = new ArrayList<>();
+        roadSegments = null;
+        roadSegments = new ArrayList<>();
     }
 
 

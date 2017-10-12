@@ -1,6 +1,6 @@
 package main.entities.car;
 
-import main.entities.Road;
+import main.entities.RoadSegment;
 import main.entities.interfaces.CarMovable;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarDestroy;
@@ -65,8 +65,8 @@ public class CarPath {
             if (carPath.get(carPath.size() - 1).getClass() == Intersection.class) {
                 boolean foundConnection = false;
                 Intersection intersection = (Intersection) carPath.get(carPath.size() - 1);
-                for (Road road : intersection.getRoads()) {
-                    for (Lane lane : road.getLanes()) {
+                for (RoadSegment roadSegment : intersection.getRoadSegments()) {
+                    for (Lane lane : roadSegment.getLanes()) {
                         if (lane == destructor) {
                             foundConnection = true;
                         }
@@ -144,7 +144,7 @@ public class CarPath {
      * Moves a car to the next position in the path, or deletes it if it has reached the end of the path
      *
      * @param car the car to be moved
-     * @return whether it was moved/esists to be moved
+     * @return whether it was moved/exists to be moved
      */
     public boolean moveCarToNext(Car car) {
         if (pathComplete && carPosition.containsKey(car)) {

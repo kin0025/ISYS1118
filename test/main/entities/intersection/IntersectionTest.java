@@ -1,7 +1,7 @@
 package main.entities.intersection;
 import static org.junit.Assert.*;
 
-import main.entities.Road;
+import main.entities.RoadSegment;
 import main.utils.*;
 
 import main.utils.enums.CardinalDirection;
@@ -82,9 +82,10 @@ public class IntersectionTest {
     @Test
     public void getRoadDirection(){
     	CardinalDirection roadDirection = CardinalDirection.NORTH;
-    	Road road = new Road(Orientation.VERTICAL,new BoundingBox(new Position(0,0),DimensionManager.widthOfRoadPixels,DimensionManager.lengthOfRoadPixels));
-		intersection.addRoad(road,roadDirection);
-    	assertEquals("Couldn't find added road", roadDirection, intersection.getRoadDirection(road));
+        RoadSegment roadSegment = new RoadSegment(Orientation.VERTICAL, new BoundingBox(new Position(0, 0), DimensionManager.widthOfRoadPixels,
+                DimensionManager.lengthOfRoadPixels));
+        intersection.addRoad(roadSegment, roadDirection);
+        assertEquals("Couldn't find added roadSegment", roadDirection, intersection.getRoadDirection(roadSegment));
     }
 
     @Test

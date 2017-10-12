@@ -17,15 +17,15 @@ public class MapGrid {
     private final int width;
     private final int height;
     private int numberOfIntersections = 0;
-    private Intersection[][] grid;
-    private ArrayList<Road> roads = new ArrayList<>();
-    private boolean maxIntersectionsDisabled = true;
+    private final Intersection[][] grid;
+    private final boolean maxIntersectionsDisabled = false;
+    private ArrayList<RoadSegment> roadSegments = new ArrayList<>();
 
     public MapGrid(int width, int height) {
         this.width = width;
         this.height = height;
         grid = new Intersection[width][height];
-        //A list of all the roads in the grid - used to create roads and display them.
+        //A list of all the roadSegments in the grid - used to create roadSegments and display them.
     }
 
     public void incrementTime() {
@@ -37,7 +37,7 @@ public class MapGrid {
             }
 
         }
-        for (Road roads : getRoads()) {
+        for (RoadSegment roads : getRoadSegments()) {
             roads.incrementTime();
         }
     }
@@ -81,13 +81,13 @@ public class MapGrid {
      */
     public void removeIntersection(int x, int y) {
         Intersection intersection = grid[x][y];
-        ArrayList<Road> removalRoads = new ArrayList<>();
-        for (Road road : roads) {
-            if (road.hasIntersection(intersection)) {
-                removalRoads.add(road);
+        ArrayList<RoadSegment> removalRoadSegments = new ArrayList<>();
+        for (RoadSegment roadSegment : roadSegments) {
+            if (roadSegment.hasIntersection(intersection)) {
+                removalRoadSegments.add(roadSegment);
             }
         }
-        roads.removeAll(removalRoads);
+        roadSegments.removeAll(removalRoadSegments);
         grid[x][y] = null;
         numberOfIntersections--;
     }
@@ -160,18 +160,18 @@ public class MapGrid {
 
 
     public boolean addLane(Lane lane, Intersection intersection1, Intersection intersection2) {
-        Road road = getRoad(intersection1, intersection2);
-        if (road.getOrientation() == lane.getDirection().getAxis()) {
-            road.addLane(lane);
+        RoadSegment roadSegment = getRoad(intersection1, intersection2);
+        if (roadSegment.getOrientation() == lane.getDirection().getAxis()) {
+            roadSegment.addLane(lane);
             return true;
         }
         return false;
     }
 
     public boolean addLane(Lane lane, Intersection intersection1, CardinalDirection direction) {
-        Road road = getRoad(intersection1, direction);
-        if (road.getOrientation() == lane.getDirection().getAxis()) {
-            road.addLane(lane);
+        RoadSegment roadSegment = getRoad(intersection1, direction);
+        if (roadSegment.getOrientation() == lane.getDirection().getAxis()) {
+            roadSegment.addLane(lane);
             return true;
         }
         return false;
@@ -193,23 +193,23 @@ public class MapGrid {
         turnDirections.add(TurnDirection.LEFT);
         turnDirections.add(TurnDirection.STRAIGHT);
         turnDirections.add(TurnDirection.RIGHT);
-        Road road = getRoad(intersection, direction);
-        if (road == null) {
-            road = addRoad(intersection, direction);
+        RoadSegment roadSegment = getRoad(intersection, direction);
+        if (roadSegment == null) {
+            roadSegment = addRoad(intersection, direction);
         }
         BoundingBox laneBox;
-        if (!road.getLanes().isEmpty()) {
-            laneBox = road.getLanes().get(0).getBoundingBox();
+        if (!roadSegment.getLanes().isEmpty()) {
+            laneBox = roadSegment.getLanes().get(0).getBoundingBox();
         } else {
-            laneBox = road.getBoundingBox();
+            laneBox = roadSegment.getBoundingBox();
         }
         CarSpawn carSpawn = new CarSpawn(direction.reverse(), turnDirections, 0, laneBox, spawnDelay);
-        road.addLane(carSpawn);
+        roadSegment.addLane(carSpawn);
         return carSpawn;
     }
 
 
-    public boolean createLinePath(CarSpawn carSpawn, int indexNumber, CardinalDirection goTo) throws PathNotFoundException {
+    public boolean createLinePath(CarSpawn carSpawn, int indexNumber, CardinalDirection goTo) {
         boolean pathEnded = false;
         boolean pathStarted = false;
         boolean pathWorked = true;
@@ -295,7 +295,7 @@ public class MapGrid {
                         carSpawn.addToPath(getRoad(thisIntersection, nextIntersection).getLane(goTo, TurnDirection.STRAIGHT));
                     } else if (pathEnded && nextIntersection != null) {
                         pathWorked = false;
-                    } else if(pathStarted){
+                    } else if (pathStarted) {
                         pathEnded = true;
                     }
                     if (!pathWorked) {
@@ -309,12 +309,12 @@ public class MapGrid {
         }
         lastIntersection = getEdgeIntersection(indexNumber, goTo);
         carSpawn.addToPath(lastIntersection);
-        Road lastRoad = getRoad(lastIntersection, goTo);
-        if (lastRoad == null) {
-            lastRoad = addRoad(lastIntersection, goTo);
-            lastRoad.addDestroyerLane(goTo);
-        } else if (lastRoad.getDestructorLane(goTo) == null) {
-            lastRoad.addDestroyerLane(goTo);
+        RoadSegment lastRoadSegment = getRoad(lastIntersection, goTo);
+        if (lastRoadSegment == null) {
+            lastRoadSegment = addRoad(lastIntersection, goTo);
+            lastRoadSegment.addDestroyerLane(goTo);
+        } else if (lastRoadSegment.getDestructorLane(goTo) == null) {
+            lastRoadSegment.addDestroyerLane(goTo);
         }
         return carSpawn.finalisePath(getRoad(lastIntersection, goTo).getDestructorLane
                 (goTo));
@@ -355,7 +355,7 @@ public class MapGrid {
         }
     }
 
-    public Road addRoad(Intersection intersection1, Intersection intersection2, Orientation orientation) {
+    public RoadSegment addRoad(Intersection intersection1, Intersection intersection2, Orientation orientation) {
         if (intersection1 == null || intersection2 == null) {
             return null;
         }
@@ -377,20 +377,20 @@ public class MapGrid {
 
             }
 
-            Road newRoad = new Road(orientation, new BoundingBox(new Position(xPos, yPos), xWidth, yWidth));
-            roads.add(newRoad);
+            RoadSegment newRoadSegment = new RoadSegment(orientation, new BoundingBox(new Position(xPos, yPos), xWidth, yWidth));
+            roadSegments.add(newRoadSegment);
 
             CardinalDirection direction = getDirectionFrom(intersection1, intersection2);
-            newRoad.addIntersection(intersection1, direction);
-            newRoad.addIntersection(intersection2, direction.reverse());
-            intersection1.addRoad(newRoad, direction);
-            intersection2.addRoad(newRoad, direction.reverse());
-            return newRoad;
+            newRoadSegment.addIntersection(intersection1, direction);
+            newRoadSegment.addIntersection(intersection2, direction.reverse());
+            intersection1.addRoad(newRoadSegment, direction);
+            intersection2.addRoad(newRoadSegment, direction.reverse());
+            return newRoadSegment;
         }
         return null;
     }
 
-    public Road addRoad(Intersection intersection1, CardinalDirection directionFromIntersection) {
+    public RoadSegment addRoad(Intersection intersection1, CardinalDirection directionFromIntersection) {
         if (getRoad(intersection1, directionFromIntersection) == null) {
             double xPos = intersection1.getCentre().getX();
             double xWidth;
@@ -421,15 +421,16 @@ public class MapGrid {
                     yWidth = DimensionManager.widthOfRoadPixels;
                     xWidth = DimensionManager.lengthOfRoadPixels;
                     break;
-                    default:
-                        return null;
+                default:
+                    return null;
             }
-            Road newRoad = new Road(directionFromIntersection.getAxis(), new BoundingBox(new Position(xPos, yPos), xWidth, yWidth));
-            roads.add(newRoad);
+            RoadSegment newRoadSegment = new RoadSegment(directionFromIntersection.getAxis(), new BoundingBox(new Position(xPos, yPos), xWidth,
+                    yWidth));
+            roadSegments.add(newRoadSegment);
 
-            newRoad.addIntersection(intersection1, directionFromIntersection);
-            intersection1.addRoad(newRoad, directionFromIntersection);
-            return newRoad;
+            newRoadSegment.addIntersection(intersection1, directionFromIntersection);
+            intersection1.addRoad(newRoadSegment, directionFromIntersection);
+            return newRoadSegment;
         }
 
         return null;
@@ -440,17 +441,17 @@ public class MapGrid {
     }
 
     /**
-     * Needs to empty any roads in intersections if there are any - call removeAllRoads on intersections?
-     * Generate all connecting roads - lanes are auto created by the roads.
+     * Needs to empty any roadSegments in intersections if there are any - call removeAllRoads on intersections?
+     * Generate all connecting roadSegments - lanes are auto created by the roadSegments.
      */
     public void fillRoads() {
-        roads = new ArrayList<>();
+        roadSegments = new ArrayList<>();
         //Iterate through all the columns of the grid
         for (int i = 0; i < grid.length; i++) {
             //Iterate through the rows of intersections
             for (int j = 0; j < grid[i].length; j++) {
                 if (grid[i][j] != null) {
-                    //Clear existing roads.
+                    //Clear existing roadSegments.
                     grid[i][j].removeRoads();
                     //Check the horizontal grid
                     if (j + 1 != grid[i].length && grid[i][j] != null && grid[i][j + 1] != null) {
@@ -466,8 +467,8 @@ public class MapGrid {
 
     }
 
-    public ArrayList<Road> getRoads() {
-        return roads;
+    public ArrayList<RoadSegment> getRoadSegments() {
+        return roadSegments;
     }
 
     /**
@@ -477,10 +478,10 @@ public class MapGrid {
      * @param intersection2 another intersection
      * @return null if no road, or the road between two intersections
      */
-    public Road getRoad(Intersection intersection1, Intersection intersection2) {
-        for (Road road : roads) {
-            if (road.hasIntersection(intersection1) && road.hasIntersection(intersection2)) {
-                return road;
+    public RoadSegment getRoad(Intersection intersection1, Intersection intersection2) {
+        for (RoadSegment roadSegment : roadSegments) {
+            if (roadSegment.hasIntersection(intersection1) && roadSegment.hasIntersection(intersection2)) {
+                return roadSegment;
             }
         }
         return null;
@@ -492,10 +493,10 @@ public class MapGrid {
      * @param intersection1 an intersection
      * @return null if no road, or the road between two intersections
      */
-    public Road getRoad(Intersection intersection1, CardinalDirection directionToGrid) {
-        for (Road road : roads) {
-            if (road.getIntersectionDirection(intersection1) == directionToGrid.reverse() && road.numberOfIntersections() == 1) {
-                return road;
+    public RoadSegment getRoad(Intersection intersection1, CardinalDirection directionToGrid) {
+        for (RoadSegment roadSegment : roadSegments) {
+            if (roadSegment.getIntersectionDirection(intersection1) == directionToGrid.reverse() && roadSegment.numberOfIntersections() == 1) {
+                return roadSegment;
             }
         }
         return null;
@@ -532,14 +533,8 @@ public class MapGrid {
         } else {
             index = getIntersectionCoords(intersection)[1];
         }
-        try {
-            createLinePath(spawn, index, spawn.getDirection());
 
-        } catch (PathNotFoundException e) {
-            System.out.println("Creating the spawn path failed.");
-
-        }
-
+        createLinePath(spawn, index, spawn.getDirection());
 
         direction = CardinalDirection.WEST;
         spawn = createSpawnPoint(intersection, direction, DimensionManager.secondsToTicks(5));
@@ -549,12 +544,8 @@ public class MapGrid {
         } else {
             index = getIntersectionCoords(intersection)[1];
         }
-        try {
-            createLinePath(spawn, index, spawn.getDirection());
 
-        } catch (PathNotFoundException e) {
-            System.out.println("Creating the spawn path failed.");
+        createLinePath(spawn, index, spawn.getDirection());
 
-        }
     }
 }

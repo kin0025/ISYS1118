@@ -6,8 +6,6 @@
 
 package main.utils;
 
-import main.utils.enums.CollisionStatus;
-
 @SuppressWarnings("SpellCheckingInspection")
 public class BoundingBox {
     private double width;

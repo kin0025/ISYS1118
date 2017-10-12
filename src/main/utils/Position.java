@@ -1,7 +1,5 @@
 package main.utils;
 
-import javafx.geometry.Pos;
-
 /**
  * The type main.utils.Position.
  */

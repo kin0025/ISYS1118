@@ -10,12 +10,10 @@ import main.entities.car.Car;
 import main.entities.car.CarPath;
 import main.entities.interfaces.CarMovable;
 import main.utils.BoundingBox;
-import main.utils.DimensionManager;
 import main.utils.Position;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.TurnDirection;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 /**
@@ -48,12 +46,14 @@ public class CarSpawn extends Lane {
      *
      * @return if the car couldn't spawn due to been blocked returns false.
      */
-    boolean spawnCar() {
+    void spawnCar() {
         //Check cars aren't going to be too close together.
         if (!getCars().isEmpty() && getCars().getLast().getPosition().getDifference(entryPosition) <= 20) {
-            return false;
+            return;
         }
-        return active && addCar(new Car(new Position(entryPosition.getX(), entryPosition.getY()), carPath));
+        if (active) {
+            addCar(new Car(new Position(entryPosition.getX(), entryPosition.getY()), carPath));
+        }
     }
 
     /**

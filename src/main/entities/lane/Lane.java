@@ -8,10 +8,8 @@ import main.entities.car.Car;
 import main.entities.interfaces.CarMovable;
 import main.entities.interfaces.SimulationTimed;
 import main.utils.BoundingBox;
-import main.utils.DimensionManager;
 import main.utils.Position;
 import main.utils.enums.CardinalDirection;
-import main.utils.enums.CollisionStatus;
 import main.utils.enums.TurnDirection;
 
 import java.util.ArrayList;

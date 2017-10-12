@@ -1,7 +1,6 @@
 package main.entities;
 
 
-import main.entities.car.Car;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarDestroy;
 import main.entities.lane.CarSpawn;
@@ -15,14 +14,14 @@ import main.utils.enums.TurnDirection;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Road {
+public class RoadSegment {
     private final ArrayList<Lane> lanes;
     private final Orientation orientation;
     private final HashMap<Intersection, CardinalDirection> intersectionDirections = new HashMap<>();
     private final BoundingBox boundingBox;
 
 
-    public Road(Orientation orientation, BoundingBox boundingBox) {
+    public RoadSegment(Orientation orientation, BoundingBox boundingBox) {
         this.orientation = orientation;
         this.boundingBox = boundingBox;
 
@@ -132,17 +131,6 @@ public class Road {
         for (Lane lane : lanes) {
             lane.incrementTime();
         }
-        checkCarsInsideRoad();
-    }
-
-    /**
-     * Checks that cars are still inside the road and puts them back in if they aren't. Fixes direction of cars if they are moving in the wrong
-     * direction.
-     *
-     * @return whether cars are inside the road
-     */
-    public boolean checkCarsInsideRoad() {
-        return false;
     }
 
     public BoundingBox getBoundingBox() {

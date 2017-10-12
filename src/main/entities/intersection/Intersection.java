@@ -102,8 +102,8 @@ public class Intersection implements CarMovable, SimulationTimed {
         }
 
         for (Car car : cars.values()) {
-            car.start();
             car.incrementTime();
+            car.start();
         }
         checkCarPositions();
     }
@@ -134,7 +134,6 @@ public class Intersection implements CarMovable, SimulationTimed {
     /**
      * Finds out if a direction has free spaces or not from a direction
      *
-     * @param carDirection
      * @return
      */
     public boolean hasFreeSpaces(Car car) {
@@ -152,6 +151,8 @@ public class Intersection implements CarMovable, SimulationTimed {
         for (Car car : cars.values()) {
             if (!car.isInsideParent() && car.getNextLane().getNumberOfFreeSpaces() >= 1) {
                 move.add(car);
+            }else if(car.isInsideParent()){
+                car.start();
             }else{
                 car.stop();
             }
@@ -205,7 +206,6 @@ public class Intersection implements CarMovable, SimulationTimed {
 
     public void setLightTiming(Orientation orientation, int newGreenTime) {
         lights.get(orientation).setTiming(newGreenTime);
-
     }
 
 

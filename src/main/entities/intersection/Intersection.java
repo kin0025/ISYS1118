@@ -129,7 +129,6 @@ public class Intersection implements CarMovable, SimulationTimed {
 
     /**
      * Finds out if a direction has free spaces or not from a direction
-     *
      * @return
      */
     public boolean hasFreeSpaces(Car car) {
@@ -151,6 +150,7 @@ public class Intersection implements CarMovable, SimulationTimed {
                 car.start();
             }else{
                 car.stop();
+
             }
         }
         for (Car car : move) {

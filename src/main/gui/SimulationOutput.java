@@ -108,59 +108,59 @@ public class SimulationOutput extends JPanel {
 
 
     public void drawIntersection(Graphics2D g2, Intersection intersection) {
-        if (intersection != null) {
-            BoundingBox intersectionBox = intersection.getBoundingBox();
-            g2.setPaint(intersectionColour);
-            g2.fill(new Rectangle2D.Double(intersectionBox.getxMin(), intersectionBox.getyMin(), intersectionBox.getWidth(),
-                    intersectionBox.getHeight()));
+        if (intersection == null) {
+            return;
+        }
+        BoundingBox intersectionBox = intersection.getBoundingBox();
+        g2.setPaint(intersectionColour);
+        g2.fill(new Rectangle2D.Double(intersectionBox.getxMin(), intersectionBox.getyMin(), intersectionBox.getWidth(),
+                intersectionBox.getHeight()));
 
-            for (Car car : intersection.getCars()) {
-                drawCar(g2, car);
+        for (Car car : intersection.getCars()) {
+            drawCar(g2, car);
+
+        }
+        Orientation[] orientations = {Orientation.HORIZONTAL, Orientation.VERTICAL};
+        for (Orientation orientation : orientations) {
+            LightStatus lightStatus = intersection.getLightStatus(orientation);
+            switch (lightStatus) {
+                case RED:
+                    g2.setPaint(Color.red);
+                    break;
+                case AMBER:
+                    g2.setPaint(Color.orange);
+                    break;
+                case GREEN:
+                    g2.setPaint(Color.green);
+                    break;
+                default:
+                    g2.setPaint(Color.white);
 
             }
-            Orientation[] orientations = {Orientation.HORIZONTAL, Orientation.VERTICAL};
-            for (Orientation orientation : orientations) {
-                LightStatus lightStatus = intersection.getLightStatus(orientation);
-                switch (lightStatus) {
-                    case RED:
-                        g2.setPaint(Color.red);
-                        break;
-                    case AMBER:
-                        g2.setPaint(Color.orange);
-                        break;
-                    case GREEN:
-                        g2.setPaint(Color.green);
-                        break;
-                    default:
-                        g2.setPaint(Color.white);
-
-                }
-                double xPos1 = -DimensionManager
-                        .sizeOfLightPixels / 2;
-                double yPos1 = -DimensionManager
-                        .sizeOfLightPixels / 2;
-                double yPos2 = -DimensionManager
-                        .sizeOfLightPixels / 2;
-                double xPos2 = -DimensionManager
-                        .sizeOfLightPixels / 2;
-                if (orientation == Orientation.HORIZONTAL) {
-                    xPos1 += intersection.getCentre().getX() - (DimensionManager.widthOfIntersectionPixels / 2);
-                    xPos2 += intersection.getCentre().getX() + (DimensionManager.widthOfIntersectionPixels / 2);
-                    yPos1 += intersection.getCentre().getY();
-                    yPos2 += intersection.getCentre().getY();
-                } else {
-                    xPos1 += intersection.getCentre().getX();
-                    xPos2 += intersection.getCentre().getX();
-                    yPos1 += intersection.getCentre().getY() - (DimensionManager.widthOfIntersectionPixels / 2);
-                    yPos2 += intersection.getCentre().getY() + (DimensionManager.widthOfIntersectionPixels / 2);
-                }
-                g2.fill(new Ellipse2D.Double(xPos1, yPos1, DimensionManager.sizeOfLightPixels, DimensionManager.sizeOfLightPixels));
-                g2.fill(new Ellipse2D.Double(xPos2, yPos2, DimensionManager.sizeOfLightPixels, DimensionManager.sizeOfLightPixels));
-                g2.setPaint(Color.white);
-                g2.draw(new Ellipse2D.Double(xPos1, yPos1, DimensionManager.sizeOfLightPixels, DimensionManager.sizeOfLightPixels));
-                g2.draw(new Ellipse2D.Double(xPos2, yPos2, DimensionManager.sizeOfLightPixels, DimensionManager.sizeOfLightPixels));
+            double xPos1 = -DimensionManager
+                    .sizeOfLightPixels / 2;
+            double yPos1 = -DimensionManager
+                    .sizeOfLightPixels / 2;
+            double yPos2 = -DimensionManager
+                    .sizeOfLightPixels / 2;
+            double xPos2 = -DimensionManager
+                    .sizeOfLightPixels / 2;
+            if (orientation == Orientation.HORIZONTAL) {
+                xPos1 += intersection.getCentre().getX() - (DimensionManager.widthOfIntersectionPixels / 2);
+                xPos2 += intersection.getCentre().getX() + (DimensionManager.widthOfIntersectionPixels / 2);
+                yPos1 += intersection.getCentre().getY();
+                yPos2 += intersection.getCentre().getY();
+            } else {
+                xPos1 += intersection.getCentre().getX();
+                xPos2 += intersection.getCentre().getX();
+                yPos1 += intersection.getCentre().getY() - (DimensionManager.widthOfIntersectionPixels / 2);
+                yPos2 += intersection.getCentre().getY() + (DimensionManager.widthOfIntersectionPixels / 2);
             }
-
+            g2.fill(new Ellipse2D.Double(xPos1, yPos1, DimensionManager.sizeOfLightPixels, DimensionManager.sizeOfLightPixels));
+            g2.fill(new Ellipse2D.Double(xPos2, yPos2, DimensionManager.sizeOfLightPixels, DimensionManager.sizeOfLightPixels));
+            g2.setPaint(Color.white);
+            g2.draw(new Ellipse2D.Double(xPos1, yPos1, DimensionManager.sizeOfLightPixels, DimensionManager.sizeOfLightPixels));
+            g2.draw(new Ellipse2D.Double(xPos2, yPos2, DimensionManager.sizeOfLightPixels, DimensionManager.sizeOfLightPixels));
         }
     }
 
@@ -182,7 +182,8 @@ public class SimulationOutput extends JPanel {
         }
         carPolygon.closePath();
         g.fill(carPolygon);
-       // g.fill(new Ellipse2D.Double(car.getPosition().getX(), car.getPosition().getY(), DimensionManager.widthOfCarPixels, DimensionManager.widthOfCarPixels));
+        // g.fill(new Ellipse2D.Double(car.getPosition().getX(), car.getPosition().getY(), DimensionManager.widthOfCarPixels, DimensionManager
+        // .widthOfCarPixels));
 
     }
 

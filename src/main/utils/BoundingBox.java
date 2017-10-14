@@ -76,6 +76,6 @@ public class BoundingBox {
     }
 
     public boolean isInsideBoundingBox(double x, double y) {
-        return x > getxMin() && x < getxMax() && y > getyMin() && y < getyMax();
+        return x >= getxMin() && x <= getxMax() && y >= getyMin() && y <= getyMax();
     }
 }

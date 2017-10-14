@@ -181,6 +181,15 @@ public class Position {
         return new Position(x,y);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Position) {
+            Position position = (Position) obj;
+            return position.x == this.x && position.y == this.y;
+        }
+        return false;
+    }
+
     public enum DIMENSION {X, Y}
 
 }

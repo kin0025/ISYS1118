@@ -157,6 +157,8 @@ public class LaneTest {
         Car car2 = new Car(new Position(0, 100), null);
         lane.addCar(car1);
         lane.addCar(car2);
+        car1.getCarBox().setCentre(new Position(0, 0));
+        car2.getCarBox().setCentre(new Position(0, 100));
         assertEquals(true, lane.checkCarCollisions());
     }
 
@@ -166,6 +168,8 @@ public class LaneTest {
         Car car2 = new Car(new Position(0, DimensionManager.minimumFollowingDistancePixels), null);
         lane.addCar(car1);
         lane.addCar(car2);
+        car1.getCarBox().setCentre(new Position(0, 0));
+        car2.getCarBox().setCentre(new Position(0, DimensionManager.minimumFollowingDistancePixels));
         assertEquals(true, lane.checkCarCollisions());
     }
 

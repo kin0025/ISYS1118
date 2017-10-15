@@ -141,6 +141,7 @@ public class MovingBox extends BoundingBox {
                 corners[3].setY(getCentre().getY() - getWidth() / 2);
                 break;
             default:
+                //FIXME This is wrong
                 double angleToCorner = Math.atan(getHeight() / getWidth());
                 double radius = Math.sqrt((getHeight() * getHeight()) + (getWidth() * getWidth())) / 2;
                 corners[2].setX(getCentre().getX() + Math.sin(angle - angleToCorner) * radius);

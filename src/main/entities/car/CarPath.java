@@ -46,12 +46,42 @@ public class CarPath {
      * @return whether the object could be added
      */
     public boolean addPartToPath(CarMovable addedObject) {
-        if (!pathComplete && !carPath.isEmpty() && carPath.get(carPath.size() - 1) != addedObject && addedObject != null) {
-            //Now check we can actually path to the object from the last lane position.
+        boolean works = false;
 
-            carPath.add(addedObject);
-        }
-        return false;
+//FIXME: This stuff doesn't work
+//        if (!pathComplete && !carPath.isEmpty() && carPath.get(carPath.size() - 1) != addedObject && addedObject != null) {
+//            //Now check we can actually path to the object from the last lane position.
+//            if (carPath.getLast() instanceof Intersection) {
+//                Intersection intersection = (Intersection) carPath.getLast();
+//                for (RoadSegment road : intersection.getRoadSegments()) {
+//                    for (Lane lane : road.getLanes()) {
+//                        if (lane == addedObject) {
+//                            works = true;
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            if (carPath.getLast() instanceof Lane) {
+//                if(addedObject instanceof Intersection){
+//                    Intersection intersection = (Intersection) addedObject;
+//                    for (RoadSegment road : intersection.getRoadSegments()) {
+//                        for (Lane lane : road.getLanes()) {
+//                            if (lane == carPath.getLast()) {
+//                                works = true;
+//                                break;
+//                            }
+//                        }
+//                    }
+//                }
+//
+//            }
+//            if (works) {
+        carPath.add(addedObject);
+        //          }
+//        }
+        return true;
     }
 
     /**
@@ -119,7 +149,7 @@ public class CarPath {
      */
     public CarMovable getNextCarPosition(Car car) {
         if (pathComplete && !carPath.isEmpty() && carPosition.containsKey(car)) {
-            return carPath.get(carPosition.get(car)+1);
+            return carPath.get(carPosition.get(car) + 1);
         }
         return null;
     }
@@ -137,7 +167,6 @@ public class CarPath {
         }
         return false;
     }
-
 
 
     /**
@@ -238,10 +267,10 @@ public class CarPath {
 
             Lane lane1 = getCurrentLane(car);
             Lane lane2 = getNextLane(car);
-            if(lane1 == null){
-                lane1 = (Lane)carPath.get(carPosition.get(car) - 1);
+            if (lane1 == null) {
+                lane1 = (Lane) carPath.get(carPosition.get(car) - 1);
             }
-            if(lane1 != null && lane2 != null){
+            if (lane1 != null && lane2 != null) {
                 return lane1.getDirection().getTurnDirection(lane2.getDirection());
             }
         }

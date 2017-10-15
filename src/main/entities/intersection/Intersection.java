@@ -98,6 +98,7 @@ public class Intersection implements CarMovable, SimulationTimed {
         }
 
         for (Car car : cars.values()) {
+            car.setParent(this.boundingBox);
             car.incrementTime();
             car.start();
         }

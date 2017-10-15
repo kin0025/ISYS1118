@@ -1,11 +1,13 @@
 package main.gui;
 
 import main.Simulator;
+import main.entities.RoadSegment;
 import main.entities.intersection.Intersection;
 import main.entities.lane.CarSpawn;
 import main.utils.DimensionManager;
 import main.utils.enums.CardinalDirection;
 import main.utils.enums.Orientation;
+import main.utils.enums.TurnDirection;
 
 import java.util.Scanner;
 import java.util.StringTokenizer;
@@ -107,9 +109,12 @@ public class CommandLineController implements InputController {
     /**
      * Reads a string of fixed length.
      *
-     * @param flavourText     The text to be printed asking for input
-     * @param options         the valid values for input
-     * @param outputLength    the length of the output string - only the first n characters are matched
+     * @param flavourText  The text to be printed asking for input
+     * @param options      the valid values for input
+     * @param outputLength the length of the output string - only the first n characters are matched
+     * @param flavourText  The text to be printed asking for input
+     * @param options      the valid values for input
+     * @param outputLength the length of the output string - only the first n characters are matched
      * @return the output string
      */
     private String receiveFixedString(String flavourText, String[] options, int outputLength) {
@@ -324,11 +329,11 @@ public class CommandLineController implements InputController {
         System.out.println(" 1. Start Simulation");
         System.out.println(" 2. Stop Simulation");
         System.out.println(" 3. Add Intersection");
-        System.out.println(" 4. Add RoadSegment");
+        System.out.println(" 4. Add Road");
         System.out.println(" 5. Add Spawn Point");
         System.out.println(" 6. Change light timings");
         System.out.println(" 7. Remove Intersection");
-        System.out.println(" 8. Remove RoadSegment");
+        System.out.println(" 8. Remove Road");
         System.out.println(" 9. Remove spawn point");
         System.out.println("10. Fill grid with intersections and roads");
         System.out.println("11. Exit");
@@ -426,7 +431,27 @@ public class CommandLineController implements InputController {
             boolean keepGoing = true;
             while (keepGoing) {
 
-                //simulator.getIntersection();
+                Intersection firstIntersection;
+                Intersection secondIntersection;
+                RoadSegment nextRoad;
+                do {
+                    int[] coordinatesFirst = receiveCoordinateInput("Please enter the co-ordinates that you want the next intersection to be " +
+                            "connected to", simulator.getGridSize());
+                    int[] coordinatesSecond = receiveCoordinateInput("Please enter the co-ordinates that you want the next intersection to be " +
+                            "connected to", simulator.getGridSize());
+                    nextRoad = simulator.getRoad(simulator.getIntersection(coordinatesFirst), simulator.getIntersection
+                            (coordinatesSecond));
+
+                    Intersection nextIntersection;
+                    do {
+                        int[] coordinates = receiveCoordinateInput("Please enter the co-ordinates that you want the next intersection to be " +
+                                "connected " +
+                                "to", simulator.getGridSize());
+                        nextIntersection = simulator.getIntersection(coordinates);
+                    } while (!spawn.addToPath(nextIntersection));
+                    spawn.addToPath(nextRoad.getLane(nextRoad.getIntersectionDirection(nextIntersection), TurnDirection.STRAIGHT));
+                } while (nextRoad == null);
+
                 //simulator.getRoad();
                 //spawn.addToPath();
                 //System.out.println(spawn.get);
@@ -452,21 +477,21 @@ public class CommandLineController implements InputController {
 
     @Override
     public void changeTrafficLights() {
-    	 int[] coordinates = receiveCoordinateInput("Please enter the co-ordinates of the intersection where the traffic lights you wish to change are", simulator.getGridSize());
-    	 
-    	 int horizontalTime = DimensionManager.secondsToTicks(readDouble("Please enter the length of the horizontal light in seconds", 5, 1, 100));
-         int verticalTime = DimensionManager.secondsToTicks(readDouble("Please enter the length of the vertical light in seconds", 5, 1, 100));
+        int[] coordinates = receiveCoordinateInput("Please enter the co-ordinates of the intersection where the traffic lights you wish to change " +
+                "are", simulator.getGridSize());
 
-         Orientation orientation;
-         
-         do {
-             orientation = Orientation.stringToOrientation(receiveStringInput("Enter the orientation of the starting lights", new
-                     String[]{"Horizontal", "Vertical"}, true));
-         } while (orientation == null);
+        int horizontalTime = DimensionManager.secondsToTicks(readDouble("Please enter the length of the horizontal light in seconds", 5, 1, 100));
+        int verticalTime = DimensionManager.secondsToTicks(readDouble("Please enter the length of the vertical light in seconds", 5, 1, 100));
 
-         
+        Orientation orientation;
 
-         simulator.changeTrafficLights(coordinates, verticalTime, horizontalTime, orientation);
+        do {
+            orientation = Orientation.stringToOrientation(receiveStringInput("Enter the orientation of the starting lights", new
+                    String[]{"Horizontal", "Vertical"}, true));
+        } while (orientation == null);
+
+
+        simulator.changeTrafficLights(coordinates, verticalTime, horizontalTime, orientation);
     }
 
     @Override

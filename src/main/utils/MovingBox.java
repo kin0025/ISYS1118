@@ -201,7 +201,10 @@ public class MovingBox extends BoundingBox {
     }
 
     public boolean isInsideParent(){
-        return parentBox.isInsideBoundingBox(this.getCentre());
+        if(parentBox != null) {
+            return parentBox.isInsideBoundingBox(this.getCentre());
+        }
+        return true;
     }
 
     public void setAngle(int angleDegrees) {
